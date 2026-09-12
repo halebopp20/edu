@@ -1,0 +1,624 @@
+<title>품사 그림책</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&family=Baloo+2:wght@500;600;700;800&display=swap">
+<style>
+:root{
+  --paper:#FFF8EF;
+  --card:#FFFFFF;
+  --ink:#4A3B32;
+  --ink-soft:#97836F;
+  --ink-faint:#C3B29E;
+  --line:#F0E3D1;
+
+  --noun:#FF8FA3;      --noun-deep:#F0577A;  --noun-soft:#FFE7EC;
+  --verb:#43CBBB;      --verb-deep:#1EA294;  --verb-soft:#DDF9F5;
+  --adj:#FFB648;       --adj-deep:#EE9518;   --adj-soft:#FFF0D6;
+  --adv:#A78BFA;       --adv-deep:#8360E8;   --adv-soft:#EEE7FF;
+
+  --ok:#38C172;
+  --font-display:'Gaegu','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --font-body:'Gowun Dodum','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --font-word:'Baloo 2','Trebuchet MS',sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse 70% 40% at 12% 0%, #FFE7EC 0%, transparent 55%),
+    radial-gradient(ellipse 70% 40% at 88% 12%, #EEE7FF 0%, transparent 55%),
+    radial-gradient(ellipse 60% 35% at 90% 95%, #DDF9F5 0%, transparent 55%),
+    var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+.wrap{max-width:640px; margin:0 auto; padding:20px 18px 28px; position:relative; min-height:100vh; display:flex; flex-direction:column;}
+
+/* ---------- header / mascot ---------- */
+header.top{display:flex; align-items:flex-start; gap:14px; margin-bottom:18px;}
+.mascot{width:76px; height:76px; flex-shrink:0; filter:drop-shadow(0 4px 8px #00000014);}
+.title-block h1{font-family:var(--font-display); font-weight:700; font-size:clamp(30px,8vw,40px); margin:2px 0 7px; color:var(--ink); text-wrap:balance;}
+.bubble{position:relative; background:var(--card); border:2px solid var(--line); border-radius:16px 16px 16px 4px; padding:12px 16px; font-size:18px; color:var(--ink-soft); line-height:1.5; margin:0; box-shadow:0 3px 10px #00000008;}
+
+/* ---------- home shelf ---------- */
+.shelf{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:4px; flex:1;}
+@media (max-width:380px){ .shelf{grid-template-columns:1fr;} }
+.landCard{
+  --c:var(--noun); --cd:var(--noun-deep); --cs:var(--noun-soft);
+  position:relative; border:none; cursor:pointer; text-align:left; padding:0;
+  background:var(--card); border-radius:24px; border:3px solid var(--line);
+  overflow:hidden; min-height:236px; display:flex; flex-direction:column;
+  box-shadow:0 6px 16px #00000010; transition:transform .12s ease;
+}
+.landCard:active{transform:scale(.97);}
+.landCard .cover{flex:1; background:var(--cs); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:13px; padding:18px 10px; position:relative;}
+.landCard .cover svg{width:66px; height:66px;}
+.landCard .coverTitle{font-family:var(--font-word); font-weight:800; font-size:30px; color:var(--cd); text-align:center; line-height:1.15;}
+.landCard .coverTitle span{display:block; font-family:var(--font-display); font-weight:700; font-size:19px; color:var(--ink-soft); margin-top:4px;}
+.landCard .footer{display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--card);}
+.landCard .footer .num{font-family:var(--font-word); font-weight:700; font-size:16px; color:var(--ink-faint); letter-spacing:.5px;}
+.landCard .sticker{font-size:26px; line-height:1;}
+.landCard.done{border-color:var(--c);}
+
+.bonusCard{margin-top:16px; border:3px dashed var(--ink-faint); border-radius:20px; background:transparent; padding:20px; display:flex; align-items:center; justify-content:center; gap:10px; font-family:var(--font-display); font-weight:700; font-size:19px; color:var(--ink-faint); cursor:default; text-align:center;}
+.bonusCard .star{font-size:28px;}
+.bonusCard.unlocked{cursor:pointer; border-style:solid; border-color:var(--adv); background:var(--adv-soft); color:var(--adv-deep);}
+.bonusCard.unlocked:active{transform:scale(.98);}
+
+.footnote{margin-top:16px; text-align:center; color:var(--ink-faint); font-size:14.5px;}
+
+/* ---------- full-screen panel ---------- */
+.overlay{position:fixed; inset:0; z-index:20; background:#4A3B3266; backdrop-filter:blur(2px); display:flex; align-items:flex-end; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s ease;}
+.overlay.open{opacity:1; pointer-events:auto;}
+.panel{width:100%; max-width:640px; height:93vh; height:93dvh; max-height:93vh; max-height:93dvh;
+  background:
+    radial-gradient(ellipse 90% 40% at 15% 0%, #FFE7EC77, transparent 55%),
+    radial-gradient(ellipse 90% 40% at 100% 100%, #EEE7FF77, transparent 55%),
+    var(--paper);
+  border-radius:26px 26px 0 0; border:3px solid var(--line); border-bottom:none;
+  padding:16px 18px 20px; overflow-y:auto; transform:translateY(16px); transition:transform .22s ease;
+  box-shadow:0 -10px 30px #00000018; display:flex; flex-direction:column;}
+.overlay.open .panel{transform:translateY(0);}
+.panel-head{display:flex; align-items:center; gap:8px;}
+.panel-head h2{font-family:var(--font-display); font-weight:700; font-size:26px; margin:0; color:var(--ink); flex:1;}
+.panel-sub{font-size:16.5px; color:var(--ink-faint); margin:3px 0 8px; font-family:var(--font-word); font-weight:600; letter-spacing:.3px;}
+.iconBtn{background:var(--card); border:2px solid var(--line); color:var(--ink-soft); width:44px; height:44px; border-radius:50%; cursor:pointer; font-size:19px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+
+#stage{flex:1 1 auto; min-height:0; display:flex; flex-direction:column; justify-content:center; overflow-y:auto; gap:2px;}
+
+/* ---------- learn cards ---------- */
+.learnCard{display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px; padding:10px 4px;}
+.learnCard .stageArt{font-size:88px; line-height:1;}
+.learnCard .exGrid{display:flex; gap:15px; flex-wrap:wrap; justify-content:center;}
+.exGrid .exCard{background:var(--card); border:2.5px solid var(--line); border-radius:18px; padding:16px 18px; min-width:100px; box-shadow:0 4px 10px #00000008;}
+.exGrid .exCard .e{font-size:46px;}
+.exGrid .exCard .w{font-family:var(--font-word); font-weight:700; font-size:19px; margin-top:5px; color:var(--ink);}
+.learnCard .say{font-family:var(--font-display); font-weight:700; font-size:26px; line-height:1.5; color:var(--ink); text-wrap:balance; max-width:420px;}
+.learnCard .sentence{font-family:var(--font-word); font-weight:600; font-size:23px; color:var(--ink-soft); background:var(--card); border:2px dashed var(--ink-faint); border-radius:14px; padding:14px 20px;}
+.learnCard .sentence b{color:var(--cd,var(--noun-deep));}
+.learnCard .recap{font-family:var(--font-display); font-weight:700; font-size:21px; padding:11px 20px; border-radius:999px; background:var(--cs,var(--noun-soft)); color:var(--cd,var(--noun-deep));}
+.dots{display:flex; gap:6px; justify-content:center; margin:2px 0 0;}
+.dots span{width:9px; height:9px; border-radius:50%; background:var(--line);}
+.dots span.on{background:var(--c,var(--noun));}
+.bigNextBtn{margin-top:8px; width:100%; padding:18px; border:none; border-radius:16px; background:var(--c,var(--noun)); color:#fff; font-family:var(--font-display); font-weight:700; font-size:21px; cursor:pointer; box-shadow:0 5px 0 var(--cd,var(--noun-deep));}
+.bigNextBtn:active{transform:translateY(3px); box-shadow:0 2px 0 var(--cd,var(--noun-deep));}
+
+/* ---------- practice ---------- */
+.qn{text-align:center; font-family:var(--font-word); font-weight:700; font-size:16px; color:var(--ink-faint); letter-spacing:.4px; margin-bottom:9px;}
+.practiceCard{background:var(--card); border:3px solid var(--line); border-radius:26px; padding:38px 22px; text-align:center; margin:0 auto 24px; max-width:340px; box-shadow:0 6px 16px #00000010;}
+.practiceCard .e{font-size:108px; line-height:1;}
+.practiceCard .w{font-family:var(--font-word); font-weight:800; font-size:44px; color:var(--ink); margin-top:9px;}
+.practiceCard.sentenceMode{max-width:380px; padding:26px 22px;}
+.practiceCard .qLabel{font-family:var(--font-display); font-weight:700; font-size:16px; color:var(--ink-faint);}
+.practiceCard .sent{font-family:var(--font-word); font-weight:600; font-size:26px; color:var(--ink); line-height:1.55; margin:8px 0; text-wrap:balance;}
+.practiceCard .sent b{color:var(--cd,var(--noun-deep)); text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:4px; font-weight:800;}
+.answerRow{display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:440px; margin:0 auto; width:100%;}
+.answerRow.four{grid-template-columns:1fr 1fr;}
+.ansBtn{--c:var(--noun); --cd:var(--noun-deep); --cs:var(--noun-soft);
+  font-family:var(--font-word); font-weight:700; font-size:21px; background:var(--cs); color:var(--cd);
+  border:3px solid var(--c); border-radius:18px; padding:21px 10px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; transition:transform .1s ease;}
+.ansBtn .ic{font-size:33px;}
+.ansBtn .sub{font-size:14.5px; font-weight:600;}
+.ansBtn:active{transform:scale(.96);}
+.ansBtn.correct{background:var(--ok); border-color:#279656; color:#fff;}
+.ansBtn.wrong{background:#FFE3E3; border-color:#F0577A; color:#C23B5B; opacity:.7;}
+.ansBtn[disabled]{cursor:default;}
+.fb{text-align:center; min-height:28px; margin-top:15px; font-family:var(--font-display); font-weight:700; font-size:20px; color:var(--ink-soft);}
+
+/* ---------- sticker reward page ---------- */
+.rewardPage{text-align:center; padding:6px 4px;}
+.rewardPage .stickerBig{font-size:120px; animation:pop .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{0%{transform:scale(0) rotate(-15deg);} 70%{transform:scale(1.15) rotate(6deg);} 100%{transform:scale(1) rotate(0);}}
+.rewardPage h3{font-family:var(--font-display); font-weight:700; font-size:28px; margin:11px 0 5px; color:var(--ink);}
+.rewardPage p{color:var(--ink-soft); font-size:18px; margin:4px 0 18px;}
+.starsRow{display:flex; justify-content:center; gap:8px; margin:6px 0 16px;}
+.starsRow svg{width:36px; height:36px;}
+
+.confetti{position:fixed; width:9px; height:9px; border-radius:3px; pointer-events:none; z-index:60; animation:fall 1.1s ease-out forwards;}
+@keyframes fall{0%{transform:translate(0,0) rotate(0deg); opacity:1;} 100%{transform:translate(var(--dx),var(--dy)) rotate(var(--rot)); opacity:0;}}
+
+@media (prefers-reduced-motion:reduce){ *{animation-duration:.001s !important; transition-duration:.001s !important;} }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <svg class="mascot" viewBox="0 0 100 100">
+      <ellipse cx="36" cy="22" rx="9" ry="22" fill="#FFF8EF" stroke="#4A3B32" stroke-width="3"/>
+      <ellipse cx="64" cy="22" rx="9" ry="22" fill="#FFF8EF" stroke="#4A3B32" stroke-width="3"/>
+      <ellipse cx="36" cy="24" rx="4.5" ry="13" fill="#FFC9D4"/>
+      <ellipse cx="64" cy="24" rx="4.5" ry="13" fill="#FFC9D4"/>
+      <circle cx="50" cy="60" r="32" fill="#FFF8EF" stroke="#4A3B32" stroke-width="3"/>
+      <circle cx="30" cy="66" r="6" fill="#FFC9D4"/>
+      <circle cx="70" cy="66" r="6" fill="#FFC9D4"/>
+      <circle cx="40" cy="55" r="3.4" fill="#4A3B32"/>
+      <circle cx="60" cy="55" r="3.4" fill="#4A3B32"/>
+      <path d="M47 65 q3 3 6 0" stroke="#4A3B32" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="title-block">
+      <h1>품사 그림책</h1>
+      <p class="bubble" id="homeBubble">안녕! 나는 토실이야. 오늘은 그림으로 낱말 친구들을 만나보자!</p>
+    </div>
+  </header>
+
+  <div class="shelf" id="shelf"></div>
+
+  <button class="bonusCard" id="bonusCard" disabled>
+    <span class="star">⭐</span>
+    <span>네 권을 다 읽으면 '한 번에 맞히기'가 열려요!</span>
+  </button>
+
+  <p class="footnote">그림책을 눌러서 Noun · Verb · Adjective · Adverb를 하나씩 배워 보세요 🌼</p>
+</div>
+
+<div class="overlay" id="overlay"><div class="panel" id="panel"></div></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var ICONS = {
+    tag:'<svg viewBox="0 0 48 48"><path d="M6 24 L24 6 H38 A4 4 0 0 1 42 10 V24 L24 42 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="32" cy="16" r="3.2" fill="currentColor"/></svg>',
+    run:'<svg viewBox="0 0 48 48"><circle cx="28" cy="9" r="5" fill="currentColor"/><path d="M28 16 L22 26 L28 30 L26 42 M22 26 L12 22 M28 30 L38 34 M22 26 L16 38" stroke="currentColor" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    paint:'<svg viewBox="0 0 48 48"><path d="M24 6 C12 6 6 16 6 24 c0 8 6 10 10 8 c3-1.5 2-6 5-6 h9 c5 0 8-4 8-9 C38 10 32 6 24 6 Z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="16" cy="20" r="2.6" fill="currentColor"/><circle cx="24" cy="14" r="2.6" fill="currentColor"/><circle cx="32" cy="20" r="2.6" fill="currentColor"/><circle cx="18" cy="30" r="2.6" fill="currentColor"/></svg>',
+    wind:'<svg viewBox="0 0 48 48"><path d="M6 16 H30 a5 5 0 1 0 -5 -6" stroke="currentColor" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M6 26 H36 a5 5 0 1 1 -5 6" stroke="currentColor" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M6 36 H24" stroke="currentColor" stroke-width="3.4" fill="none" stroke-linecap="round"/></svg>',
+    star:'<svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17l-6.1 3.5 1.5-6.8L2.2 9l6.9-.7z"/></svg>'
+  };
+
+  /* ================= content ================= */
+  var LANDS = {
+    noun:{
+      title:'Noun', sub:'이름말', color:'noun', icon:'tag',
+      learn:[
+        {art:'🐰', say:'안녕! 오늘은 Noun(명사)을 배워보자!'},
+        {defLine:'Noun(명사)은 사람, 동물, 사물의 ‘이름’을 말하는 낱말이에요!',
+          examples:[{e:'🐱',w:'cat'},{e:'🍎',w:'apple'},{e:'👩',w:'mom'}]},
+        {sentence:'I have a <b>cat</b>.', sentNote:'cat이 바로 Noun이에요!', recap:'Noun = 이름이 있는 것'}
+      ],
+      practice:{
+        target:{label:'Noun', sub:'이름말', icon:'🏷️'},
+        foil:{label:'Verb', sub:'움직임말', icon:'🏃'},
+        items:[
+          {e:'🐱',w:'cat',is:'target'},
+          {e:'🏃',w:'run',is:'foil'},
+          {e:'🍎',w:'apple',is:'target'},
+          {e:'🐶',w:'dog',is:'target'},
+          {e:'🤸',w:'jump',is:'foil'},
+          {e:'🐟',w:'fish',is:'target'},
+          {sentence:'I have a <b>cat</b>.', w:'cat', is:'target'},
+          {sentence:'She eats an <b>apple</b>.', w:'apple', is:'target'},
+          {sentence:'I like to <b>run</b> every day.', w:'run', is:'foil'}
+        ]
+      }
+    },
+    verb:{
+      title:'Verb', sub:'움직임말', color:'verb', icon:'run',
+      learn:[
+        {art:'🐰', say:'이번엔 Verb(동사)를 배워보자!'},
+        {defLine:'Verb(동사)는 ‘무엇을 하는지’ 알려주는 낱말이에요!',
+          examples:[{e:'🍽️',w:'eat'},{e:'🏃',w:'run'},{e:'📖',w:'read'}]},
+        {sentence:'I <b>eat</b> an apple.', sentNote:'eat이 바로 Verb예요!', recap:'Verb = 무언가를 하는 것'}
+      ],
+      practice:{
+        target:{label:'Verb', sub:'움직임말', icon:'🏃'},
+        foil:{label:'Noun', sub:'이름말', icon:'🏷️'},
+        items:[
+          {e:'🍽️',w:'eat',is:'target'},
+          {e:'🍊',w:'orange',is:'foil'},
+          {e:'⚽',w:'play',is:'target'},
+          {e:'👩',w:'mom',is:'foil'},
+          {e:'📖',w:'read',is:'target'},
+          {e:'🥤',w:'drink',is:'target'},
+          {sentence:'I <b>eat</b> breakfast every day.', w:'eat', is:'target'},
+          {sentence:'She likes to <b>read</b> books.', w:'read', is:'target'},
+          {sentence:'My <b>mom</b> is very kind.', w:'mom', is:'foil'}
+        ]
+      }
+    },
+    adjective:{
+      title:'Adjective', sub:'꾸밈말(어떤)', color:'adj', icon:'paint',
+      learn:[
+        {art:'🐰', say:'이번엔 Adjective(형용사)를 배워보자!'},
+        {defLine:'Adjective(형용사)는 Noun이 ‘어떤지’ 꾸며주는 낱말이에요!',
+          examples:[{e:'🔴',w:'red'},{e:'😊',w:'happy'},{e:'🐘',w:'big'}]},
+        {sentence:'I have a <b>red</b> apple.', sentNote:'red가 apple을 꾸며줘요!', recap:'Adjective = Noun을 꾸며주는 말'}
+      ],
+      practice:{
+        target:{label:'Adjective', sub:'어떤', icon:'🎨'},
+        foil:{label:'Noun', sub:'이름말', icon:'🏷️'},
+        items:[
+          {e:'🔴',w:'red',is:'target'},
+          {e:'😊',w:'happy',is:'target'},
+          {e:'🐟',w:'fish',is:'foil'},
+          {e:'🐘',w:'big',is:'target'},
+          {e:'🍬',w:'sweet',is:'target'},
+          {e:'👩',w:'mom',is:'foil'},
+          {sentence:'He eats the <b>red</b> apple.', w:'red', is:'target'},
+          {sentence:'The <b>happy</b> girl is singing.', w:'happy', is:'target'},
+          {sentence:'I saw a <b>fish</b> at the pond.', w:'fish', is:'foil'}
+        ]
+      }
+    },
+    adverb:{
+      title:'Adverb', sub:'꾸밈말(어떻게)', color:'adv', icon:'wind',
+      learn:[
+        {art:'🐰', say:'마지막으로 Adverb(부사)를 배워보자!'},
+        {defLine:'Adverb(부사)는 Verb를 ‘어떻게’ 하는지 꾸며주는 낱말이에요!',
+          examples:[{e:'💨',w:'quickly'},{e:'📢',w:'loudly'},{e:'😄',w:'happily'}]},
+        {sentence:'I eat <b>quickly</b>.', sentNote:'quickly가 eat을 꾸며줘요!', recap:'Adverb = Verb를 꾸며주는 말'}
+      ],
+      practice:{
+        target:{label:'Adverb', sub:'어떻게', icon:'💨'},
+        foil:{label:'Verb', sub:'움직임말', icon:'🏃'},
+        items:[
+          {e:'💨',w:'quickly',is:'target'},
+          {e:'🐢',w:'slowly',is:'target'},
+          {e:'🏃',w:'run',is:'foil'},
+          {e:'📢',w:'loudly',is:'target'},
+          {e:'😢',w:'sadly',is:'target'},
+          {e:'🍽️',w:'eat',is:'foil'},
+          {sentence:'He runs <b>quickly</b>.', w:'quickly', is:'target'},
+          {sentence:'The girl cries <b>loudly</b>.', w:'loudly', is:'target'},
+          {sentence:'I like to <b>eat</b> pizza.', w:'eat', is:'foil'}
+        ]
+      }
+    }
+  };
+  var LAND_ORDER = ['noun','verb','adjective','adverb'];
+
+  var BONUS_ITEMS = [
+    {e:'🐱',w:'cat',cat:'noun'},
+    {e:'🏃',w:'run',cat:'verb'},
+    {e:'🔴',w:'red',cat:'adjective'},
+    {e:'💨',w:'quickly',cat:'adverb'},
+    {e:'🍎',w:'apple',cat:'noun'},
+    {e:'🍽️',w:'eat',cat:'verb'},
+    {e:'🐘',w:'big',cat:'adjective'},
+    {e:'📢',w:'loudly',cat:'adverb'}
+  ];
+  var BONUS_BTNS = [
+    {key:'noun', label:'Noun', icon:'🏷️'},
+    {key:'verb', label:'Verb', icon:'🏃'},
+    {key:'adjective', label:'Adjective', icon:'🎨'},
+    {key:'adverb', label:'Adverb', icon:'💨'}
+  ];
+
+  /* ================= progress ================= */
+  function defaultProgress(){ return {noun:0, verb:0, adjective:0, adverb:0, bonus:0}; }
+  var progress = loadProgress();
+  function loadProgress(){
+    try{ if (window.claude && window.claude.hot && window.claude.hot.data && window.claude.hot.data.progress) return window.claude.hot.data.progress; }catch(e){}
+    try{ var raw = localStorage.getItem('posBookProgressV1'); if (raw) return JSON.parse(raw); }catch(e){}
+    return defaultProgress();
+  }
+  function saveProgress(){
+    try{ localStorage.setItem('posBookProgressV1', JSON.stringify(progress)); }catch(e){}
+    try{ if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(function(){ return {progress:progress}; }); }catch(e){}
+  }
+
+  var STAR_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17l-6.1 3.5 1.5-6.8L2.2 9l6.9-.7z" fill="__C__"/></svg>';
+  function starSvg(filled){ return STAR_SVG.replace('__C__', filled ? '#FFB648' : '#EFE3D1'); }
+
+  function confetti(x, y){
+    var colors = ['#FF8FA3','#43CBBB','#FFB648','#A78BFA'];
+    for (var i=0;i<26;i++){
+      var el = document.createElement('div');
+      el.className = 'confetti';
+      var ang = Math.random()*Math.PI*2, dist = 60+Math.random()*110;
+      el.style.setProperty('--dx', Math.cos(ang)*dist+'px');
+      el.style.setProperty('--dy', (Math.sin(ang)*dist - 40)+'px');
+      el.style.setProperty('--rot', (Math.random()*360)+'deg');
+      el.style.left = x+'px'; el.style.top = y+'px';
+      el.style.background = colors[i%colors.length];
+      document.body.appendChild(el);
+      (function(node){ setTimeout(function(){ node.remove(); }, 1200); })(el);
+    }
+  }
+
+  /* ================= home render ================= */
+  var shelf = document.getElementById('shelf');
+  var bonusCard = document.getElementById('bonusCard');
+  var homeBubble = document.getElementById('homeBubble');
+  var overlay = document.getElementById('overlay');
+  var panel = document.getElementById('panel');
+
+  function renderHome(){
+    shelf.innerHTML = '';
+    LAND_ORDER.forEach(function(key){
+      var land = LANDS[key];
+      var s = progress[key]||0;
+      var btn = document.createElement('button');
+      btn.className = 'landCard'+(s>0?' done':'');
+      btn.style.setProperty('--c','var(--'+land.color+')');
+      btn.style.setProperty('--cd','var(--'+land.color+'-deep)');
+      btn.style.setProperty('--cs','var(--'+land.color+'-soft)');
+      btn.innerHTML =
+        '<div class="cover">'+ICONS[land.icon]+
+        '<div class="coverTitle">'+land.title+'<span>'+land.sub+'</span></div></div>'+
+        '<div class="footer"><span class="num">'+(s>0?'다 읽었어요':'그림책 열기')+'</span>'+
+        '<span class="sticker">'+(s>0?'⭐':'☆')+'</span></div>';
+      btn.onclick = function(){ openLand(key); };
+      shelf.appendChild(btn);
+    });
+    var doneCount = LAND_ORDER.filter(function(k){ return (progress[k]||0)>0; }).length;
+    var allDone = doneCount === LAND_ORDER.length;
+    bonusCard.classList.toggle('unlocked', allDone);
+    bonusCard.disabled = !allDone;
+    if (allDone){
+      bonusCard.innerHTML = '<span class="star">'+(progress.bonus>0?'🏆':'⭐')+'</span><span>'+(progress.bonus>0?'한 번에 맞히기 다시 하기':'한 번에 맞히기! 눌러서 도전해요')+'</span>';
+      bonusCard.onclick = openBonus;
+      homeBubble.textContent = progress.bonus>0 ? '와, 네 가지를 모두 완벽하게 익혔구나! 정말 멋져!' : '그림책 네 권을 다 읽었어! 이제 한 번에 맞혀볼까?';
+    } else {
+      bonusCard.innerHTML = '<span class="star">⭐</span><span>네 권을 다 읽으면 \'한 번에 맞히기\'가 열려요!</span>';
+      bonusCard.onclick = null;
+      homeBubble.textContent = doneCount===0 ? '안녕! 나는 토실이야. 오늘은 그림으로 낱말 친구들을 만나보자!' : '잘하고 있어! 남은 그림책도 같이 읽어보자.';
+    }
+  }
+
+  /* ================= learn flow ================= */
+  function openLand(key){
+    renderLearn(key, 0);
+    overlay.classList.add('open');
+  }
+
+  function renderLearn(key, idx){
+    var land = LANDS[key];
+    var cards = land.learn;
+    panel.innerHTML = '';
+    panel.style.setProperty('--c','var(--'+land.color+')');
+    panel.style.setProperty('--cd','var(--'+land.color+'-deep)');
+    panel.style.setProperty('--cs','var(--'+land.color+'-soft)');
+
+    var head = document.createElement('div');
+    head.innerHTML =
+      '<div class="panel-head"><h2>'+land.title+' 그림책</h2><button class="iconBtn" id="closeBtn">&#10005;</button></div>'+
+      '<p class="panel-sub">배워요 · '+(idx+1)+' / '+cards.length+'</p>';
+    panel.appendChild(head);
+
+    var stage = document.createElement('div');
+    stage.id = 'stage';
+    var c = cards[idx];
+    var html = '<div class="learnCard">';
+    if (c.art) html += '<div class="stageArt">'+c.art+'</div><div class="say">'+c.say+'</div>';
+    if (c.defLine){
+      html += '<div class="say">'+c.defLine+'</div><div class="exGrid">';
+      c.examples.forEach(function(ex){ html += '<div class="exCard"><div class="e">'+ex.e+'</div><div class="w">'+ex.w+'</div></div>'; });
+      html += '</div>';
+    }
+    if (c.sentence){
+      html += '<div class="sentence">'+c.sentence+'</div><div class="say" style="font-size:19px;">'+c.sentNote+'</div>'+
+        '<div class="recap">'+c.recap+'</div>';
+    }
+    var dots = '<div class="dots">';
+    for (var i=0;i<cards.length;i++) dots += '<span class="'+(i===idx?'on':'')+'"></span>';
+    dots += '</div>';
+    html += dots + '</div>';
+    stage.innerHTML = html;
+    panel.appendChild(stage);
+
+    var nextBtn = document.createElement('button');
+    nextBtn.className = 'bigNextBtn';
+    nextBtn.textContent = (idx === cards.length-1) ? '연습하러 가기 →' : '다음 →';
+    nextBtn.onclick = function(){
+      if (idx === cards.length-1) startPractice(key);
+      else renderLearn(key, idx+1);
+    };
+    panel.appendChild(nextBtn);
+
+    document.getElementById('closeBtn').onclick = closeAll;
+  }
+
+  /* ================= practice flow (2-button, per land) ================= */
+  function startPractice(key){
+    var land = LANDS[key];
+    var items = land.practice.items;
+    var idx = 0, correct = 0;
+    renderQ();
+
+    function renderQ(){
+      panel.innerHTML = '';
+      var head = document.createElement('div');
+      head.innerHTML =
+        '<div class="panel-head"><h2>'+land.title+' 연습</h2><button class="iconBtn" id="closeBtn">&#10005;</button></div>'+
+        '<p class="panel-sub">이건 '+land.practice.target.label+'일까요, '+land.practice.foil.label+'일까요?</p>';
+      panel.appendChild(head);
+
+      var stage = document.createElement('div');
+      stage.id = 'stage';
+      var it = items[idx];
+      var cardHtml = it.sentence
+        ? '<div class="practiceCard sentenceMode"><div class="qLabel">이 문장에서</div><div class="sent">'+it.sentence+'</div><div class="qLabel">밑줄 친 낱말은 무엇일까요?</div></div>'
+        : '<div class="practiceCard"><div class="e">'+it.e+'</div><div class="w">'+it.w+'</div></div>';
+      stage.innerHTML =
+        '<div class="qn">문제 '+(idx+1)+' / '+items.length+'</div>'+
+        cardHtml+
+        '<div class="answerRow" id="ansRow">'+
+          '<button class="ansBtn" id="btnTarget" style="--c:var(--'+land.color+'); --cd:var(--'+land.color+'-deep); --cs:var(--'+land.color+'-soft);"><span class="ic">'+land.practice.target.icon+'</span>'+land.practice.target.label+'<br><span class="sub">'+land.practice.target.sub+'</span></button>'+
+          '<button class="ansBtn" id="btnFoil" style="--c:#C3B29E; --cd:#8B7565; --cs:#F0E3D1;"><span class="ic">'+land.practice.foil.icon+'</span>'+land.practice.foil.label+'<br><span class="sub">'+land.practice.foil.sub+'</span></button>'+
+        '</div>'+
+        '<div class="fb" id="fb"></div>';
+      panel.appendChild(stage);
+      document.getElementById('closeBtn').onclick = closeAll;
+
+      document.getElementById('btnTarget').onclick = function(){ choose('target'); };
+      document.getElementById('btnFoil').onclick = function(){ choose('foil'); };
+
+      function choose(pick){
+        var btnT = document.getElementById('btnTarget'), btnF = document.getElementById('btnFoil');
+        btnT.disabled = true; btnF.disabled = true;
+        var right = it.is;
+        (right==='target'?btnT:btnF).classList.add('correct');
+        if (pick !== right) (pick==='target'?btnT:btnF).classList.add('wrong');
+        var fb = document.getElementById('fb');
+        if (pick === right){
+          correct++;
+          fb.textContent = '정답이에요! 참 잘했어요 ✨'; fb.style.color = '#1EA294';
+          var r = (right==='target'?btnT:btnF).getBoundingClientRect();
+          confetti(r.left+r.width/2, r.top+r.height/2);
+        } else {
+          fb.textContent = it.w + '는 ' + land.practice[right].label + '예요. 다음엔 맞힐 수 있어요!';
+          fb.style.color = '#C23B5B';
+        }
+        var next = document.createElement('button');
+        next.className = 'bigNextBtn';
+        next.style.marginTop = '14px';
+        next.style.setProperty('--c','var(--'+land.color+')');
+        next.style.setProperty('--cd','var(--'+land.color+'-deep)');
+        next.textContent = (idx===items.length-1) ? '결과 보기 →' : '다음 →';
+        next.onclick = function(){ idx++; if (idx>=items.length) finish(); else renderQ(); };
+        panel.appendChild(next);
+      }
+    }
+    function finish(){
+      var pct = correct/items.length;
+      var stars = pct>=0.9 ? 3 : (pct>=0.6 ? 2 : 1);
+      showReward(key, correct, items.length, stars);
+    }
+  }
+
+  /* ================= sticker reward page ================= */
+  function showReward(key, correct, total, stars){
+    var land = LANDS[key];
+    if ((progress[key]||0) < stars){ progress[key] = stars; saveProgress(); }
+    panel.innerHTML = '';
+    var head = document.createElement('div');
+    head.innerHTML = '<div class="panel-head"><h2>'+land.title+' 완료!</h2><button class="iconBtn" id="closeBtn">&#10005;</button></div>';
+    panel.appendChild(head);
+    var stage = document.createElement('div');
+    stage.id = 'stage';
+    stage.innerHTML =
+      '<div class="rewardPage">'+
+      '<div class="stickerBig">⭐</div>'+
+      '<h3>'+land.title+' 스티커 획득!</h3>'+
+      '<div class="starsRow">'+[1,2,3].map(function(i){return starSvg(i<=stars);}).join('')+'</div>'+
+      '<p>'+correct+' / '+total+'개를 맞혔어요. '+rewardMsg(stars)+'</p>'+
+      '<button class="bigNextBtn" id="rewardBackBtn" style="--c:var(--'+land.color+'); --cd:var(--'+land.color+'-deep);">그림책으로 돌아가기</button>'+
+      '</div>';
+    panel.appendChild(stage);
+    document.getElementById('closeBtn').onclick = closeAll;
+    document.getElementById('rewardBackBtn').onclick = closeAll;
+    setTimeout(function(){
+      var r = stage.querySelector('.stickerBig').getBoundingClientRect();
+      confetti(r.left+r.width/2, r.top+r.height/2);
+    }, 150);
+  }
+  function rewardMsg(stars){
+    if (stars>=3) return '완벽해요! 토실이가 정말 자랑스러워해요.';
+    if (stars===2) return '아주 잘했어요! 한 번 더 하면 완벽해질 거예요.';
+    return '스티커를 모았어요! 다시 읽어보면 더 쉬워질 거예요.';
+  }
+
+  /* ================= bonus round (4-button) ================= */
+  function openBonus(){
+    var idx = 0, correct = 0;
+    overlay.classList.add('open');
+    renderQ();
+    function renderQ(){
+      panel.innerHTML = '';
+      panel.style.setProperty('--c','var(--adv)');
+      panel.style.setProperty('--cd','var(--adv-deep)');
+      var head = document.createElement('div');
+      head.innerHTML =
+        '<div class="panel-head"><h2>한 번에 맞히기</h2><button class="iconBtn" id="closeBtn">&#10005;</button></div>'+
+        '<p class="panel-sub">Noun · Verb · Adjective · Adverb 중에서 골라 보세요!</p>';
+      panel.appendChild(head);
+      var stage = document.createElement('div');
+      stage.id = 'stage';
+      var it = BONUS_ITEMS[idx];
+      var btnsHtml = BONUS_BTNS.map(function(b){
+        return '<button class="ansBtn" data-key="'+b.key+'" style="--c:var(--'+LANDS[b.key].color+'); --cd:var(--'+LANDS[b.key].color+'-deep); --cs:var(--'+LANDS[b.key].color+'-soft);"><span class="ic">'+b.icon+'</span>'+b.label+'</button>';
+      }).join('');
+      stage.innerHTML =
+        '<div class="qn">문제 '+(idx+1)+' / '+BONUS_ITEMS.length+'</div>'+
+        '<div class="practiceCard"><div class="e">'+it.e+'</div><div class="w">'+it.w+'</div></div>'+
+        '<div class="answerRow four" id="ansRow">'+btnsHtml+'</div>'+
+        '<div class="fb" id="fb"></div>';
+      panel.appendChild(stage);
+      document.getElementById('closeBtn').onclick = closeAll;
+
+      Array.prototype.forEach.call(stage.querySelectorAll('.ansBtn'), function(b){
+        b.onclick = function(){ choose(b.getAttribute('data-key'), b); };
+      });
+
+      function choose(pick, btn){
+        Array.prototype.forEach.call(stage.querySelectorAll('.ansBtn'), function(b){
+          b.disabled = true;
+          if (b.getAttribute('data-key') === it.cat) b.classList.add('correct');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        var fb = document.getElementById('fb');
+        if (pick === it.cat){
+          correct++;
+          fb.textContent = '정답이에요! ✨'; fb.style.color = '#1EA294';
+          var r = btn.getBoundingClientRect();
+          confetti(r.left+r.width/2, r.top+r.height/2);
+        } else {
+          fb.textContent = it.w + '는 ' + LANDS[it.cat].title + '예요!'; fb.style.color = '#C23B5B';
+        }
+        var next = document.createElement('button');
+        next.className = 'bigNextBtn';
+        next.style.marginTop = '14px';
+        next.textContent = (idx===BONUS_ITEMS.length-1) ? '결과 보기 →' : '다음 →';
+        next.onclick = function(){ idx++; if (idx>=BONUS_ITEMS.length) finish(); else renderQ(); };
+        panel.appendChild(next);
+      }
+    }
+    function finish(){
+      var pct = correct/BONUS_ITEMS.length;
+      var stars = pct>=0.9 ? 3 : (pct>=0.6 ? 2 : 1);
+      if ((progress.bonus||0) < stars){ progress.bonus = stars; saveProgress(); }
+      panel.innerHTML = '';
+      var head = document.createElement('div');
+      head.innerHTML = '<div class="panel-head"><h2>도전 완료!</h2><button class="iconBtn" id="closeBtn">&#10005;</button></div>';
+      panel.appendChild(head);
+      var stage = document.createElement('div'); stage.id='stage';
+      stage.innerHTML =
+        '<div class="rewardPage">'+
+        '<div class="stickerBig">🏆</div>'+
+        '<h3>최고예요!</h3>'+
+        '<div class="starsRow">'+[1,2,3].map(function(i){return starSvg(i<=stars);}).join('')+'</div>'+
+        '<p>'+correct+' / '+BONUS_ITEMS.length+'개를 맞혔어요. 이제 Noun, Verb, Adjective, Adverb를 잘 구분할 수 있어요!</p>'+
+        '<button class="bigNextBtn" id="rewardBackBtn" style="--c:var(--adv); --cd:var(--adv-deep);">그림책으로 돌아가기</button>'+
+        '</div>';
+      panel.appendChild(stage);
+      document.getElementById('closeBtn').onclick = closeAll;
+      document.getElementById('rewardBackBtn').onclick = closeAll;
+      setTimeout(function(){
+        var r = stage.querySelector('.stickerBig').getBoundingClientRect();
+        confetti(r.left+r.width/2, r.top+r.height/2);
+      }, 150);
+    }
+  }
+
+  function closeAll(){ overlay.classList.remove('open'); renderHome(); }
+
+  renderHome();
+
+  try{
+    if (window.claude && window.claude.hot){
+      var boot = function(){ renderHome(); };
+      if (window.claude.hot.ready) window.claude.hot.ready(boot); else boot();
+    }
+  }catch(e){}
+})();
+</script>
