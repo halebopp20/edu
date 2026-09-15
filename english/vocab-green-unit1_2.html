@@ -1,0 +1,607 @@
+<title>초록 단어 정원</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@300;400;700&family=Baloo+2:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #fdf3fb;
+    --bg-soft: #f7e7f7;
+    --surface: #ffffff;
+    --surface-2: #fff8fc;
+    --ink: #4a3a55;
+    --ink-soft: #8d7c98;
+    --ink-faint: #bbaec4;
+    --accent: #ff8fb1;
+    --accent-strong: #f2557f;
+    --accent-tint: #ffe3ec;
+    --secondary: #4fbf83;
+    --secondary-strong: #339160;
+    --secondary-tint: #ddf5e6;
+    --sun: #ffc93c;
+    --correct: #3fa564;
+    --correct-strong: #2c7a49;
+    --correct-tint: #e2f6e9;
+    --wrong: #ff7a68;
+    --wrong-tint: #ffe9e4;
+    --line: #f3ddf0;
+    --opt1: #f2e6ff;
+    --opt1-line: #ddbcff;
+    --opt2: #fff3c9;
+    --opt2-line: #ffdd7a;
+    --opt3: #dcf3ff;
+    --opt3-line: #a8e2ff;
+    --opt4: #ffe4d6;
+    --opt4-line: #ffc19e;
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(242, 85, 127, 0.35);
+    --radius: 32px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #221a3a;
+      --bg-soft: #2a2147;
+      --surface: #2e2450;
+      --surface-2: #362a5c;
+      --ink: #f5ecff;
+      --ink-soft: #c6b8de;
+      --ink-faint: #8c7ead;
+      --accent: #ff9fc2;
+      --accent-strong: #ffc0da;
+      --accent-tint: #452a41;
+      --secondary: #7fe0a8;
+      --secondary-strong: #a4edc2;
+      --secondary-tint: #1f3c2c;
+      --sun: #ffd166;
+      --correct: #7fe0a8;
+      --correct-strong: #4fae76;
+      --correct-tint: #1f3c2c;
+      --wrong: #ff9d8d;
+      --wrong-tint: #452a26;
+      --line: #4a3b73;
+      --opt1: #3a2e5c; --opt1-line: #6a53a0;
+      --opt2: #4a3e2c; --opt2-line: #8a713a;
+      --opt3: #263c50; --opt3-line: #3f6f92;
+      --opt4: #452f2c; --opt4-line: #8a5a48;
+      --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #221a3a; --bg-soft: #2a2147; --surface: #2e2450; --surface-2: #362a5c;
+    --ink: #f5ecff; --ink-soft: #c6b8de; --ink-faint: #8c7ead;
+    --accent: #ff9fc2; --accent-strong: #ffc0da; --accent-tint: #452a41;
+    --secondary: #7fe0a8; --secondary-strong: #a4edc2; --secondary-tint: #1f3c2c;
+    --sun: #ffd166; --correct: #7fe0a8; --correct-strong: #4fae76; --correct-tint: #1f3c2c;
+    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #4a3b73;
+    --opt1: #3a2e5c; --opt1-line: #6a53a0; --opt2: #4a3e2c; --opt2-line: #8a713a;
+    --opt3: #263c50; --opt3-line: #3f6f92; --opt4: #452f2c; --opt4-line: #8a5a48;
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 8% 8%, var(--bg-soft) 0%, transparent 40%),
+      radial-gradient(circle at 92% 18%, var(--bg-soft) 0%, transparent 38%);
+    color: var(--ink);
+    font-family: "Gaegu", "Pretendard", -apple-system, sans-serif;
+    font-size: 21px;
+    line-height: 1.5;
+  }
+
+  .word-font { font-family: "Baloo 2", "Gaegu", sans-serif; }
+
+  .app {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .brand-mark {
+    width: 76px; height: 76px; flex: none; border-radius: 24px;
+    background: linear-gradient(150deg, var(--secondary), var(--accent));
+    display: flex; align-items: center; justify-content: center; font-size: 40px;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.08);
+  }
+  .eyebrow { margin: 0 0 2px; font-size: 19px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--secondary-strong); }
+  h1 { margin: 0; font-family: "Jua", sans-serif; font-weight: 400; font-size: 44px; color: var(--ink); line-height: 1.15; }
+
+  .theme-toggle {
+    border: 3px solid var(--line); background: var(--surface); color: var(--ink-soft);
+    border-radius: 999px; padding: 12px 22px; font-size: 22px; font-weight: 700;
+    cursor: pointer; font-family: "Gaegu", sans-serif; flex: none;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+  .mascot-row { display: flex; align-items: center; gap: 16px; padding: 2px 4px; }
+  .mascot { font-size: 56px; line-height: 1; }
+  .speech {
+    background: var(--surface); border: 3px solid var(--line); border-radius: 20px;
+    padding: 16px 22px; font-size: 24px; color: var(--ink-soft); flex: 1;
+    box-shadow: var(--shadow);
+  }
+
+  .card { background: var(--surface); border: 3px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 36px 30px; }
+
+  .section-title { margin: 0 0 8px; font-family: "Jua", sans-serif; font-weight: 400; font-size: 32px; line-height: 1.3; }
+  .section-sub { margin: 0 0 22px; font-size: 23px; color: var(--ink-soft); line-height: 1.55; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+  .chip {
+    border: 3px solid var(--line); background: var(--surface-2); color: var(--ink-soft);
+    border-radius: 999px; padding: 16px 26px; font-size: 24px; font-weight: 700;
+    cursor: pointer; font-family: "Gaegu", sans-serif;
+  }
+  .chip[aria-pressed="true"] { background: var(--secondary-tint); border-color: var(--secondary); color: var(--secondary-strong); }
+
+  .mode-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 32px; }
+
+  .mode-card {
+    text-align: left; border: 3px solid var(--line); background: var(--surface-2);
+    border-radius: 24px; padding: 22px 24px; cursor: pointer; font-family: "Gaegu", sans-serif;
+    color: var(--ink); display: flex; flex-direction: column; gap: 8px;
+  }
+  .mode-card .step-row { display: flex; align-items: center; gap: 10px; }
+  .mode-card .icon { font-size: 34px; }
+  .mode-card .step { font-size: 20px; font-weight: 700; letter-spacing: 0.02em; color: var(--ink-faint); }
+  .mode-card .name { font-family: "Jua", sans-serif; font-weight: 400; font-size: 27px; }
+  .mode-card .desc { font-size: 21px; color: var(--ink-soft); line-height: 1.5; }
+  .mode-card[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-tint); }
+  .mode-card[aria-pressed="true"] .step { color: var(--accent-strong); }
+
+  .primary-btn {
+    width: 100%; border: none; border-bottom: 6px solid var(--accent-strong);
+    background: var(--accent); color: #fff; font-family: "Jua", sans-serif; font-weight: 400;
+    font-size: 28px; padding: 22px; border-radius: 22px; cursor: pointer; line-height: 1.3;
+  }
+  .primary-btn:active { transform: translateY(3px); border-bottom-width: 3px; }
+  .primary-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .ghost-btn {
+    border: 3px solid var(--line); background: var(--surface); color: var(--ink-soft);
+    font-family: "Gaegu", sans-serif; font-weight: 700; font-size: 22px;
+    padding: 18px 22px; border-radius: 20px; cursor: pointer; line-height: 1.3;
+  }
+  .ghost-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+  .recap { margin-top: 26px; padding-top: 22px; border-top: 3px dashed var(--line); }
+  .recap p { margin: 0 0 12px; font-size: 21px; color: var(--ink-faint); font-weight: 700; }
+  .recap-words { display: flex; flex-wrap: wrap; gap: 8px; }
+  .recap-words span { font-family: "Baloo 2", sans-serif; font-size: 20px; background: var(--wrong-tint); color: var(--wrong); padding: 6px 16px; border-radius: 999px; font-weight: 600; }
+
+  .progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-size: 21px; color: var(--ink-soft); font-weight: 700; }
+  .growth { font-size: 34px; }
+
+  .quiz-card { position: relative; background: var(--surface); border: 3px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 38px 30px 32px; overflow: hidden; }
+  .quiz-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: linear-gradient(90deg, var(--secondary), var(--sun), var(--accent)); }
+
+  .unit-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 20px; font-weight: 700; color: var(--secondary-strong); background: var(--secondary-tint); padding: 8px 18px; border-radius: 999px; margin-bottom: 22px; }
+
+  .meaning-en { font-family: "Baloo 2", sans-serif; font-size: 32px; font-weight: 600; line-height: 1.45; margin: 0 0 14px; text-wrap: balance; }
+  .meaning-kr { font-size: 25px; color: var(--ink-soft); margin: 0 0 32px; }
+
+  .options-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+
+  .option-btn {
+    border: 3px solid var(--line); background: var(--surface-2); color: var(--ink);
+    font-family: "Baloo 2", sans-serif; font-size: 28px; font-weight: 600;
+    padding: 22px 18px; border-radius: 22px; cursor: pointer; text-align: center; line-height: 1.3;
+  }
+  .options-grid .option-btn:nth-child(1) { background: var(--opt1); border-color: var(--opt1-line); }
+  .options-grid .option-btn:nth-child(2) { background: var(--opt2); border-color: var(--opt2-line); }
+  .options-grid .option-btn:nth-child(3) { background: var(--opt3); border-color: var(--opt3-line); }
+  .options-grid .option-btn:nth-child(4) { background: var(--opt4); border-color: var(--opt4-line); }
+  .option-btn:active:not(:disabled) { transform: scale(0.98); }
+  .option-btn:disabled { cursor: default; }
+  .options-grid .option-btn.is-correct { border-color: var(--correct); background: var(--correct-tint); color: var(--correct); }
+  .options-grid .option-btn.is-wrong { border-color: var(--wrong); background: var(--wrong-tint); color: var(--wrong); }
+
+  .type-row { display: flex; flex-wrap: wrap; gap: 14px; }
+  .type-input {
+    flex: 1; min-width: 220px; border: 3px solid var(--line); background: var(--surface-2); color: var(--ink);
+    font-family: "Baloo 2", sans-serif; font-size: 30px; letter-spacing: 0.02em;
+    padding: 18px 22px; border-radius: 20px;
+  }
+  .type-input:focus { outline: 4px solid var(--accent-tint); border-color: var(--accent); }
+  .type-input.is-correct { border-color: var(--correct); background: var(--correct-tint); }
+  .type-input.is-wrong { border-color: var(--wrong); background: var(--wrong-tint); }
+  .type-hint { font-size: 19px; color: var(--ink-faint); margin: 12px 0 0; line-height: 1.5; }
+  #submitType { width: auto; padding: 18px 28px; border-radius: 20px; }
+
+  .pad-card {
+    background: #fffdf6; border: 3px solid var(--line); border-radius: 22px; padding: 10px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+  }
+  .write-pad { width: 100%; height: 240px; display: block; border-radius: 15px; touch-action: none; background: #fffdf6; cursor: crosshair; }
+  @media (max-width: 480px) { .write-pad { height: 190px; } }
+
+  .pad-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .pad-toolbar .primary-btn, .pad-toolbar .ghost-btn { width: auto; flex: 1; min-width: 170px; }
+  .pad-toolbar .primary-btn.btn-correct { background: var(--correct); border-bottom-color: var(--correct-strong); }
+
+  .reveal-box {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    background: var(--accent-tint); border: 3px solid var(--accent);
+    border-radius: 20px; padding: 16px 22px; margin-top: 16px;
+  }
+  .reveal-box[hidden], .pad-toolbar[hidden] { display: none; }
+  .reveal-label { font-size: 18px; font-weight: 700; color: var(--accent-strong); }
+  .reveal-word { font-family: "Baloo 2", sans-serif; font-size: 34px; font-weight: 700; color: var(--accent-strong); }
+
+  .feedback-row { margin-top: 22px; min-height: 34px; font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .feedback-row.correct { color: var(--correct); }
+  .feedback-row.wrong { color: var(--wrong); }
+
+  .quiz-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+  .next-btn {
+    border: none; border-bottom: 6px solid var(--secondary-strong); background: var(--secondary); color: #fff;
+    font-family: "Jua", sans-serif; font-weight: 400; font-size: 24px; padding: 16px 30px;
+    border-radius: 20px; cursor: pointer; visibility: hidden;
+  }
+  .next-btn.show { visibility: visible; }
+  .next-btn:active { transform: translateY(3px); border-bottom-width: 3px; }
+
+  .score-hero { text-align: center; padding: 8px 0 6px; }
+  .score-mascot { font-size: 74px; }
+  .score-num { font-family: "Jua", sans-serif; font-weight: 400; font-size: 68px; line-height: 1.2; }
+  .score-label { margin-top: 6px; font-size: 23px; color: var(--ink-soft); font-weight: 700; }
+
+  .result-list { margin: 26px 0 0; display: flex; flex-direction: column; gap: 10px; }
+  .result-row { display: flex; align-items: baseline; gap: 12px; padding: 14px 18px; border-radius: 18px; background: var(--wrong-tint); font-size: 22px; flex-wrap: wrap; }
+  .result-row .rw { font-family: "Baloo 2", sans-serif; font-weight: 700; min-width: 100px; color: var(--wrong); }
+  .result-row .kr { color: var(--ink-soft); margin-left: auto; }
+
+  .result-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .result-actions .primary-btn, .result-actions .ghost-btn { flex: 1; min-width: 220px; }
+
+  footer.note { text-align: center; font-size: 18px; color: var(--ink-faint); margin-top: 4px; line-height: 1.6; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  @media (max-width: 480px) {
+    body { font-size: 19px; }
+    h1 { font-size: 36px; }
+    .card { padding: 26px 20px; }
+    .quiz-card { padding: 30px 20px 26px; }
+    .meaning-en { font-size: 27px; }
+    .score-num { font-size: 54px; }
+  }
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">🐰</div>
+      <div>
+        <p class="eyebrow">Vocabulary Workshop · Green</p>
+        <h1>초록 단어 정원</h1>
+      </div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button">☀️ 낮</button>
+  </div>
+  <main id="screen"></main>
+  <footer class="note">Unit 1 · Unit 2 들어있어요 (모두 20개) · Unit 3는 준비되면 함께 넣어줄게요.</footer>
+</div>
+
+<script>
+(function () {
+  var WORDS = [
+    { unit: 1, word: "allow", en: "to let do or happen; to agree", kr: "허락하다" },
+    { unit: 1, word: "bitter", en: "sharp and unpleasant; angry or hurt", kr: "쓴맛이 나는" },
+    { unit: 1, word: "common", en: "found often; average", kr: "흔한, 보통의" },
+    { unit: 1, word: "faint", en: "to pass out; not clear; weak", kr: "기절하다, 희미한" },
+    { unit: 1, word: "firm", en: "solid, steady or strong; also a business or small company", kr: "단단한, 회사" },
+    { unit: 1, word: "force", en: "strength, power; to cause to do something by using strength or power", kr: "힘, 강요하다" },
+    { unit: 1, word: "goal", en: "something a person wants and works for", kr: "목표" },
+    { unit: 1, word: "patient", en: "a person getting medical care; able to stay calm when faced with pain, trouble, or a long wait", kr: "환자, 참을성 있는" },
+    { unit: 1, word: "prefer", en: "to like better than others; to tend to choose", kr: "선호하다, 더 좋아하다" },
+    { unit: 1, word: "trace", en: "a small amount left behind showing something was there; to copy by following lines seen through paper", kr: "흔적, (선을) 따라 그리다" },
+    { unit: 2, word: "aim", en: "to point or direct at a target; a purpose or goal", kr: "조준하다, 목표" },
+    { unit: 2, word: "aware", en: "knowing or realizing", kr: "알고 있는" },
+    { unit: 2, word: "defeat", en: "to beat in a game or battle; loss, failure", kr: "패배시키다, 패배" },
+    { unit: 2, word: "drift", en: "to be carried away by water or air", kr: "(바다에서) 떠다니다" },
+    { unit: 2, word: "mild", en: "gentle; not harsh", kr: "순한" },
+    { unit: 2, word: "pause", en: "to stop for a short time; a short stop", kr: "멈추다, 정지" },
+    { unit: 2, word: "refuse", en: "to not accept or agree to something", kr: "거절하다" },
+    { unit: 2, word: "route", en: "a road or way of travel between two places", kr: "길, 경로" },
+    { unit: 2, word: "ruin", en: "to destroy or damage something", kr: "망치다" },
+    { unit: 2, word: "solid", en: "having shape and hardness; not liquid or gas; very strong and reliable", kr: "단단한" }
+  ];
+
+  var GROWTH_STAGES = ["🌱", "🌿", "🍀", "🌷", "🌻", "💐"];
+  var STORE_KEY = "vwgreen_progress_v2";
+  var screenEl = document.getElementById("screen");
+  var root = document.documentElement;
+  var themeBtn = document.getElementById("themeToggle");
+
+  function loadStore() {
+    try { var raw = localStorage.getItem(STORE_KEY); return raw ? JSON.parse(raw) : {}; }
+    catch (e) { return {}; }
+  }
+  function saveStore(data) { try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {} }
+  function applyTheme(mode) {
+    if (mode === "dark") { root.setAttribute("data-theme", "dark"); themeBtn.textContent = "🌙 밤"; }
+    else { root.setAttribute("data-theme", "light"); themeBtn.textContent = "☀️ 낮"; }
+  }
+  (function initTheme() { var store = loadStore(); applyTheme(store.theme === "dark" ? "dark" : "light"); })();
+  themeBtn.addEventListener("click", function () {
+    var current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    var next = current === "dark" ? "light" : "dark";
+    applyTheme(next);
+    var store = loadStore(); store.theme = next; saveStore(store);
+  });
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+  }
+
+  var state = { selectedUnits: { 1: true, 2: true }, mode: "mc", questions: [], index: 0, score: 0, wrong: [], answered: false };
+
+  function pool() { return WORDS.filter(function (w) { return state.selectedUnits[w.unit]; }); }
+
+  // ---------- START ----------
+  function renderStart() {
+    var store = loadStore();
+    var lastWrong = store.lastWrong || [];
+    var p = pool();
+    var canStart = state.mode === "mc" ? p.length >= 4 : p.length >= 1;
+
+    screenEl.innerHTML =
+      '<div class="mascot-row"><span class="mascot">🐰</span><div class="speech">안녕! 오늘은 어떤 단어를 배워볼까?</div></div>' +
+      '<div class="card">' +
+        '<h2 class="section-title">🌳 어떤 단원을 공부할까요?</h2>' +
+        '<p class="section-sub">시험 범위에 있는 단원을 골라주세요.</p>' +
+        '<div class="chip-row" id="unitChips">' +
+          '<button class="chip" data-unit="1" aria-pressed="' + state.selectedUnits[1] + '" type="button">🌱 Unit 1 · 10개</button>' +
+          '<button class="chip" data-unit="2" aria-pressed="' + state.selectedUnits[2] + '" type="button">🌸 Unit 2 · 10개</button>' +
+        '</div>' +
+        '<h2 class="section-title">🎯 어떤 단계로 공부할까요?</h2>' +
+        '<p class="section-sub">처음에는 보기 중에서 고르고, 익숙해지면 직접 써보세요.</p>' +
+        '<div class="mode-grid" id="modeCards">' +
+          '<button class="mode-card" data-mode="mc" aria-pressed="' + (state.mode === "mc") + '" type="button">' +
+            '<span class="step-row"><span class="icon">🧩</span><span class="step">1단계</span></span>' +
+            '<span class="name">뜻 보고 단어 고르기</span>' +
+            '<span class="desc">뜻을 읽고 보기 4개 중 알맞은 단어를 골라요.</span>' +
+          '</button>' +
+          '<button class="mode-card" data-mode="typing" aria-pressed="' + (state.mode === "typing") + '" type="button">' +
+            '<span class="step-row"><span class="icon">✏️</span><span class="step">2단계</span></span>' +
+            '<span class="name">뜻 보고 단어 쓰기</span>' +
+            '<span class="desc">뜻을 읽고 펜이나 손가락으로 스펠링을 직접 써봐요.</span>' +
+          '</button>' +
+        '</div>' +
+        '<button class="primary-btn" id="startBtn" type="button" ' + (canStart ? "" : "disabled") + '>' +
+          (p.length ? '🚀 시작할래요! (단어 ' + p.length + '개)' : '단원을 하나 이상 골라주세요') +
+        '</button>' +
+        (lastWrong.length ? (
+          '<div class="recap"><p>🌟 지난번에 헷갈렸던 단어</p><div class="recap-words">' +
+            lastWrong.map(function (w) { return '<span>' + esc(w) + '</span>'; }).join("") +
+          '</div></div>'
+        ) : "") +
+      '</div>';
+
+    document.querySelectorAll('#unitChips .chip').forEach(function (btn) {
+      btn.addEventListener("click", function () { state.selectedUnits[Number(btn.getAttribute("data-unit"))] = !state.selectedUnits[Number(btn.getAttribute("data-unit"))]; renderStart(); });
+    });
+    document.querySelectorAll('#modeCards .mode-card').forEach(function (btn) {
+      btn.addEventListener("click", function () { state.mode = btn.getAttribute("data-mode"); renderStart(); });
+    });
+    var startBtn = document.getElementById("startBtn");
+    if (startBtn) startBtn.addEventListener("click", startQuiz);
+  }
+
+  // ---------- QUIZ ----------
+  function startQuiz() {
+    var p = pool();
+    if (!p.length) return;
+    state.questions = shuffle(p); state.index = 0; state.score = 0; state.wrong = [];
+    renderQuiz();
+  }
+  function currentWord() { return state.questions[state.index]; }
+
+  function renderQuiz() {
+    var total = state.questions.length;
+    var w = currentWord();
+    state.answered = false;
+    var stage = GROWTH_STAGES[Math.min(GROWTH_STAGES.length - 1, Math.floor((state.index / total) * GROWTH_STAGES.length))];
+
+    var answerAreaHtml;
+    if (state.mode === "mc") {
+      var distractors = shuffle(pool().filter(function (x) { return x.word !== w.word; })).slice(0, 3);
+      var options = shuffle([w].concat(distractors));
+      answerAreaHtml = '<div class="options-grid" id="optionsGrid">' +
+        options.map(function (o) { return '<button class="option-btn" data-word="' + esc(o.word) + '" type="button">' + esc(o.word) + '</button>'; }).join("") +
+      '</div>';
+    } else {
+      answerAreaHtml =
+        '<div class="pad-card"><canvas id="writeCanvas" class="write-pad"></canvas></div>' +
+        '<div class="reveal-box" id="revealBox" hidden><span class="reveal-label">정답</span><span class="reveal-word word-font" id="revealWord"></span></div>' +
+        '<div class="pad-toolbar" id="preToolbar">' +
+          '<button class="ghost-btn" id="clearPad" type="button">🧹 다시 쓰기</button>' +
+          '<button class="primary-btn" id="revealBtn" type="button">👀 정답 확인하기</button>' +
+        '</div>' +
+        '<div class="pad-toolbar" id="postToolbar" hidden>' +
+          '<button class="ghost-btn" id="clearPad2" type="button">🧹 다시 쓰기</button>' +
+          '<button class="ghost-btn" id="missedBtn" type="button">🔁 다시 볼게요</button>' +
+          '<button class="primary-btn btn-correct" id="gotItBtn" type="button">✅ 맞았어요</button>' +
+        '</div>' +
+        '<p class="type-hint">펜이나 손가락으로 여기에 단어를 써 보세요. 다 썼으면 정답 확인을 눌러서 비교해봐요.</p>';
+    }
+
+    screenEl.innerHTML =
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">' + stage + '</span></div>' +
+      '<div class="quiz-card">' +
+        '<span class="unit-tag">' + (w.unit === 1 ? "🌱 Unit 1" : "🌸 Unit 2") + '</span>' +
+        '<p class="meaning-en">' + esc(w.en) + '</p>' +
+        '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
+        answerAreaHtml +
+        '<div class="feedback-row" id="feedback"></div>' +
+        '<div class="quiz-footer">' +
+          '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
+          '<button class="next-btn" id="nextBtn" type="button">다음 →</button>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById("quitBtn").addEventListener("click", renderStart);
+    document.getElementById("nextBtn").addEventListener("click", goNext);
+
+    if (state.mode === "mc") {
+      document.querySelectorAll("#optionsGrid .option-btn").forEach(function (btn) { btn.addEventListener("click", function () { handleMcAnswer(btn, w); }); });
+    } else {
+      var pad = setupWritePad();
+      document.getElementById("clearPad").addEventListener("click", function () { if (pad) pad.clear(); });
+      document.getElementById("revealBtn").addEventListener("click", function () {
+        document.getElementById("revealWord").textContent = w.word;
+        document.getElementById("revealBox").hidden = false;
+        document.getElementById("preToolbar").hidden = true;
+        document.getElementById("postToolbar").hidden = false;
+      });
+      document.getElementById("clearPad2").addEventListener("click", function () { if (pad) pad.clear(); });
+      document.getElementById("gotItBtn").addEventListener("click", function () { markAnsweredPen(true, w); });
+      document.getElementById("missedBtn").addEventListener("click", function () { markAnsweredPen(false, w); });
+    }
+  }
+
+  // pointer-based writing pad (works with finger, mouse, and stylus/Apple Pencil)
+  function setupWritePad() {
+    var canvas = document.getElementById("writeCanvas");
+    if (!canvas) return null;
+    var ctx = canvas.getContext("2d");
+    var ratio = window.devicePixelRatio || 1;
+    var w = 0, h = 0;
+
+    function paintGuides() {
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+      ctx.strokeStyle = "rgba(74,58,85,0.2)";
+      ctx.setLineDash([7, 7]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(0, h * 0.28); ctx.lineTo(w, h * 0.28); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, h * 0.62); ctx.lineTo(w, h * 0.62); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = "rgba(74,58,85,0.4)";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, h * 0.82); ctx.lineTo(w, h * 0.82); ctx.stroke();
+    }
+
+    function fit() {
+      var rect = canvas.getBoundingClientRect();
+      w = rect.width; h = rect.height;
+      canvas.width = w * ratio; canvas.height = h * ratio;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      paintGuides();
+    }
+    fit();
+
+    var drawing = false, lastX = 0, lastY = 0;
+    function point(e) { var r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+    function down(e) {
+      drawing = true;
+      var p = point(e); lastX = p.x; lastY = p.y;
+      if (canvas.setPointerCapture) { try { canvas.setPointerCapture(e.pointerId); } catch (err) {} }
+      e.preventDefault();
+    }
+    function move(e) {
+      if (!drawing) return;
+      var p = point(e);
+      ctx.strokeStyle = "#3c2b4a"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+      lastX = p.x; lastY = p.y;
+      e.preventDefault();
+    }
+    function up(e) { drawing = false; }
+
+    canvas.addEventListener("pointerdown", down);
+    canvas.addEventListener("pointermove", move);
+    canvas.addEventListener("pointerup", up);
+    canvas.addEventListener("pointercancel", up);
+
+    return { clear: paintGuides };
+  }
+
+  function markAnswered(isCorrect, w) {
+    state.answered = true;
+    if (isCorrect) state.score++; else state.wrong.push(w);
+    var fb = document.getElementById("feedback");
+    if (isCorrect) { fb.innerHTML = "🐰✨ 정답이에요! 정말 잘했어요"; fb.className = "feedback-row correct"; }
+    else { fb.innerHTML = "🐰🌱 괜찮아요! 정답은 <span class='word-font'>" + esc(w.word) + "</span> 예요"; fb.className = "feedback-row wrong"; }
+    document.getElementById("nextBtn").classList.add("show");
+  }
+
+  function handleMcAnswer(btn, w) {
+    if (state.answered) return;
+    var isCorrect = btn.getAttribute("data-word") === w.word;
+    document.querySelectorAll("#optionsGrid .option-btn").forEach(function (b) {
+      b.disabled = true;
+      if (b.getAttribute("data-word") === w.word) b.classList.add("is-correct");
+      else if (b === btn) b.classList.add("is-wrong");
+    });
+    markAnswered(isCorrect, w);
+  }
+
+  function markAnsweredPen(isCorrect, w) {
+    if (state.answered) return;
+    state.answered = true;
+    if (isCorrect) state.score++; else state.wrong.push(w);
+    var fb = document.getElementById("feedback");
+    if (isCorrect) { fb.innerHTML = "🐰✨ 정답이에요! 정말 잘했어요"; fb.className = "feedback-row correct"; }
+    else { fb.innerHTML = "🐰🌱 괜찮아요, 다음엔 더 잘 쓸 수 있어요!"; fb.className = "feedback-row wrong"; }
+    document.getElementById("nextBtn").classList.add("show");
+  }
+
+  function goNext() {
+    if (state.index + 1 < state.questions.length) { state.index++; renderQuiz(); }
+    else { renderResult(); }
+  }
+
+  // ---------- RESULT ----------
+  function renderResult() {
+    var total = state.questions.length;
+    var pct = Math.round((state.score / total) * 100);
+    var store = loadStore(); store.lastWrong = state.wrong.map(function (w) { return w.word; }); saveStore(store);
+
+    var cheer, mascotFace;
+    if (pct >= 90) { cheer = "우와, 정말 최고예요! 🏆"; mascotFace = "🐰🎉"; }
+    else if (pct >= 70) { cheer = "잘했어요! 조금만 더 연습하면 완벽해요 🌟"; mascotFace = "🐰😊"; }
+    else { cheer = "괜찮아요, 다시 도전하면 더 잘할 수 있어요 💪"; mascotFace = "🐰🌱"; }
+
+    var otherMode = state.mode === "mc" ? "typing" : "mc";
+    var otherLabel = state.mode === "mc" ? "✏️ 2단계 쓰기로 이어서 연습하기" : "🧩 1단계 고르기로 다시 연습하기";
+
+    screenEl.innerHTML =
+      '<div class="card">' +
+        '<div class="score-hero">' +
+          '<div class="score-mascot">' + mascotFace + '</div>' +
+          '<div class="score-num">' + state.score + ' / ' + total + '</div>' +
+          '<div class="score-label">' + cheer + '</div>' +
+        '</div>' +
+        (state.wrong.length ? (
+          '<div class="result-list">' + state.wrong.map(function (w) { return '<div class="result-row"><span class="rw">' + esc(w.word) + '</span><span class="kr">' + esc(w.kr) + '</span></div>'; }).join("") + '</div>'
+        ) : '<p class="section-sub" style="margin-top:16px; text-align:center;">모두 정답이에요. 완벽해요! 🎊</p>') +
+        '<div class="result-actions">' +
+          (state.wrong.length ? '<button class="primary-btn" id="retryWrongBtn" type="button">🔁 틀린 단어 다시 풀기</button>' : '') +
+          '<button class="ghost-btn" id="switchModeBtn" type="button">' + otherLabel + '</button>' +
+          '<button class="ghost-btn" id="restartBtn" type="button">🏠 처음으로</button>' +
+        '</div>' +
+      '</div>';
+
+    var retryBtn = document.getElementById("retryWrongBtn");
+    if (retryBtn) retryBtn.addEventListener("click", function () { state.questions = shuffle(state.wrong); state.index = 0; state.score = 0; state.wrong = []; renderQuiz(); });
+    document.getElementById("switchModeBtn").addEventListener("click", function () { state.mode = otherMode; state.questions = shuffle(pool()); state.index = 0; state.score = 0; state.wrong = []; renderQuiz(); });
+    document.getElementById("restartBtn").addEventListener("click", renderStart);
+  }
+
+  renderStart();
+})();
+</script>
