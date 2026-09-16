@@ -480,15 +480,18 @@
 
   // ---------- QUIZ ----------
   function startQuiz() {
-    var p = pool();
-    if (!p.length) return;
-    state.questions = shuffle(p); state.index = 0; state.score = 0; state.wrong = [];
+    var q = buildSessionQueue();
+    if (!q.length) { renderCertificate(); return; }
+    state.queue = q;
+    state.retryQueue = [];
+    state.index = 0;
+    state.answered = false;
     renderQuiz();
   }
-  function currentWord() { return state.questions[state.index]; }
+  function currentWord() { return state.queue[state.index]; }
 
   function renderQuiz() {
-    var total = state.questions.length;
+    var total = state.queue.length;
     var w = currentWord();
     state.answered = false;
     var stage = FLOWER[Math.min(FLOWER.length - 1, Math.floor((state.index / total) * FLOWER.length))];
@@ -545,8 +548,8 @@
         document.getElementById("postToolbar").hidden = false;
       });
       document.getElementById("clearPad2").addEventListener("click", function () { if (pad) pad.clear(); });
-      document.getElementById("gotItBtn").addEventListener("click", function () { markAnsweredPen(true, w); });
-      document.getElementById("missedBtn").addEventListener("click", function () { markAnsweredPen(false, w); });
+      document.getElementById("gotItBtn").addEventListener("click", function () { handleCorrect(w); });
+      document.getElementById("missedBtn").addEventListener("click", function () { handleWrong(w); });
     }
   }
 
@@ -609,12 +612,23 @@
     return { clear: paintGuides };
   }
 
-  function markAnswered(isCorrect, w) {
+  function handleCorrect(w) {
+    if (state.answered) return;
     state.answered = true;
-    if (isCorrect) state.score++; else state.wrong.push(w);
+    setStars(w.word, getStars(w.word) + 1);
     var fb = document.getElementById("feedback");
-    if (isCorrect) { fb.innerHTML = "🐰✨ 정답이에요! 정말 잘했어요"; fb.className = "feedback-row correct"; }
-    else { fb.innerHTML = "🐰🌱 괜찮아요! 정답은 <span class='word-font'>" + esc(w.word) + "</span> 예요"; fb.className = "feedback-row wrong"; }
+    fb.innerHTML = "🐰✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
+    fb.className = "feedback-row correct";
+    document.getElementById("nextBtn").classList.add("show");
+  }
+
+  function handleWrong(w) {
+    if (state.answered) return;
+    state.answered = true;
+    state.retryQueue.push(w);
+    var fb = document.getElementById("feedback");
+    fb.innerHTML = "🐰🌱 괜찮아요, 나중에 다시 해봐요!";
+    fb.className = "feedback-row wrong";
     document.getElementById("nextBtn").classList.add("show");
   }
 
@@ -629,19 +643,19 @@
     markAnswered(isCorrect, w);
   }
 
-  function markAnsweredPen(isCorrect, w) {
-    if (state.answered) return;
-    state.answered = true;
-    if (isCorrect) state.score++; else state.wrong.push(w);
-    var fb = document.getElementById("feedback");
-    if (isCorrect) { fb.innerHTML = "🐰✨ 정답이에요! 정말 잘했어요"; fb.className = "feedback-row correct"; }
-    else { fb.innerHTML = "🐰🌱 괜찮아요, 다음엔 더 잘 쓸 수 있어요!"; fb.className = "feedback-row wrong"; }
-    document.getElementById("nextBtn").classList.add("show");
-  }
-
   function goNext() {
-    if (state.index + 1 < state.questions.length) { state.index++; renderQuiz(); }
-    else { renderResult(); }
+    state.index++;
+    if (state.index < state.queue.length) {
+      renderQuiz();
+    } else if (state.retryQueue.length > 0) {
+      state.queue = state.queue.concat(shuffle(state.retryQueue));
+      state.retryQueue = [];
+      renderQuiz();
+    } else {
+      var allDone = WORDS.every(function (w) { return getStars(w.word) >= 4; });
+      if (allDone) renderCertificate();
+      else renderResult();
+    }
   }
 
   // ---------- CERTIFICATE (stub — Task 8에서 교체) ----------
