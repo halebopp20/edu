@@ -349,7 +349,7 @@
     <button class="theme-toggle" id="themeToggle" type="button">☀️ 낮</button>
   </div>
   <main id="screen"></main>
-  <footer class="note">Unit 1 · Unit 2 들어있어요 (모두 20개) · Unit 3는 준비되면 함께 넣어줄게요.</footer>
+  <footer class="note">Unit 1 · Unit 2 · 20개 단어 · 비밀코드는 소스 맨 위 SECRET_CODE 변수에서 바꿔요.</footer>
 </div>
 
 <script>
@@ -723,8 +723,33 @@
     }
   }
 
-  // ---------- CERTIFICATE (stub — Task 8에서 교체) ----------
-  function renderCertificate() { renderStart(); }
+  // ---------- CERTIFICATE ----------
+  function renderCertificate() {
+    screenEl.innerHTML =
+      '<div class="card">' +
+        '<div class="cert-flowers">🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸</div>' +
+        '<div class="cert-title">정원 완성! 🎉</div>' +
+        '<div class="cert-sub">Unit 1 · 2 단어 20개를 모두 외웠어요!</div>' +
+        '<div class="cert-box">이 친구는 초록 단어 정원의<br>모든 꽃을 피웠습니다 🌸</div>' +
+        '<div class="secret-box">' +
+          '<div class="secret-label">🔑 비밀코드</div>' +
+          '<div class="secret-code">' + esc(SECRET_CODE) + '</div>' +
+          '<div class="secret-hint">엄마한테 이 코드를 말해봐요!<br><strong>선물이 기다리고 있어요 🎁</strong></div>' +
+        '</div>' +
+        '<button class="primary-btn" id="shareBtn" type="button">📸 엄마한테 보여주기</button>' +
+        '<button class="ghost-btn" id="resetBtn" type="button" style="margin-top:12px">🔄 처음부터 다시 하기</button>' +
+      '</div>';
+
+    document.getElementById("shareBtn").addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    document.getElementById("resetBtn").addEventListener("click", function () {
+      var store = loadStore();
+      store.words = {};
+      saveStore(store);
+      renderStart();
+    });
+  }
 
   // ---------- RESULT ----------
   function renderResult() {
