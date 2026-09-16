@@ -728,39 +728,27 @@
 
   // ---------- RESULT ----------
   function renderResult() {
-    var total = state.questions.length;
-    var pct = Math.round((state.score / total) * 100);
-    var store = loadStore(); store.lastWrong = state.wrong.map(function (w) { return w.word; }); saveStore(store);
-
-    var cheer, mascotFace;
-    if (pct >= 90) { cheer = "우와, 정말 최고예요! 🏆"; mascotFace = "🐰🎉"; }
-    else if (pct >= 70) { cheer = "잘했어요! 조금만 더 연습하면 완벽해요 🌟"; mascotFace = "🐰😊"; }
-    else { cheer = "괜찮아요, 다시 도전하면 더 잘할 수 있어요 💪"; mascotFace = "🐰🌱"; }
-
-    var otherMode = state.mode === "mc" ? "typing" : "mc";
-    var otherLabel = state.mode === "mc" ? "✏️ 2단계 쓰기로 이어서 연습하기" : "🧩 1단계 고르기로 다시 연습하기";
+    var mastered = WORDS.filter(function (w) { return getStars(w.word) >= 4; }).length;
+    var remaining = WORDS.length - mastered;
 
     screenEl.innerHTML =
       '<div class="card">' +
         '<div class="score-hero">' +
-          '<div class="score-mascot">' + mascotFace + '</div>' +
-          '<div class="score-num">' + state.score + ' / ' + total + '</div>' +
-          '<div class="score-label">' + cheer + '</div>' +
+          '<div class="score-mascot">🐰🌱</div>' +
+          '<div class="score-num">' + mastered + ' / 20</div>' +
+          '<div class="score-label">꽃이 ' + mastered + '송이 피었어요! 계속 키워봐요 🌸</div>' +
         '</div>' +
-        (state.wrong.length ? (
-          '<div class="result-list">' + state.wrong.map(function (w) { return '<div class="result-row"><span class="rw">' + esc(w.word) + '</span><span class="kr">' + esc(w.kr) + '</span></div>'; }).join("") + '</div>'
-        ) : '<p class="section-sub" style="margin-top:16px; text-align:center;">모두 정답이에요. 완벽해요! 🎊</p>') +
         '<div class="result-actions">' +
-          (state.wrong.length ? '<button class="primary-btn" id="retryWrongBtn" type="button">🔁 틀린 단어 다시 풀기</button>' : '') +
-          '<button class="ghost-btn" id="switchModeBtn" type="button">' + otherLabel + '</button>' +
-          '<button class="ghost-btn" id="restartBtn" type="button">🏠 처음으로</button>' +
+          (remaining > 0
+            ? '<button class="primary-btn" id="continueBtn" type="button">🌱 계속 연습하기 (' + remaining + '개 남음)</button>'
+            : '') +
+          '<button class="ghost-btn" id="homeBtn" type="button">🏠 정원으로 돌아가기</button>' +
         '</div>' +
       '</div>';
 
-    var retryBtn = document.getElementById("retryWrongBtn");
-    if (retryBtn) retryBtn.addEventListener("click", function () { state.questions = shuffle(state.wrong); state.index = 0; state.score = 0; state.wrong = []; renderQuiz(); });
-    document.getElementById("switchModeBtn").addEventListener("click", function () { state.mode = otherMode; state.questions = shuffle(pool()); state.index = 0; state.score = 0; state.wrong = []; renderQuiz(); });
-    document.getElementById("restartBtn").addEventListener("click", renderStart);
+    var continueBtn = document.getElementById("continueBtn");
+    if (continueBtn) continueBtn.addEventListener("click", startQuiz);
+    document.getElementById("homeBtn").addEventListener("click", renderStart);
   }
 
   renderStart();
