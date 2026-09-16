@@ -488,44 +488,32 @@
     state.answered = false;
     renderQuiz();
   }
-  function currentWord() { return state.queue[state.index]; }
-
   function renderQuiz() {
-    var total = state.queue.length;
-    var w = currentWord();
+    var w = state.queue[state.index];
     state.answered = false;
-    var stage = FLOWER[Math.min(FLOWER.length - 1, Math.floor((state.index / total) * FLOWER.length))];
+    var stars = getStars(w.word);
+    if (stars === 0) renderStage1(w);
+    else if (stars === 1) renderStage2(w);
+    else if (stars === 2) renderStage3(w);
+    else renderStage4(w);
+  }
 
-    var answerAreaHtml;
-    if (state.mode === "mc") {
-      var distractors = shuffle(pool().filter(function (x) { return x.word !== w.word; })).slice(0, 3);
-      var options = shuffle([w].concat(distractors));
-      answerAreaHtml = '<div class="options-grid" id="optionsGrid">' +
-        options.map(function (o) { return '<button class="option-btn" data-word="' + esc(o.word) + '" type="button">' + esc(o.word) + '</button>'; }).join("") +
-      '</div>';
-    } else {
-      answerAreaHtml =
-        '<div class="pad-card"><canvas id="writeCanvas" class="write-pad"></canvas></div>' +
-        '<div class="reveal-box" id="revealBox" hidden><span class="reveal-label">정답</span><span class="reveal-word word-font" id="revealWord"></span></div>' +
-        '<div class="pad-toolbar" id="preToolbar">' +
-          '<button class="ghost-btn" id="clearPad" type="button">🧹 다시 쓰기</button>' +
-          '<button class="primary-btn" id="revealBtn" type="button">👀 정답 확인하기</button>' +
-        '</div>' +
-        '<div class="pad-toolbar" id="postToolbar" hidden>' +
-          '<button class="ghost-btn" id="clearPad2" type="button">🧹 다시 쓰기</button>' +
-          '<button class="ghost-btn" id="missedBtn" type="button">🔁 다시 볼게요</button>' +
-          '<button class="primary-btn btn-correct" id="gotItBtn" type="button">✅ 맞았어요</button>' +
-        '</div>' +
-        '<p class="type-hint">펜이나 손가락으로 여기에 단어를 써 보세요. 다 썼으면 정답 확인을 눌러서 비교해봐요.</p>';
-    }
+  function renderStage1(w) {
+    var total = state.queue.length;
+    var distractors = shuffle(WORDS.filter(function (x) { return x.word !== w.word; })).slice(0, 3);
+    var options = shuffle([w].concat(distractors));
 
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">' + stage + '</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌱</span></div>' +
       '<div class="quiz-card">' +
-        '<span class="unit-tag">' + (w.unit === 1 ? "🌱 Unit 1" : "🌸 Unit 2") + '</span>' +
+        '<span class="stage-badge stage-1">🧩 1단계 · 객관식</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
         '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
-        answerAreaHtml +
+        '<div class="options-grid" id="optionsGrid">' +
+          options.map(function (o) {
+            return '<button class="option-btn" data-word="' + esc(o.word) + '" type="button">' + esc(o.word) + '</button>';
+          }).join("") +
+        '</div>' +
         '<div class="feedback-row" id="feedback"></div>' +
         '<div class="quiz-footer">' +
           '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
@@ -535,22 +523,110 @@
 
     document.getElementById("quitBtn").addEventListener("click", renderStart);
     document.getElementById("nextBtn").addEventListener("click", goNext);
-
-    if (state.mode === "mc") {
-      document.querySelectorAll("#optionsGrid .option-btn").forEach(function (btn) { btn.addEventListener("click", function () { handleMcAnswer(btn, w); }); });
-    } else {
-      var pad = setupWritePad();
-      document.getElementById("clearPad").addEventListener("click", function () { if (pad) pad.clear(); });
-      document.getElementById("revealBtn").addEventListener("click", function () {
-        document.getElementById("revealWord").textContent = w.word;
-        document.getElementById("revealBox").hidden = false;
-        document.getElementById("preToolbar").hidden = true;
-        document.getElementById("postToolbar").hidden = false;
+    document.querySelectorAll("#optionsGrid .option-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (state.answered) return;
+        var isCorrect = btn.getAttribute("data-word") === w.word;
+        document.querySelectorAll("#optionsGrid .option-btn").forEach(function (b) {
+          b.disabled = true;
+          if (b.getAttribute("data-word") === w.word) b.classList.add("is-correct");
+          else if (b === btn && !isCorrect) b.classList.add("is-wrong");
+        });
+        if (isCorrect) handleCorrect(w); else handleWrong(w);
       });
-      document.getElementById("clearPad2").addEventListener("click", function () { if (pad) pad.clear(); });
-      document.getElementById("gotItBtn").addEventListener("click", function () { handleCorrect(w); });
-      document.getElementById("missedBtn").addEventListener("click", function () { handleWrong(w); });
-    }
+    });
+  }
+
+  function renderStage2(w) {
+    var total = state.queue.length;
+    screenEl.innerHTML =
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌿</span></div>' +
+      '<div class="quiz-card">' +
+        '<span class="stage-badge stage-2">✏️ 2단계 · 보면서 쓰기</span>' +
+        '<p class="meaning-en">' + esc(w.en) + '</p>' +
+        '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
+        '<div class="hint-box hint-full word-font">' + esc(w.word) + '</div>' +
+        '<p class="type-hint">위 단어를 보면서 아래에 써봐요</p>' +
+        renderCanvasHtml() +
+        '<div class="feedback-row" id="feedback"></div>' +
+        '<div class="quiz-footer">' +
+          '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
+          '<button class="next-btn" id="nextBtn" type="button">다음 →</button>' +
+        '</div>' +
+      '</div>';
+    bindCanvasEvents(w);
+  }
+
+  function renderStage3(w) {
+    var total = state.queue.length;
+    screenEl.innerHTML =
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌷</span></div>' +
+      '<div class="quiz-card">' +
+        '<span class="stage-badge stage-3">🌟 3단계 · 힌트 보고 쓰기</span>' +
+        '<p class="meaning-en">' + esc(w.en) + '</p>' +
+        '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
+        '<div class="hint-box hint-partial word-font">' + esc(getHint(w.word)) + '</div>' +
+        '<p class="type-hint">힌트를 보고 전체 단어를 아래에 써봐요</p>' +
+        renderCanvasHtml() +
+        '<div class="feedback-row" id="feedback"></div>' +
+        '<div class="quiz-footer">' +
+          '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
+          '<button class="next-btn" id="nextBtn" type="button">다음 →</button>' +
+        '</div>' +
+      '</div>';
+    bindCanvasEvents(w);
+  }
+
+  function renderStage4(w) {
+    var total = state.queue.length;
+    screenEl.innerHTML =
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌸</span></div>' +
+      '<div class="quiz-card">' +
+        '<span class="stage-badge stage-4">🖊️ 4단계 · 완전 암기</span>' +
+        '<p class="meaning-en">' + esc(w.en) + '</p>' +
+        '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
+        renderCanvasHtml() +
+        '<div class="feedback-row" id="feedback"></div>' +
+        '<div class="quiz-footer">' +
+          '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
+          '<button class="next-btn" id="nextBtn" type="button">다음 →</button>' +
+        '</div>' +
+      '</div>';
+    bindCanvasEvents(w);
+  }
+
+  function renderCanvasHtml() {
+    return '<div class="pad-card"><canvas id="writeCanvas" class="write-pad"></canvas></div>' +
+      '<div class="reveal-box" id="revealBox" hidden>' +
+        '<span class="reveal-label">정답</span>' +
+        '<span class="reveal-word word-font" id="revealWord"></span>' +
+      '</div>' +
+      '<div class="pad-toolbar" id="preToolbar">' +
+        '<button class="ghost-btn" id="clearPad" type="button">🧹 다시 쓰기</button>' +
+        '<button class="primary-btn" id="revealBtn" type="button">👀 정답 확인하기</button>' +
+      '</div>' +
+      '<div class="pad-toolbar" id="postToolbar" hidden>' +
+        '<button class="ghost-btn" id="clearPad2" type="button">🧹 다시 쓰기</button>' +
+        '<button class="ghost-btn" id="missedBtn" type="button">🔁 다시 볼게요</button>' +
+        '<button class="primary-btn btn-correct" id="gotItBtn" type="button">✅ 맞았어요</button>' +
+      '</div>' +
+      '<p class="type-hint">펜이나 손가락으로 써봐요. 다 썼으면 정답 확인을 눌러주세요.</p>';
+  }
+
+  function bindCanvasEvents(w) {
+    document.getElementById("quitBtn").addEventListener("click", renderStart);
+    document.getElementById("nextBtn").addEventListener("click", goNext);
+    var pad = setupWritePad();
+    document.getElementById("clearPad").addEventListener("click", function () { if (pad) pad.clear(); });
+    document.getElementById("revealBtn").addEventListener("click", function () {
+      document.getElementById("revealWord").textContent = w.word;
+      document.getElementById("revealBox").hidden = false;
+      document.getElementById("preToolbar").hidden = true;
+      document.getElementById("postToolbar").hidden = false;
+    });
+    document.getElementById("clearPad2").addEventListener("click", function () { if (pad) pad.clear(); });
+    document.getElementById("gotItBtn").addEventListener("click", function () { handleCorrect(w); });
+    document.getElementById("missedBtn").addEventListener("click", function () { handleWrong(w); });
   }
 
   // pointer-based writing pad (works with finger, mouse, and stylus/Apple Pencil)
@@ -630,17 +706,6 @@
     fb.innerHTML = "🐰🌱 괜찮아요, 나중에 다시 해봐요!";
     fb.className = "feedback-row wrong";
     document.getElementById("nextBtn").classList.add("show");
-  }
-
-  function handleMcAnswer(btn, w) {
-    if (state.answered) return;
-    var isCorrect = btn.getAttribute("data-word") === w.word;
-    document.querySelectorAll("#optionsGrid .option-btn").forEach(function (b) {
-      b.disabled = true;
-      if (b.getAttribute("data-word") === w.word) b.classList.add("is-correct");
-      else if (b === btn) b.classList.add("is-wrong");
-    });
-    markAnswered(isCorrect, w);
   }
 
   function goNext() {
