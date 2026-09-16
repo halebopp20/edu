@@ -443,52 +443,39 @@
 
   // ---------- START ----------
   function renderStart() {
-    var store = loadStore();
-    var lastWrong = store.lastWrong || [];
-    var p = pool();
-    var canStart = state.mode === "mc" ? p.length >= 4 : p.length >= 1;
+    var remaining = WORDS.filter(function (w) { return getStars(w.word) < 4; }).length;
+
+    var gardenHtml = '<div class="garden-grid">' +
+      WORDS.map(function (w) {
+        var stars = getStars(w.word);
+        var emoji = FLOWER[stars];
+        var style = stars === 0 ? ' style="opacity:0.25"' : '';
+        return '<span class="garden-flower"' + style + ' title="' + esc(w.word) + '">' + emoji + '</span>';
+      }).join("") +
+    '</div>';
+
+    var legendHtml = '<div class="garden-legend">' +
+      '<span style="opacity:0.25">🌱 아직 안 봤어</span>' +
+      '<span>🌱 1단계 통과</span><span>🌿 2단계</span>' +
+      '<span>🌷 3단계</span><span>🌸 완전히 외웠어</span>' +
+    '</div>';
+
+    var actionHtml = remaining > 0
+      ? '<button class="primary-btn" id="startBtn" type="button">🚀 오늘의 연습 시작! (' + remaining + '개 남음)</button>'
+      : '<button class="primary-btn" id="certBtn" type="button">🏆 수료증 보기!</button>';
 
     screenEl.innerHTML =
-      '<div class="mascot-row"><span class="mascot">🐰</span><div class="speech">안녕! 오늘은 어떤 단어를 배워볼까?</div></div>' +
+      '<div class="mascot-row"><span class="mascot">🐰</span>' +
+        '<div class="speech">안녕! 오늘도 같이 단어를 키워보자! 🌸</div></div>' +
       '<div class="card">' +
-        '<h2 class="section-title">🌳 어떤 단원을 공부할까요?</h2>' +
-        '<p class="section-sub">시험 범위에 있는 단원을 골라주세요.</p>' +
-        '<div class="chip-row" id="unitChips">' +
-          '<button class="chip" data-unit="1" aria-pressed="' + state.selectedUnits[1] + '" type="button">🌱 Unit 1 · 10개</button>' +
-          '<button class="chip" data-unit="2" aria-pressed="' + state.selectedUnits[2] + '" type="button">🌸 Unit 2 · 10개</button>' +
-        '</div>' +
-        '<h2 class="section-title">🎯 어떤 단계로 공부할까요?</h2>' +
-        '<p class="section-sub">처음에는 보기 중에서 고르고, 익숙해지면 직접 써보세요.</p>' +
-        '<div class="mode-grid" id="modeCards">' +
-          '<button class="mode-card" data-mode="mc" aria-pressed="' + (state.mode === "mc") + '" type="button">' +
-            '<span class="step-row"><span class="icon">🧩</span><span class="step">1단계</span></span>' +
-            '<span class="name">뜻 보고 단어 고르기</span>' +
-            '<span class="desc">뜻을 읽고 보기 4개 중 알맞은 단어를 골라요.</span>' +
-          '</button>' +
-          '<button class="mode-card" data-mode="typing" aria-pressed="' + (state.mode === "typing") + '" type="button">' +
-            '<span class="step-row"><span class="icon">✏️</span><span class="step">2단계</span></span>' +
-            '<span class="name">뜻 보고 단어 쓰기</span>' +
-            '<span class="desc">뜻을 읽고 펜이나 손가락으로 스펠링을 직접 써봐요.</span>' +
-          '</button>' +
-        '</div>' +
-        '<button class="primary-btn" id="startBtn" type="button" ' + (canStart ? "" : "disabled") + '>' +
-          (p.length ? '🚀 시작할래요! (단어 ' + p.length + '개)' : '단원을 하나 이상 골라주세요') +
-        '</button>' +
-        (lastWrong.length ? (
-          '<div class="recap"><p>🌟 지난번에 헷갈렸던 단어</p><div class="recap-words">' +
-            lastWrong.map(function (w) { return '<span>' + esc(w) + '</span>'; }).join("") +
-          '</div></div>'
-        ) : "") +
+        '<h2 class="section-title">🌸 내 단어 정원</h2>' +
+        gardenHtml + legendHtml + actionHtml +
       '</div>';
 
-    document.querySelectorAll('#unitChips .chip').forEach(function (btn) {
-      btn.addEventListener("click", function () { state.selectedUnits[Number(btn.getAttribute("data-unit"))] = !state.selectedUnits[Number(btn.getAttribute("data-unit"))]; renderStart(); });
-    });
-    document.querySelectorAll('#modeCards .mode-card').forEach(function (btn) {
-      btn.addEventListener("click", function () { state.mode = btn.getAttribute("data-mode"); renderStart(); });
-    });
     var startBtn = document.getElementById("startBtn");
     if (startBtn) startBtn.addEventListener("click", startQuiz);
+    var certBtn = document.getElementById("certBtn");
+    if (certBtn) certBtn.addEventListener("click", renderCertificate);
   }
 
   // ---------- QUIZ ----------
