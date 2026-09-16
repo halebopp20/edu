@@ -276,6 +276,64 @@
     .meaning-en { font-size: 27px; }
     .score-num { font-size: 54px; }
   }
+
+  /* ── 정원 그리드 ── */
+  .garden-grid {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding: 18px; background: var(--surface-2);
+    border-radius: 18px; margin-bottom: 14px;
+  }
+  .garden-flower { font-size: 40px; line-height: 1; cursor: default; }
+
+  .garden-legend {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    font-size: 20px; color: var(--ink-faint); margin-bottom: 24px;
+  }
+
+  /* ── 스테이지 뱃지 ── */
+  .stage-badge {
+    display: inline-block; font-size: 20px; font-weight: 700;
+    padding: 8px 18px; border-radius: 999px; margin-bottom: 18px;
+  }
+  .stage-1 { background: var(--secondary-tint); color: var(--secondary-strong); }
+  .stage-2 { background: #efe0ff; color: #7b2ff7; }
+  .stage-3 { background: #fff0c2; color: #b07800; }
+  .stage-4 { background: var(--accent-tint); color: var(--accent-strong); }
+
+  /* ── 힌트 박스 ── */
+  .hint-box {
+    text-align: center; border-radius: 16px; padding: 14px 20px;
+    font-family: "Baloo 2", sans-serif; font-size: 36px; font-weight: 700;
+    letter-spacing: 3px; margin-bottom: 12px;
+  }
+  .hint-full  { background: #efe0ff; border: 3px dashed #c49eff; color: #7b2ff7; }
+  .hint-partial { background: #fff0c2; border: 3px dashed #ffc93c; color: #b07800; }
+
+  /* ── 수료증 ── */
+  .cert-flowers { font-size: 36px; line-height: 1.7; text-align: center; margin-bottom: 16px; }
+  .cert-title {
+    font-family: "Jua", sans-serif; font-size: 52px; text-align: center;
+    color: var(--ink); margin-bottom: 6px;
+  }
+  .cert-sub { font-size: 24px; color: var(--ink-soft); text-align: center; margin-bottom: 22px; }
+  .cert-box {
+    background: var(--sun); border-radius: 18px; padding: 18px 24px;
+    font-size: 22px; font-weight: 700; color: #5a3a00; text-align: center;
+    line-height: 1.6; margin-bottom: 22px;
+    box-shadow: 0 4px 0 rgba(180,120,0,0.3);
+  }
+  .secret-box {
+    background: var(--accent-tint); border: 3px dashed var(--accent);
+    border-radius: 18px; padding: 22px; text-align: center; margin-bottom: 24px;
+  }
+  .secret-label { font-size: 22px; font-weight: 700; color: var(--accent-strong); margin-bottom: 10px; }
+  .secret-code {
+    font-family: "Baloo 2", sans-serif; font-size: 52px; font-weight: 900;
+    color: var(--accent-strong); letter-spacing: 8px;
+    background: #fff; padding: 12px 24px; border-radius: 14px;
+    display: inline-block; margin-bottom: 12px;
+  }
+  .secret-hint { font-size: 22px; color: var(--ink-soft); line-height: 1.6; }
 </style>
 </head>
 <body>
