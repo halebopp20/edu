@@ -344,7 +344,7 @@
     saveStore(store);
   }
   function getHint(word) {
-    var half = Math.ceil(word.length / 2);
+    var half = Math.floor(word.length / 2);
     var shown = word.slice(0, half);
     var blanks = word.slice(half).split("").map(function () { return "_"; }).join(" ");
     return shown + " " + blanks;
