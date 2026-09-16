@@ -370,9 +370,16 @@
     return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
   }
 
-  var state = { selectedUnits: { 1: true, 2: true }, mode: "mc", questions: [], index: 0, score: 0, wrong: [], answered: false };
+  var state = {
+    queue: [],       // 현재 세션 메인 큐
+    retryQueue: [],  // 🔁 누른 단어들 (세션 끝에 재시도)
+    index: 0,
+    answered: false
+  };
 
-  function pool() { return WORDS.filter(function (w) { return state.selectedUnits[w.unit]; }); }
+  function buildSessionQueue() {
+    return shuffle(WORDS.filter(function (w) { return getStars(w.word) < 4; }));
+  }
 
   // ---------- START ----------
   function renderStart() {
