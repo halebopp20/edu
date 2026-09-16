@@ -319,8 +319,9 @@
     { unit: 2, word: "solid", en: "having shape and hardness; not liquid or gas; very strong and reliable", kr: "단단한" }
   ];
 
-  var GROWTH_STAGES = ["🌱", "🌿", "🍀", "🌷", "🌻", "💐"];
-  var STORE_KEY = "vwgreen_progress_v2";
+  var SECRET_CODE = "ROSE🌸";   // ← 엄마가 원하는 코드로 바꾸세요
+  var STORE_KEY = "vwgreen_progress_v3";
+  var FLOWER = ["🌱", "🌱", "🌿", "🌷", "🌸"];  // index = stars(0~4)
   var screenEl = document.getElementById("screen");
   var root = document.documentElement;
   var themeBtn = document.getElementById("themeToggle");
@@ -330,6 +331,24 @@
     catch (e) { return {}; }
   }
   function saveStore(data) { try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {} }
+
+  function getStars(wordStr) {
+    var store = loadStore();
+    return (store.words && store.words[wordStr] !== undefined)
+      ? store.words[wordStr] : 0;
+  }
+  function setStars(wordStr, n) {
+    var store = loadStore();
+    if (!store.words) store.words = {};
+    store.words[wordStr] = n;
+    saveStore(store);
+  }
+  function getHint(word) {
+    var half = Math.ceil(word.length / 2);
+    var shown = word.slice(0, half);
+    var blanks = word.slice(half).split("").map(function () { return "_"; }).join(" ");
+    return shown + " " + blanks;
+  }
   function applyTheme(mode) {
     if (mode === "dark") { root.setAttribute("data-theme", "dark"); themeBtn.textContent = "🌙 밤"; }
     else { root.setAttribute("data-theme", "light"); themeBtn.textContent = "☀️ 낮"; }
@@ -418,7 +437,7 @@
     var total = state.questions.length;
     var w = currentWord();
     state.answered = false;
-    var stage = GROWTH_STAGES[Math.min(GROWTH_STAGES.length - 1, Math.floor((state.index / total) * GROWTH_STAGES.length))];
+    var stage = FLOWER[Math.min(FLOWER.length - 1, Math.floor((state.index / total) * FLOWER.length))];
 
     var answerAreaHtml;
     if (state.mode === "mc") {
