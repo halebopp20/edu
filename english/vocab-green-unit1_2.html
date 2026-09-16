@@ -438,9 +438,6 @@
   function buildSessionQueue() {
     return shuffle(WORDS.filter(function (w) { return getStars(w.word) < 4; }));
   }
-  // 임시 심 — Task 4·6 교체 시 삭제
-  function pool() { return WORDS.filter(function (w) { return getStars(w.word) < 4; }); }
-
   // ---------- START ----------
   function renderStart() {
     var remaining = WORDS.filter(function (w) { return getStars(w.word) < 4; }).length;
