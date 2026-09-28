@@ -221,8 +221,11 @@
   .pad-card {
     background: #fffdf6; border: 3px solid var(--line); border-radius: 22px; padding: 10px;
     box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
   }
-  .write-pad { width: 100%; height: 240px; display: block; border-radius: 15px; touch-action: none; background: #fffdf6; cursor: crosshair; }
+  .write-pad { width: 100%; height: 240px; display: block; border-radius: 15px; touch-action: none; background: #fffdf6; cursor: crosshair; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
   @media (max-width: 480px) { .write-pad { height: 190px; } }
 
   .pad-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
