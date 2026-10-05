@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>초록 단어 정원 · Unit 5·6</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@300;400;700&family=Baloo+2:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #fdf3fb;
+    --bg-soft: #f7e7f7;
+    --surface: #ffffff;
+    --surface-2: #fff8fc;
+    --ink: #4a3a55;
+    --ink-soft: #8d7c98;
+    --ink-faint: #bbaec4;
+    --accent: #ff8fb1;
+    --accent-strong: #f2557f;
+    --accent-tint: #ffe3ec;
+    --secondary: #4fbf83;
+    --secondary-strong: #339160;
+    --secondary-tint: #ddf5e6;
+    --sun: #ffc93c;
+    --correct: #3fa564;
+    --correct-strong: #2c7a49;
+    --correct-tint: #e2f6e9;
+    --wrong: #ff7a68;
+    --wrong-tint: #ffe9e4;
+    --line: #f3ddf0;
+    --opt1: #f2e6ff;
+    --opt1-line: #ddbcff;
+    --opt2: #fff3c9;
+    --opt2-line: #ffdd7a;
+    --opt3: #dcf3ff;
+    --opt3-line: #a8e2ff;
+    --opt4: #ffe4d6;
+    --opt4-line: #ffc19e;
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(242, 85, 127, 0.35);
+    --radius: 32px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #221a3a;
+      --bg-soft: #2a2147;
+      --surface: #2e2450;
+      --surface-2: #362a5c;
+      --ink: #f5ecff;
+      --ink-soft: #c6b8de;
+      --ink-faint: #8c7ead;
+      --accent: #ff9fc2;
+      --accent-strong: #ffc0da;
+      --accent-tint: #452a41;
+      --secondary: #7fe0a8;
+      --secondary-strong: #a4edc2;
+      --secondary-tint: #1f3c2c;
+      --sun: #ffd166;
+      --correct: #7fe0a8;
+      --correct-strong: #4fae76;
+      --correct-tint: #1f3c2c;
+      --wrong: #ff9d8d;
+      --wrong-tint: #452a26;
+      --line: #4a3b73;
+      --opt1: #3a2e5c; --opt1-line: #6a53a0;
+      --opt2: #4a3e2c; --opt2-line: #8a713a;
+      --opt3: #263c50; --opt3-line: #3f6f92;
+      --opt4: #452f2c; --opt4-line: #8a5a48;
+      --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #221a3a; --bg-soft: #2a2147; --surface: #2e2450; --surface-2: #362a5c;
+    --ink: #f5ecff; --ink-soft: #c6b8de; --ink-faint: #8c7ead;
+    --accent: #ff9fc2; --accent-strong: #ffc0da; --accent-tint: #452a41;
+    --secondary: #7fe0a8; --secondary-strong: #a4edc2; --secondary-tint: #1f3c2c;
+    --sun: #ffd166; --correct: #7fe0a8; --correct-strong: #4fae76; --correct-tint: #1f3c2c;
+    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #4a3b73;
+    --opt1: #3a2e5c; --opt1-line: #6a53a0; --opt2: #4a3e2c; --opt2-line: #8a713a;
+    --opt3: #263c50; --opt3-line: #3f6f92; --opt4: #452f2c; --opt4-line: #8a5a48;
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 8% 8%, var(--bg-soft) 0%, transparent 40%),
+      radial-gradient(circle at 92% 18%, var(--bg-soft) 0%, transparent 38%);
+    color: var(--ink);
+    font-family: "Gaegu", "Pretendard", -apple-system, sans-serif;
+    font-size: 21px;
+    line-height: 1.5;
+  }
+
+  .word-font { font-family: "Baloo 2", "Gaegu", sans-serif; }
+
+  .app {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .brand-mark {
+    width: 76px; height: 76px; flex: none; border-radius: 24px;
+    background: linear-gradient(150deg, var(--secondary), var(--accent));
+    display: flex; align-items: center; justify-content: center; font-size: 40px;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.08);
+  }
+  .eyebrow { margin: 0 0 2px; font-size: 19px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--secondary-strong); }
+  h1 { margin: 0; font-family: "Jua", sans-serif; font-weight: 400; font-size: 44px; color: var(--ink); line-height: 1.15; }
+
+  .theme-toggle {
+    border: 3px solid var(--line); background: var(--surface); color: var(--ink-soft);
+    border-radius: 999px; padding: 12px 22px; font-size: 22px; font-weight: 700;
+    cursor: pointer; font-family: "Gaegu", sans-serif; flex: none;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+  .mascot-row { display: flex; align-items: center; gap: 16px; padding: 2px 4px; }
+  .mascot { font-size: 56px; line-height: 1; }
+  .speech {
+    background: var(--surface); border: 3px solid var(--line); border-radius: 20px;
+    padding: 16px 22px; font-size: 24px; color: var(--ink-soft); flex: 1;
+    box-shadow: var(--shadow);
+  }
+
+  .card { background: var(--surface); border: 3px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 36px 30px; }
+
+  .section-title { margin: 0 0 8px; font-family: "Jua", sans-serif; font-weight: 400; font-size: 32px; line-height: 1.3; }
+  .section-sub { margin: 0 0 22px; font-size: 23px; color: var(--ink-soft); line-height: 1.55; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+  .chip {
+    border: 3px solid var(--line); background: var(--surface-2); color: var(--ink-soft);
+    border-radius: 999px; padding: 16px 26px; font-size: 24px; font-weight: 700;
+    cursor: pointer; font-family: "Gaegu", sans-serif;
+  }
+  .chip[aria-pressed="true"] { background: var(--secondary-tint); border-color: var(--secondary); color: var(--secondary-strong); }
+
+  .mode-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 32px; }
+
+  .mode-card {
+    text-align: left; border: 3px solid var(--line); background: var(--surface-2);
+    border-radius: 24px; padding: 22px 24px; cursor: pointer; font-family: "Gaegu", sans-serif;
+    color: var(--ink); display: flex; flex-direction: column; gap: 8px;
+  }
+  .mode-card .step-row { display: flex; align-items: center; gap: 10px; }
+  .mode-card .icon { font-size: 34px; }
+  .mode-card .step { font-size: 20px; font-weight: 700; letter-spacing: 0.02em; color: var(--ink-faint); }
+  .mode-card .name { font-family: "Jua", sans-serif; font-weight: 400; font-size: 27px; }
+  .mode-card .desc { font-size: 21px; color: var(--ink-soft); line-height: 1.5; }
+  .mode-card[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-tint); }
+  .mode-card[aria-pressed="true"] .step { color: var(--accent-strong); }
+
+  .primary-btn {
+    width: 100%; border: none; border-bottom: 6px solid var(--accent-strong);
+    background: var(--accent); color: #fff; font-family: "Jua", sans-serif; font-weight: 400;
+    font-size: 28px; padding: 22px; border-radius: 22px; cursor: pointer; line-height: 1.3;
+  }
+  .primary-btn:active { transform: translateY(3px); border-bottom-width: 3px; }
+  .primary-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .ghost-btn {
+    border: 3px solid var(--line); background: var(--surface); color: var(--ink-soft);
+    font-family: "Gaegu", sans-serif; font-weight: 700; font-size: 22px;
+    padding: 18px 22px; border-radius: 20px; cursor: pointer; line-height: 1.3;
+  }
+  .ghost-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+  .recap { margin-top: 26px; padding-top: 22px; border-top: 3px dashed var(--line); }
+  .recap p { margin: 0 0 12px; font-size: 21px; color: var(--ink-faint); font-weight: 700; }
+  .recap-words { display: flex; flex-wrap: wrap; gap: 8px; }
+  .recap-words span { font-family: "Baloo 2", sans-serif; font-size: 20px; background: var(--wrong-tint); color: var(--wrong); padding: 6px 16px; border-radius: 999px; font-weight: 600; }
+
+  .progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-size: 21px; color: var(--ink-soft); font-weight: 700; }
+  .growth { font-size: 34px; }
+
+  .quiz-card { position: relative; background: var(--surface); border: 3px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 38px 30px 32px; overflow: hidden; }
+  .quiz-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: linear-gradient(90deg, var(--secondary), var(--sun), var(--accent)); }
+
+  .unit-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 20px; font-weight: 700; color: var(--secondary-strong); background: var(--secondary-tint); padding: 8px 18px; border-radius: 999px; margin-bottom: 22px; }
+
+  .meaning-en { font-family: "Baloo 2", sans-serif; font-size: 32px; font-weight: 600; line-height: 1.45; margin: 0 0 14px; text-wrap: balance; }
+  .meaning-kr { font-size: 25px; color: var(--ink-soft); margin: 0 0 32px; }
+
+  .options-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+
+  .option-btn {
+    border: 3px solid var(--line); background: var(--surface-2); color: var(--ink);
+    font-family: "Baloo 2", sans-serif; font-size: 28px; font-weight: 600;
+    padding: 22px 18px; border-radius: 22px; cursor: pointer; text-align: center; line-height: 1.3;
+  }
+  .options-grid .option-btn:nth-child(1) { background: var(--opt1); border-color: var(--opt1-line); }
+  .options-grid .option-btn:nth-child(2) { background: var(--opt2); border-color: var(--opt2-line); }
+  .options-grid .option-btn:nth-child(3) { background: var(--opt3); border-color: var(--opt3-line); }
+  .options-grid .option-btn:nth-child(4) { background: var(--opt4); border-color: var(--opt4-line); }
+  .option-btn:active:not(:disabled) { transform: scale(0.98); }
+  .option-btn:disabled { cursor: default; }
+  .options-grid .option-btn.is-correct { border-color: var(--correct); background: var(--correct-tint); color: var(--correct); }
+  .options-grid .option-btn.is-wrong { border-color: var(--wrong); background: var(--wrong-tint); color: var(--wrong); }
+
+  .type-row { display: flex; flex-wrap: wrap; gap: 14px; }
+  .type-input {
+    flex: 1; min-width: 220px; border: 3px solid var(--line); background: var(--surface-2); color: var(--ink);
+    font-family: "Baloo 2", sans-serif; font-size: 30px; letter-spacing: 0.02em;
+    padding: 18px 22px; border-radius: 20px;
+  }
+  .type-input:focus { outline: 4px solid var(--accent-tint); border-color: var(--accent); }
+  .type-input.is-correct { border-color: var(--correct); background: var(--correct-tint); }
+  .type-input.is-wrong { border-color: var(--wrong); background: var(--wrong-tint); }
+  .type-hint { font-size: 19px; color: var(--ink-faint); margin: 12px 0 0; line-height: 1.5; }
+  #submitType { width: auto; padding: 18px 28px; border-radius: 20px; }
+
+  .pad-card {
+    background: #fffdf6; border: 3px solid var(--line); border-radius: 22px; padding: 10px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+  }
+  .write-pad { width: 100%; height: 240px; display: block; border-radius: 15px; touch-action: none; background: #fffdf6; cursor: crosshair; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  @media (max-width: 480px) { .write-pad { height: 190px; } }
+
+  .pad-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .pad-toolbar .primary-btn, .pad-toolbar .ghost-btn { width: auto; flex: 1; min-width: 170px; }
+  .pad-toolbar .primary-btn.btn-correct { background: var(--correct); border-bottom-color: var(--correct-strong); }
+
+  .reveal-box {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    background: var(--accent-tint); border: 3px solid var(--accent);
+    border-radius: 20px; padding: 16px 22px; margin-top: 16px;
+  }
+  .reveal-box[hidden], .pad-toolbar[hidden] { display: none; }
+  .reveal-label { font-size: 18px; font-weight: 700; color: var(--accent-strong); }
+  .reveal-word { font-family: "Baloo 2", sans-serif; font-size: 34px; font-weight: 700; color: var(--accent-strong); }
+
+  .feedback-row { margin-top: 22px; min-height: 34px; font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .feedback-row.correct { color: var(--correct); }
+  .feedback-row.wrong { color: var(--wrong); }
+
+  .quiz-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+  .next-btn {
+    border: none; border-bottom: 6px solid var(--secondary-strong); background: var(--secondary); color: #fff;
+    font-family: "Jua", sans-serif; font-weight: 400; font-size: 24px; padding: 16px 30px;
+    border-radius: 20px; cursor: pointer; visibility: hidden;
+  }
+  .next-btn.show { visibility: visible; }
+  .next-btn:active { transform: translateY(3px); border-bottom-width: 3px; }
+
+  .score-hero { text-align: center; padding: 8px 0 6px; }
+  .score-mascot { font-size: 74px; }
+  .score-num { font-family: "Jua", sans-serif; font-weight: 400; font-size: 68px; line-height: 1.2; }
+  .score-label { margin-top: 6px; font-size: 23px; color: var(--ink-soft); font-weight: 700; }
+
+  .result-list { margin: 26px 0 0; display: flex; flex-direction: column; gap: 10px; }
+  .result-row { display: flex; align-items: baseline; gap: 12px; padding: 14px 18px; border-radius: 18px; background: var(--wrong-tint); font-size: 22px; flex-wrap: wrap; }
+  .result-row .rw { font-family: "Baloo 2", sans-serif; font-weight: 700; min-width: 100px; color: var(--wrong); }
+  .result-row .kr { color: var(--ink-soft); margin-left: auto; }
+
+  .result-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .result-actions .primary-btn, .result-actions .ghost-btn { flex: 1; min-width: 220px; }
+
+  footer.note { text-align: center; font-size: 18px; color: var(--ink-faint); margin-top: 4px; line-height: 1.6; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  @media (max-width: 480px) {
+    body { font-size: 19px; }
+    h1 { font-size: 36px; }
+    .card { padding: 26px 20px; }
+    .quiz-card { padding: 30px 20px 26px; }
+    .meaning-en { font-size: 27px; }
+    .score-num { font-size: 54px; }
+  }
+
+  /* ── 정원 그리드 ── */
+  .garden-grid {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding: 18px; background: var(--surface-2);
+    border-radius: 18px; margin-bottom: 14px;
+  }
+  .garden-flower { font-size: 40px; line-height: 1; cursor: default; }
+
+  .garden-legend {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    font-size: 20px; color: var(--ink-faint); margin-bottom: 24px;
+  }
+
+  /* ── 스테이지 뱃지 ── */
+  .stage-badge {
+    display: inline-block; font-size: 20px; font-weight: 700;
+    padding: 8px 18px; border-radius: 999px; margin-bottom: 18px;
+  }
+  .stage-1 { background: var(--secondary-tint); color: var(--secondary-strong); }
+  .stage-2 { background: #efe0ff; color: #7b2ff7; }
+  .stage-3 { background: #fff0c2; color: #b07800; }
+  .stage-4 { background: var(--accent-tint); color: var(--accent-strong); }
+
+  /* ── 힌트 박스 ── */
+  .hint-box {
+    text-align: center; border-radius: 16px; padding: 14px 20px;
+    font-family: "Baloo 2", sans-serif; font-size: 36px; font-weight: 700;
+    letter-spacing: 3px; margin-bottom: 12px;
+  }
+  .hint-full  { background: #efe0ff; border: 3px dashed #c49eff; color: #7b2ff7; }
+  .hint-partial { background: #fff0c2; border: 3px dashed #ffc93c; color: #b07800; }
+
+  /* ── 수료증 ── */
+  .cert-flowers { font-size: 36px; line-height: 1.7; text-align: center; margin-bottom: 16px; }
+  .cert-title {
+    font-family: "Jua", sans-serif; font-size: 52px; text-align: center;
+    color: var(--ink); margin-bottom: 6px;
+  }
+  .cert-sub { font-size: 24px; color: var(--ink-soft); text-align: center; margin-bottom: 22px; }
+  .cert-box {
+    background: var(--sun); border-radius: 18px; padding: 18px 24px;
+    font-size: 22px; font-weight: 700; color: #5a3a00; text-align: center;
+    line-height: 1.6; margin-bottom: 22px;
+    box-shadow: 0 4px 0 rgba(180,120,0,0.3);
+  }
+  .secret-box {
+    background: var(--accent-tint); border: 3px dashed var(--accent);
+    border-radius: 18px; padding: 22px; text-align: center; margin-bottom: 24px;
+  }
+  .secret-label { font-size: 22px; font-weight: 700; color: var(--accent-strong); margin-bottom: 10px; }
+  .secret-code {
+    font-family: "Baloo 2", sans-serif; font-size: 52px; font-weight: 900;
+    color: var(--accent-strong); letter-spacing: 8px;
+    background: #fff; padding: 12px 24px; border-radius: 14px;
+    display: inline-block; margin-bottom: 12px;
+  }
+  .secret-hint { font-size: 22px; color: var(--ink-soft); line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">🐰</div>
+      <div>
+        <p class="eyebrow">Vocabulary Workshop · Green</p>
+        <h1>초록 단어 정원</h1>
+      </div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button">☀️ 낮</button>
+  </div>
+  <main id="screen"></main>
+  <footer class="note">Unit 5 · Unit 6 · 20개 단어 · 비밀코드는 소스 맨 위 SECRET_CODE 변수에서 바꿔요.</footer>
+</div>
+
+<script>
+(function () {
+  var WORDS = [
+    { unit: 5, word: "atmosphere", en: "the air that surrounds Earth; the feeling or mood in a room or place",    kr: "대기, 분위기" },
+    { unit: 5, word: "brilliant",  en: "sparkling or full of light; striking and shiny; very smart",              kr: "훌륭한, 눈부신" },
+    { unit: 5, word: "convince",   en: "to get someone to believe something or to do something; to win over",     kr: "설득하다" },
+    { unit: 5, word: "endure",     en: "to put up with; to continue in the same way for a long time",             kr: "견디다, 버티다" },
+    { unit: 5, word: "glance",     en: "to look quickly; to bounce off a surface; a quick look",                  kr: "흘깃보다, 흘깃 봄" },
+    { unit: 5, word: "harsh",      en: "rough or unpleasant to the senses; unkind in voice or behavior",          kr: "가혹한, 냉혹한" },
+    { unit: 5, word: "plunge",     en: "to fall quickly; to throw oneself into something; the act of jumping in", kr: "빠르게 떨어지다, 낙하" },
+    { unit: 5, word: "precious",   en: "very high-priced; loved and adored",                                      kr: "소중한, 귀중한" },
+    { unit: 5, word: "swift",      en: "able to move at a quick speed; quick to respond",                         kr: "재빠른" },
+    { unit: 5, word: "unite",      en: "to bring two or more parts together to make a whole",                     kr: "통합하다, 힘을 합치다" },
+    { unit: 6, word: "border",     en: "the outer edge of an object; the line where two parts meet; to be next to something", kr: "국경, 서로 접해있다" },
+    { unit: 6, word: "certain",    en: "having no doubt; sure",                                                   kr: "확신하는" },
+    { unit: 6, word: "clasp",      en: "a device that holds parts together; to hook something up; to hold tightly", kr: "자물쇠, 꽉 껴안다" },
+    { unit: 6, word: "depart",     en: "to go away",                                                              kr: "떠나다" },
+    { unit: 6, word: "fierce",     en: "violent; wild or savage",                                                 kr: "사나운" },
+    { unit: 6, word: "journey",    en: "a long trip; a passage from one place to another; to go on a trip; to travel", kr: "여행, 여행을 떠나다" },
+    { unit: 6, word: "observe",    en: "to see; to watch with close attention; to stick to or obey",              kr: "관찰하다, 보다" },
+    { unit: 6, word: "superb",     en: "of the best quality",                                                     kr: "최고의" },
+    { unit: 6, word: "treasure",   en: "a collection of valuable objects; something worth a lot; to care a great deal for", kr: "보물, 아끼다" },
+    { unit: 6, word: "wisdom",     en: "knowledge and good sense, especially as a result of experience",          kr: "지혜" }
+  ];
+
+  var SECRET_CODE = "ROSE🌸";   // ← 엄마가 원하는 코드로 바꾸세요
+  var STORE_KEY = "vwgreen_progress_unit56_v1";
+  var FLOWER = ["🌱", "🌱", "🌿", "🌷", "🌸"];  // index = stars(0~4)
+  var screenEl = document.getElementById("screen");
+  var root = document.documentElement;
+  var themeBtn = document.getElementById("themeToggle");
+
+  function loadStore() {
+    try { var raw = localStorage.getItem(STORE_KEY); return raw ? JSON.parse(raw) : {}; }
+    catch (e) { return {}; }
+  }
+  function saveStore(data) { try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {} }
+
+  function getStars(wordStr) {
+    var store = loadStore();
+    return (store.words && store.words[wordStr] !== undefined)
+      ? store.words[wordStr] : 0;
+  }
+  function setStars(wordStr, n) {
+    var store = loadStore();
+    if (!store.words) store.words = {};
+    store.words[wordStr] = n;
+    saveStore(store);
+  }
+  function getHint(word) {
+    var blanks = word.slice(1).split("").map(function () { return "_"; }).join(" ");
+    return word[0] + " " + blanks;
+  }
+  function applyTheme(mode) {
+    if (mode === "dark") { root.setAttribute("data-theme", "dark"); themeBtn.textContent = "🌙 밤"; }
+    else { root.setAttribute("data-theme", "light"); themeBtn.textContent = "☀️ 낮"; }
+  }
+  (function initTheme() { var store = loadStore(); applyTheme(store.theme === "dark" ? "dark" : "light"); })();
+  themeBtn.addEventListener("click", function () {
+    var current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    var next = current === "dark" ? "light" : "dark";
+    applyTheme(next);
+    var store = loadStore(); store.theme = next; saveStore(store);
+  });
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+  }
+
+  var state = {
+    queue: [],       // 현재 세션 메인 큐
+    retryQueue: [],  // 🔁 누른 단어들 (세션 끝에 재시도)
+    index: 0,
+    answered: false
+  };
+
+  function buildSessionQueue() {
+    return shuffle(WORDS.filter(function (w) { return getStars(w.word) < 4; }));
+  }
+  // ---------- START ----------
+  function renderStart() {
+    var remaining = WORDS.filter(function (w) { return getStars(w.word) < 4; }).length;
+
+    var gardenHtml = '<div class="garden-grid">' +
+      WORDS.map(function (w) {
+        var stars = getStars(w.word);
+        var emoji = FLOWER[stars];
+        var style = stars === 0 ? ' style="opacity:0.25"' : '';
+        return '<span class="garden-flower"' + style + ' title="' + esc(w.word) + '">' + emoji + '</span>';
+      }).join("") +
+    '</div>';
+
+    var legendHtml = '<div class="garden-legend">' +
+      '<span style="opacity:0.25">🌱 아직 안 봤어</span>' +
+      '<span>🌱 1단계 통과</span><span>🌿 2단계</span>' +
+      '<span>🌷 3단계</span><span>🌸 완전히 외웠어</span>' +
+    '</div>';
+
+    var actionHtml = remaining > 0
+      ? '<button class="primary-btn" id="startBtn" type="button">🚀 오늘의 연습 시작! (' + remaining + '개 남음)</button>'
+      : '<button class="primary-btn" id="certBtn" type="button">🏆 수료증 보기!</button>';
+
+    screenEl.innerHTML =
+      '<div class="mascot-row"><span class="mascot">🐰</span>' +
+        '<div class="speech">안녕! 오늘도 같이 단어를 키워보자! 🌸</div></div>' +
+      '<div class="card">' +
+        '<h2 class="section-title">🌸 내 단어 정원</h2>' +
+        gardenHtml + legendHtml + actionHtml +
+      '</div>';
+
+    var startBtn = document.getElementById("startBtn");
+    if (startBtn) startBtn.addEventListener("click", startQuiz);
+    var certBtn = document.getElementById("certBtn");
+    if (certBtn) certBtn.addEventListener("click", renderCertificate);
+  }
+
+  // ---------- QUIZ ----------
+  function startQuiz() {
+    var q = buildSessionQueue();
+    if (!q.length) { renderCertificate(); return; }
+    state.queue = q;
+    state.retryQueue = [];
+    state.index = 0;
+    state.answered = false;
+    renderQuiz();
+  }
+  function renderQuiz() {
+    var w = state.queue[state.index];
+    state.answered = false;
+    var stars = getStars(w.word);
+    if (stars === 0) renderStage1(w);
+    else if (stars === 1) renderStage2(w);
+    else if (stars === 2) renderStage3(w);
+    else renderStage4(w);
+  }
+
+  function renderStage1(w) {
+    var total = state.queue.length;
+    var distractors = shuffle(WORDS.filter(function (x) { return x.word !== w.word; })).slice(0, 3);
+    var options = shuffle([w].concat(distractors));
+
+    screenEl.innerHTML =
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌱</span></div>' +
+      '<div class="quiz-card">' +
+        '<span class="stage-badge stage-1">🧩 1단계 · 객관식</span>' +
+        '<p class="meaning-en">' + esc(w.en) + '</p>' +
+        '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
+        '<div class="options-grid" id="optionsGrid">' +
+          options.map(function (o) {
+            return '<button class="option-btn" data-word="' + esc(o.word) + '" type="button">' + esc(o.word) + '</button>';
+          }).join("") +
+        '</div>' +
+        '<div class="feedback-row" id="feedback"></div>' +
+        '<div class="quiz-footer">' +
+          '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
+          '<button class="next-btn" id="nextBtn" type="button">다음 →</button>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById("quitBtn").addEventListener("click", renderStart);
+    document.getElementById("nextBtn").addEventListener("click", goNext);
+    document.querySelectorAll("#optionsGrid .option-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (state.answered) return;
+        var isCorrect = btn.getAttribute("data-word") === w.word;
+        document.querySelectorAll("#optionsGrid .option-btn").forEach(function (b) {
+          b.disabled = true;
+          if (b.getAttribute("data-word") === w.word) b.classList.add("is-correct");
+          else if (b === btn && !isCorrect) b.classList.add("is-wrong");
+        });
+        if (isCorrect) handleCorrect(w); else handleWrong(w);
+      });
+    });
+  }
+
+  function renderStage2(w) {
+    var total = state.queue.length;
+    screenEl.innerHTML =
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌿</span></div>' +
+      '<div class="quiz-card">' +
+        '<span class="stage-badge stage-2">✏️ 2단계 · 보면서 쓰기</span>' +
+        '<p class="meaning-en">' + esc(w.en) + '</p>' +
+        '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
+        '<div class="hint-box hint-full word-font">' + esc(w.word) + '</div>' +
+        '<p class="type-hint">위 단어를 보면서 아래에 써봐요</p>' +
+        renderCanvasHtml() +
+        '<div class="feedback-row" id="feedback"></div>' +
+        '<div class="quiz-footer">' +
+          '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
+          '<button class="next-btn" id="nextBtn" type="button">다음 →</button>' +
+        '</div>' +
+      '</div>';
+    bindCanvasEvents(w);
+  }
+
+  function renderStage3(w) {
+    var total = state.queue.length;
+    screenEl.innerHTML =
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌷</span></div>' +
+      '<div class="quiz-card">' +
+        '<span class="stage-badge stage-3">🌟 3단계 · 힌트 보고 쓰기</span>' +
+        '<p class="meaning-en">' + esc(w.en) + '</p>' +
+        '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
+        '<div class="hint-box hint-partial word-font">' + esc(getHint(w.word)) + '</div>' +
+        '<p class="type-hint">힌트를 보고 전체 단어를 아래에 써봐요</p>' +
+        renderCanvasHtml() +
+        '<div class="feedback-row" id="feedback"></div>' +
+        '<div class="quiz-footer">' +
+          '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
+          '<button class="next-btn" id="nextBtn" type="button">다음 →</button>' +
+        '</div>' +
+      '</div>';
+    bindCanvasEvents(w);
+  }
+
+  function renderStage4(w) {
+    var total = state.queue.length;
+    screenEl.innerHTML =
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌸</span></div>' +
+      '<div class="quiz-card">' +
+        '<span class="stage-badge stage-4">🖊️ 4단계 · 완전 암기</span>' +
+        '<p class="meaning-en">' + esc(w.en) + '</p>' +
+        '<p class="meaning-kr">' + esc(w.kr) + '</p>' +
+        renderCanvasHtml() +
+        '<div class="feedback-row" id="feedback"></div>' +
+        '<div class="quiz-footer">' +
+          '<button class="ghost-btn" id="quitBtn" type="button">나가기</button>' +
+          '<button class="next-btn" id="nextBtn" type="button">다음 →</button>' +
+        '</div>' +
+      '</div>';
+    bindCanvasEvents(w);
+  }
+
+  function renderCanvasHtml() {
+    return '<div class="pad-card"><canvas id="writeCanvas" class="write-pad"></canvas></div>' +
+      '<div class="reveal-box" id="revealBox" hidden>' +
+        '<span class="reveal-label">정답</span>' +
+        '<span class="reveal-word word-font" id="revealWord"></span>' +
+      '</div>' +
+      '<div class="pad-toolbar" id="preToolbar">' +
+        '<button class="ghost-btn" id="clearPad" type="button">🧹 다시 쓰기</button>' +
+        '<button class="primary-btn" id="revealBtn" type="button">👀 정답 확인하기</button>' +
+      '</div>' +
+      '<div class="pad-toolbar" id="postToolbar" hidden>' +
+        '<button class="ghost-btn" id="clearPad2" type="button">🧹 다시 쓰기</button>' +
+        '<button class="ghost-btn" id="missedBtn" type="button">🔁 다시 볼게요</button>' +
+        '<button class="primary-btn btn-correct" id="gotItBtn" type="button">✅ 맞았어요</button>' +
+      '</div>' +
+      '<p class="type-hint">펜이나 손가락으로 써봐요. 다 썼으면 정답 확인을 눌러주세요.</p>';
+  }
+
+  function bindCanvasEvents(w) {
+    document.getElementById("quitBtn").addEventListener("click", renderStart);
+    document.getElementById("nextBtn").addEventListener("click", goNext);
+    var pad = setupWritePad();
+    document.getElementById("clearPad").addEventListener("click", function () { if (pad) pad.clear(); });
+    document.getElementById("revealBtn").addEventListener("click", function () {
+      document.getElementById("revealWord").textContent = w.word;
+      document.getElementById("revealBox").hidden = false;
+      document.getElementById("preToolbar").hidden = true;
+      document.getElementById("postToolbar").hidden = false;
+    });
+    document.getElementById("clearPad2").addEventListener("click", function () { if (pad) pad.clear(); });
+    document.getElementById("gotItBtn").addEventListener("click", function () { handleCorrect(w); });
+    document.getElementById("missedBtn").addEventListener("click", function () { handleWrong(w); });
+  }
+
+  // pointer-based writing pad (works with finger, mouse, and stylus/Apple Pencil)
+  function setupWritePad() {
+    var canvas = document.getElementById("writeCanvas");
+    if (!canvas) return null;
+    var ctx = canvas.getContext("2d");
+    var ratio = window.devicePixelRatio || 1;
+    var w = 0, h = 0;
+
+    function paintGuides() {
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+      ctx.strokeStyle = "rgba(74,58,85,0.2)";
+      ctx.setLineDash([7, 7]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(0, h * 0.28); ctx.lineTo(w, h * 0.28); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, h * 0.62); ctx.lineTo(w, h * 0.62); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = "rgba(74,58,85,0.4)";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, h * 0.82); ctx.lineTo(w, h * 0.82); ctx.stroke();
+    }
+
+    function fit() {
+      var rect = canvas.getBoundingClientRect();
+      w = rect.width; h = rect.height;
+      canvas.width = w * ratio; canvas.height = h * ratio;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      paintGuides();
+    }
+    fit();
+
+    var drawing = false, lastX = 0, lastY = 0;
+    function point(e) { var r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+    function down(e) {
+      drawing = true;
+      var p = point(e); lastX = p.x; lastY = p.y;
+      if (canvas.setPointerCapture) { try { canvas.setPointerCapture(e.pointerId); } catch (err) {} }
+      e.preventDefault();
+    }
+    function move(e) {
+      if (!drawing) return;
+      var p = point(e);
+      ctx.strokeStyle = "#3c2b4a"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+      lastX = p.x; lastY = p.y;
+      e.preventDefault();
+    }
+    function up(e) { drawing = false; }
+
+    canvas.addEventListener("pointerdown", down);
+    canvas.addEventListener("pointermove", move);
+    canvas.addEventListener("pointerup", up);
+    canvas.addEventListener("pointercancel", up);
+
+    return { clear: paintGuides };
+  }
+
+  function handleCorrect(w) {
+    if (state.answered) return;
+    state.answered = true;
+    setStars(w.word, getStars(w.word) + 1);
+    var fb = document.getElementById("feedback");
+    fb.innerHTML = "🐰✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
+    fb.className = "feedback-row correct";
+    document.getElementById("nextBtn").classList.add("show");
+  }
+
+  function handleWrong(w) {
+    if (state.answered) return;
+    state.answered = true;
+    state.retryQueue.push(w);
+    var fb = document.getElementById("feedback");
+    fb.innerHTML = "🐰🌱 괜찮아요, 나중에 다시 해봐요!";
+    fb.className = "feedback-row wrong";
+    document.getElementById("nextBtn").classList.add("show");
+  }
+
+  function goNext() {
+    state.index++;
+    if (state.index < state.queue.length) {
+      renderQuiz();
+    } else if (state.retryQueue.length > 0) {
+      state.queue = state.queue.concat(shuffle(state.retryQueue));
+      state.retryQueue = [];
+      renderQuiz();
+    } else {
+      var allDone = WORDS.every(function (w) { return getStars(w.word) >= 4; });
+      if (allDone) renderCertificate();
+      else renderResult();
+    }
+  }
+
+  // ---------- CERTIFICATE ----------
+  function renderCertificate() {
+    screenEl.innerHTML =
+      '<div class="card">' +
+        '<div class="cert-flowers">🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸</div>' +
+        '<div class="cert-title">정원 완성! 🎉</div>' +
+        '<div class="cert-sub">Unit 5 · 6 단어 20개를 모두 외웠어요!</div>' +
+        '<div class="cert-box">이 친구는 초록 단어 정원의<br>모든 꽃을 피웠습니다 🌸</div>' +
+        '<div class="secret-box">' +
+          '<div class="secret-label">🔑 비밀코드</div>' +
+          '<div class="secret-code">' + esc(SECRET_CODE) + '</div>' +
+          '<div class="secret-hint">엄마한테 이 코드를 말해봐요!<br><strong>선물이 기다리고 있어요 🎁</strong></div>' +
+        '</div>' +
+        '<button class="primary-btn" id="shareBtn" type="button">📸 엄마한테 보여주기</button>' +
+        '<button class="ghost-btn" id="resetBtn" type="button" style="margin-top:12px">🔄 처음부터 다시 하기</button>' +
+      '</div>';
+
+    document.getElementById("shareBtn").addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    document.getElementById("resetBtn").addEventListener("click", function () {
+      var store = loadStore();
+      store.words = {};
+      saveStore(store);
+      renderStart();
+    });
+  }
+
+  // ---------- RESULT ----------
+  function renderResult() {
+    var mastered = WORDS.filter(function (w) { return getStars(w.word) >= 4; }).length;
+    var remaining = WORDS.length - mastered;
+
+    screenEl.innerHTML =
+      '<div class="card">' +
+        '<div class="score-hero">' +
+          '<div class="score-mascot">🐰🌱</div>' +
+          '<div class="score-num">' + mastered + ' / 20</div>' +
+          '<div class="score-label">꽃이 ' + mastered + '송이 피었어요! 계속 키워봐요 🌸</div>' +
+        '</div>' +
+        '<div class="result-actions">' +
+          (remaining > 0
+            ? '<button class="primary-btn" id="continueBtn" type="button">🌱 계속 연습하기 (' + remaining + '개 남음)</button>'
+            : '') +
+          '<button class="ghost-btn" id="homeBtn" type="button">🏠 정원으로 돌아가기</button>' +
+        '</div>' +
+      '</div>';
+
+    var continueBtn = document.getElementById("continueBtn");
+    if (continueBtn) continueBtn.addEventListener("click", startQuiz);
+    document.getElementById("homeBtn").addEventListener("click", renderStart);
+  }
+
+  renderStart();
+})();
+</script>
+
+</body>
+</html>
