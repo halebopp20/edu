@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grammar Quiz ⭐</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Baloo+2:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --bg: #fdf8ff;
+    --bg-soft: #f3e8ff;
+    --surface: #ffffff;
+    --surface-2: #fdf4ff;
+    --ink: #3b0764;
+    --ink-soft: #7e22ce;
+    --ink-faint: #c084fc;
+    --primary: #9333ea;
+    --primary-strong: #7e22ce;
+    --primary-tint: #f3e8ff;
+    --pink: #ec4899;
+    --pink-strong: #be185d;
+    --pink-tint: #fce7f3;
+    --gold: #f59e0b;
+    --gold-strong: #d97706;
+    --gold-tint: #fef9c3;
+    --correct: #16a34a;
+    --correct-tint: #dcfce7;
+    --wrong: #dc2626;
+    --wrong-tint: #fee2e2;
+    --line: #e9d5ff;
+    --shadow: 0 4px 0 #e9d5ff, 0 10px 28px -8px rgba(147,51,234,0.15);
+    --radius: 28px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 5% 5%, var(--bg-soft) 0%, transparent 45%),
+      radial-gradient(circle at 95% 15%, #fce7f3 0%, transparent 40%);
+    color: var(--ink);
+    font-family: "Gaegu", sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .app {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* ── 헤더 ── */
+  .topbar { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 68px; height: 68px; flex: none; border-radius: 22px;
+    background: linear-gradient(135deg, var(--primary), var(--pink));
+    display: flex; align-items: center; justify-content: center; font-size: 36px;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+  }
+  .brand-text h1 {
+    margin: 0; font-family: "Jua", sans-serif; font-size: 38px;
+    background: linear-gradient(90deg, var(--primary), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; line-height: 1.15;
+  }
+  .brand-text p { margin: 0; font-size: 17px; color: var(--ink-faint); font-weight: 700; }
+
+  /* ── 카드 ── */
+  .card {
+    background: var(--surface); border: 3px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px 26px;
+  }
+
+  /* ── 말풍선 마스코트 ── */
+  .mascot-row { display: flex; align-items: center; gap: 14px; }
+  .mascot { font-size: 52px; line-height: 1; }
+  .speech {
+    background: var(--surface); border: 3px solid var(--line); border-radius: 20px;
+    padding: 14px 20px; font-size: 22px; color: var(--ink-soft); flex: 1;
+    box-shadow: var(--shadow);
+  }
+
+  /* ── 홈 ── */
+  .section-title { margin: 0 0 4px; font-family: "Jua", sans-serif; font-size: 30px; color: var(--ink); }
+  .section-sub { margin: 0 0 20px; font-size: 20px; color: var(--ink-faint); font-weight: 700; }
+  .section-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
+  .sec-chip {
+    background: var(--primary-tint); border: 2px solid var(--line);
+    border-radius: 999px; padding: 8px 18px; font-size: 17px;
+    color: var(--ink-soft); font-weight: 700;
+  }
+
+  /* ── 버튼 ── */
+  .primary-btn {
+    width: 100%; border: none; border-bottom: 6px solid var(--primary-strong);
+    background: linear-gradient(135deg, var(--primary), var(--pink));
+    color: #fff; font-family: "Jua", sans-serif; font-size: 26px;
+    padding: 20px; border-radius: 20px; cursor: pointer; line-height: 1.3;
+    box-shadow: 0 2px 12px rgba(147,51,234,0.25);
+  }
+  .primary-btn:active { transform: translateY(3px); border-bottom-width: 3px; }
+
+  /* ── 섹션 인트로 ── */
+  .intro-card { text-align: center; }
+  .intro-badge {
+    display: inline-block; background: var(--pink-tint); border: 2px solid var(--pink);
+    color: var(--pink-strong); font-size: 17px; font-weight: 700;
+    padding: 6px 18px; border-radius: 999px; margin-bottom: 16px;
+  }
+  .intro-emoji { font-size: 64px; line-height: 1; margin-bottom: 10px; }
+  .intro-title { margin: 0 0 4px; font-family: "Jua", sans-serif; font-size: 32px; color: var(--ink); }
+  .intro-sub { margin: 0 0 14px; font-size: 19px; color: var(--ink-faint); font-weight: 700; }
+  .intro-tip {
+    background: var(--gold-tint); border: 2px solid var(--gold);
+    border-radius: 18px; padding: 14px 18px; font-size: 20px;
+    color: #7c4a00; margin: 0 0 14px; line-height: 1.5; text-align: left;
+  }
+  .intro-count { margin: 0 0 22px; font-size: 21px; color: var(--ink-soft); font-weight: 700; }
+
+  /* ── 진행 바 ── */
+  .prog-wrap {
+    background: var(--line); border-radius: 999px; height: 14px;
+    overflow: hidden; margin-bottom: 6px;
+  }
+  .prog-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--pink));
+    border-radius: 999px; transition: width 0.3s ease;
+  }
+  .prog-label {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 17px; color: var(--ink-faint); font-weight: 700; margin-bottom: 10px;
+  }
+
+  /* ── 퀴즈 카드 ── */
+  .quiz-card {
+    background: var(--surface); border: 3px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 30px 22px 26px; position: relative; overflow: hidden;
+  }
+  .quiz-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 8px;
+    background: linear-gradient(90deg, var(--primary), var(--gold), var(--pink));
+  }
+
+  .q-hint {
+    font-size: 16px; font-weight: 700; color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+  .q-text {
+    font-family: "Baloo 2", sans-serif; font-size: 24px; font-weight: 600;
+    color: var(--ink); margin: 0 0 24px; line-height: 1.6;
+  }
+  .blank {
+    display: inline-block; min-width: 52px; border-bottom: 3px solid var(--primary);
+    color: var(--primary); font-weight: 700; text-align: center;
+  }
+
+  /* ── 선택지 ── */
+  .opts-list { display: flex; flex-direction: column; gap: 12px; }
+  .opts-list.short { flex-direction: row; gap: 14px; }
+
+  .opt-btn {
+    background: var(--surface-2); border: 3px solid var(--line);
+    border-radius: 18px; padding: 18px 18px; font-family: "Baloo 2", sans-serif;
+    font-size: 22px; font-weight: 600; color: var(--ink); cursor: pointer;
+    text-align: left; line-height: 1.4; transition: border-color 0.1s, background 0.1s;
+  }
+  .opts-list.short .opt-btn {
+    flex: 1; text-align: center; font-size: 40px; font-weight: 900;
+    padding: 22px 8px; letter-spacing: -0.02em;
+  }
+  .opts-list.long .opt-btn { font-size: 17px; padding: 14px 16px; }
+  .opt-btn:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-tint); }
+  .opt-btn:active:not(:disabled) { transform: scale(0.98); }
+  .opt-btn:disabled { cursor: default; }
+
+  @keyframes pop { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); } 40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); } 80% { transform: translateX(4px); }
+  }
+  .opt-btn.correct {
+    border-color: var(--correct); background: var(--correct-tint); color: var(--correct);
+    animation: pop 0.28s ease;
+  }
+  .opt-btn.wrong {
+    border-color: var(--wrong); background: var(--wrong-tint); color: var(--wrong);
+    animation: shake 0.36s ease;
+  }
+
+  /* ── 피드백 ── */
+  .feedback {
+    margin-top: 18px; font-size: 24px; font-weight: 700; min-height: 28px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .feedback.correct { color: var(--correct); }
+  .feedback.wrong { color: var(--wrong); }
+  .ans-reveal {
+    font-family: "Baloo 2", sans-serif; font-size: 20px; color: var(--ink-soft);
+    margin-top: 6px; line-height: 1.5;
+  }
+
+  .next-row { display: flex; justify-content: flex-end; margin-top: 20px; }
+  .next-btn {
+    border: none; border-bottom: 5px solid var(--primary-strong);
+    background: linear-gradient(135deg, var(--primary), var(--pink));
+    color: #fff; font-family: "Jua", sans-serif; font-size: 22px;
+    padding: 14px 30px; border-radius: 18px; cursor: pointer;
+  }
+  .next-btn:active { transform: translateY(3px); border-bottom-width: 2px; }
+  .next-btn.hidden { display: none; }
+
+  /* ── 섹션 결과 ── */
+  .result-card { text-align: center; }
+  .res-trophy { font-size: 72px; line-height: 1; margin-bottom: 6px; }
+  .res-score { font-family: "Jua", sans-serif; font-size: 58px; color: var(--primary); line-height: 1.2; }
+  .res-stars { font-size: 40px; margin: 8px 0 10px; }
+  .res-msg { font-size: 24px; color: var(--ink-soft); margin-bottom: 24px; }
+
+  /* ── 최종 결과 ── */
+  .final-card { text-align: center; }
+  .final-emoji-big { font-size: 52px; line-height: 1; margin-bottom: 10px; }
+  .final-grade {
+    font-family: "Jua", sans-serif; font-size: 80px; line-height: 1;
+    background: linear-gradient(135deg, var(--primary), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 4px;
+  }
+  .final-total { font-family: "Jua", sans-serif; font-size: 42px; color: var(--ink); margin-bottom: 6px; }
+  .final-msg { font-size: 23px; color: var(--ink-soft); margin-bottom: 24px; }
+  .final-list {
+    background: var(--surface-2); border: 2px solid var(--line);
+    border-radius: 20px; padding: 14px; margin-bottom: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .final-row {
+    display: flex; align-items: center; gap: 10px; font-size: 19px;
+    padding: 8px 10px; border-radius: 14px;
+  }
+  .final-row:nth-child(odd) { background: var(--primary-tint); }
+  .final-emoji { font-size: 24px; flex: none; }
+  .final-name { flex: 1; font-weight: 700; color: var(--ink-soft); text-align: left; }
+  .final-score { font-family: "Baloo 2", sans-serif; font-weight: 700; color: var(--ink); }
+  .final-stars { font-size: 20px; min-width: 56px; text-align: right; }
+
+  footer.note { text-align: center; font-size: 16px; color: var(--ink-faint); margin-top: 4px; line-height: 1.6; }
+
+  @media (max-width: 480px) {
+    body { font-size: 18px; }
+    .brand-text h1 { font-size: 32px; }
+    .card { padding: 24px 18px; }
+    .quiz-card { padding: 24px 16px 20px; }
+    .q-text { font-size: 20px; }
+    .opt-btn { font-size: 19px; }
+    .opts-list.long .opt-btn { font-size: 15px; }
+    .final-grade { font-size: 64px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand-mark">⭐</div>
+    <div class="brand-text">
+      <h1>Grammar Quiz</h1>
+      <p>영어 문법 도전!</p>
+    </div>
+  </div>
+  <main id="screen"></main>
+  <footer class="note">전치사 · 대문자 · 문장부호 · 쉼표 · 축약형 · 인용부호 · 접두사/접미사</footer>
+</div>
+
+<script>
+(function () {
+
+  var SECTIONS = [
+    {
+      id: 's1', emoji: '📍',
+      title: '전치사 — 장소',
+      subtitle: 'Prepositions of Place',
+      tip: 'IN, ON, UNDER... 어디에 있는지 알려주는 단어야! 🏠',
+      questions: [
+        { q: 'The dog sleeps ___ the bed.', opts: ['under','on','in','above'], ans: 'under' },
+        { q: 'The cup is ___ the plate.', opts: ['in','on','under','above'], ans: 'on' },
+        { q: 'The girl is ___ the park.', opts: ['on','at','in','above'], ans: 'in' },
+        { q: 'The ball flew ___ the boy.', opts: ['under','behind','in','above'], ans: 'above' },
+        { q: 'The cat is ___ the wall.', opts: ['in','on','behind','above'], ans: 'behind' },
+        { q: 'The fridge is ___ the oven.', opts: ['between','behind','next to','above'], ans: 'next to' },
+        { q: 'The school is ___ the bank and the hospital.', opts: ['beside','between','behind','next to'], ans: 'between' }
+      ]
+    },
+    {
+      id: 's2', emoji: '⏰',
+      title: '전치사 — 시간',
+      subtitle: 'in · on · at',
+      tip: 'AT은 정확한 시간, ON은 요일·날짜, IN은 월·계절! ⏰',
+      questions: [
+        { q: 'The class starts ___ Monday.', opts: ['in','on','at'], ans: 'on' },
+        { q: 'We have a meeting ___ 3:45 PM.', opts: ['in','on','at'], ans: 'at' },
+        { q: 'She was born ___ July.', opts: ['in','on','at'], ans: 'in' },
+        { q: 'The train arrives ___ platform 5.', opts: ['in','on','at'], ans: 'at' },
+        { q: 'The flowers bloom ___ spring.', opts: ['in','on','at'], ans: 'in' },
+        { q: 'The store opens ___ 8:00 AM.', opts: ['in','on','at'], ans: 'at' },
+        { q: "We'll have dinner ___ the restaurant.", opts: ['in','on','at'], ans: 'at' },
+        { q: 'The event is ___ the weekend.', opts: ['in','on','at'], ans: 'on' },
+        { q: 'The cat sleeps ___ the bed.', opts: ['in','on','at'], ans: 'on' },
+        { q: 'We play games ___ the evening.', opts: ['in','on','at'], ans: 'in' }
+      ]
+    },
+    {
+      id: 's3', emoji: '🔠',
+      title: '대문자',
+      subtitle: 'Capital Letters',
+      tip: '이름, 나라, 도시, 요일, 책 제목은 대문자로 시작해! 📚',
+      questions: [
+        {
+          hint: '올바르게 대문자가 쓰인 문장을 골라봐!',
+          q: 'alice enjoys playing with her pet rabbit.',
+          opts: [
+            'Alice enjoys playing with her pet rabbit.',
+            'alice Enjoys playing with her pet rabbit.',
+            'Alice enjoys Playing with her Pet Rabbit.'
+          ],
+          ans: 'Alice enjoys playing with her pet rabbit.'
+        },
+        {
+          hint: '올바르게 대문자가 쓰인 문장을 골라봐!',
+          q: 'Next summer, we plan to visit namsan tower in seoul.',
+          opts: [
+            'Next summer, we plan to visit namsan Tower in Seoul.',
+            'Next summer, we plan to visit Namsan Tower in Seoul.',
+            'Next Summer, we plan to visit Namsan tower in seoul.'
+          ],
+          ans: 'Next summer, we plan to visit Namsan Tower in Seoul.'
+        },
+        {
+          hint: '올바르게 대문자가 쓰인 문장을 골라봐!',
+          q: "We went to my aunt jane's house for dinner.",
+          opts: [
+            "We went to my Aunt Jane's house for Dinner.",
+            "We went to my aunt Jane's house for dinner.",
+            "We went to my aunt jane's House for dinner."
+          ],
+          ans: "We went to my aunt Jane's house for dinner."
+        },
+        {
+          hint: '올바르게 대문자가 쓰인 문장을 골라봐!',
+          q: 'We have science class every monday and thursday.',
+          opts: [
+            'We have science class every Monday and Thursday.',
+            'We have Science class every monday and thursday.',
+            'We have science class every Monday and thursday.'
+          ],
+          ans: 'We have science class every Monday and Thursday.'
+        },
+        {
+          hint: '올바르게 대문자가 쓰인 문장을 골라봐!',
+          q: '"harry potter and the philosopher\'s stone" is a fantastic book.',
+          opts: [
+            '"Harry potter and the Philosopher\'s Stone" is a fantastic book.',
+            '"Harry Potter and the Philosopher\'s Stone" is a fantastic book.',
+            '"Harry Potter and The philosopher\'s stone" is a Fantastic book.'
+          ],
+          ans: '"Harry Potter and the Philosopher\'s Stone" is a fantastic book.'
+        },
+        {
+          hint: '올바르게 대문자가 쓰인 문장을 골라봐!',
+          q: 'my cousin tom lives in london.',
+          opts: [
+            'My cousin Tom lives in London.',
+            'my cousin Tom lives in London.',
+            'My Cousin tom lives in london.'
+          ],
+          ans: 'My cousin Tom lives in London.'
+        },
+        {
+          hint: '올바르게 대문자가 쓰인 문장을 골라봐!',
+          q: 'the cat walked over the road.',
+          opts: [
+            'the Cat walked over the road.',
+            'The Cat Walked Over The Road.',
+            'The cat walked over the road.'
+          ],
+          ans: 'The cat walked over the road.'
+        },
+        {
+          hint: '올바르게 대문자가 쓰인 문장을 골라봐!',
+          q: 'I went to everland on saturday.',
+          opts: [
+            'I went to Everland on Saturday.',
+            'I went to everland on Saturday.',
+            'I went to Everland on saturday.'
+          ],
+          ans: 'I went to Everland on Saturday.'
+        }
+      ]
+    },
+    {
+      id: 's4', emoji: '❓',
+      title: '문장부호',
+      subtitle: 'End Marks: .  !  ?',
+      tip: '마침표(.), 느낌표(!), 물음표(?)를 올바르게 써봐! ✨',
+      questions: [
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'Aaaargh, a monster___', opts: ['.','!','?'], ans: '!' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'Why are you leaving so early___', opts: ['.','!','?'], ans: '?' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'I went to the shops yesterday___', opts: ['.','!','?'], ans: '.' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'Did you remember to buy milk___', opts: ['.','!','?'], ans: '?' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'Wow___ This is very exciting.', opts: ['.','!','?'], ans: '!' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'I need to study tonight for the test___', opts: ['.','!','?'], ans: '.' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: "That's amazing news___ good job.", opts: ['.','!','?'], ans: '!' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'Where did you put the orange juice___', opts: ['.','!','?'], ans: '?' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'I think I need to go to school early tomorrow___', opts: ['.','!','?'], ans: '.' },
+        { hint: '빈칸에 알맞은 부호를 골라봐!', q: 'When is the flight going to leave___', opts: ['.','!','?'], ans: '?' }
+      ]
+    },
+    {
+      id: 's5', emoji: '✏️',
+      title: '쉼표',
+      subtitle: 'Commas',
+      tip: '항목을 나열하거나 두 문장을 이을 때 쉼표(,)를 써! ✏️',
+      questions: [
+        {
+          hint: '쉼표가 올바르게 들어간 문장을 골라봐!',
+          q: 'Cats enjoy sleeping eating and playing with string.',
+          opts: [
+            'Cats enjoy sleeping, eating, and playing with string.',
+            'Cats enjoy sleeping eating, and, playing with string.',
+            'Cats, enjoy sleeping eating and playing with string.'
+          ],
+          ans: 'Cats enjoy sleeping, eating, and playing with string.'
+        },
+        {
+          hint: '쉼표가 올바르게 들어간 문장을 골라봐!',
+          q: "I wanted to go to the museum but it's closed today.",
+          opts: [
+            "I wanted, to go to the museum but it's closed today.",
+            "I wanted to go to the museum, but it's closed today.",
+            "I wanted to go to the museum but, it's closed today."
+          ],
+          ans: "I wanted to go to the museum, but it's closed today."
+        },
+        {
+          hint: '쉼표가 올바르게 들어간 문장을 골라봐!',
+          q: 'My favorite fruits are apples bananas and oranges.',
+          opts: [
+            'My favorite fruits are apples, bananas and oranges.',
+            'My favorite, fruits are apples bananas and oranges.',
+            'My favorite fruits are apples, bananas, and oranges.'
+          ],
+          ans: 'My favorite fruits are apples, bananas, and oranges.'
+        },
+        {
+          hint: '쉼표가 올바르게 들어간 문장을 골라봐!',
+          q: "The concert starts in an hour so don't be late.",
+          opts: [
+            "The concert starts in an hour, so don't be late.",
+            "The concert, starts in an hour so don't be late.",
+            "The concert starts in an hour so, don't be late."
+          ],
+          ans: "The concert starts in an hour, so don't be late."
+        },
+        {
+          hint: '쉼표가 올바르게 들어간 문장을 골라봐!',
+          q: 'She likes reading books so she reads lots of them.',
+          opts: [
+            'She likes reading, books so she reads lots of them.',
+            'She likes reading books so, she reads lots of them.',
+            'She likes reading books, so she reads lots of them.'
+          ],
+          ans: 'She likes reading books, so she reads lots of them.'
+        }
+      ]
+    },
+    {
+      id: 's6', emoji: '✂️',
+      title: '축약형',
+      subtitle: "Contractions with '",
+      tip: "두 단어를 줄일 때 어포스트로피(')를 써! 예: I am → I'm ✂️",
+      questions: [
+        { q: 'They are  →', opts: ["They're","Their","There","Theyre"], ans: "They're" },
+        { q: 'She is  →', opts: ["She's","Shes","She'd","Her's"], ans: "She's" },
+        { q: 'You are  →', opts: ["Your","You're","Youre","You'd"], ans: "You're" },
+        { q: 'Did not  →', opts: ["Didn't","Didnt","Did'nt","Doesn't"], ans: "Didn't" },
+        { q: 'Cannot  →', opts: ["Cant","Can't","Can'nt","Could've"], ans: "Can't" },
+        { q: 'Is not  →', opts: ["Isnt","Is'nt","Isn't","Wasn't"], ans: "Isn't" },
+        { q: 'Does not  →', opts: ["Doesnt","Does'nt","Didn't","Doesn't"], ans: "Doesn't" },
+        { q: 'It is  →', opts: ["Its","It's","It'is","It'd"], ans: "It's" },
+        { q: 'We are  →', opts: ["Were","We're","Wer'e","We'd"], ans: "We're" },
+        { q: 'Do not  →', opts: ["Dont","Do'nt","Don't","Doesn't"], ans: "Don't" },
+        { q: 'He is  →', opts: ["His","Hes","He's","He'd"], ans: "He's" },
+        { q: 'I am  →', opts: ["Im","I'm","I'am","I'll"], ans: "I'm" }
+      ]
+    },
+    {
+      id: 's7', emoji: '💬',
+      title: '인용부호',
+      subtitle: 'Quotation Marks " "',
+      tip: '누군가 말한 것은 따옴표(" ")로 감싸줘! 💬',
+      questions: [
+        {
+          hint: '따옴표가 올바르게 들어간 문장을 골라봐!',
+          q: 'Can we have pizza for dinner? Jack asked.',
+          opts: [
+            '"Can we have pizza for dinner?" Jack asked.',
+            'Can we have "pizza for dinner?" Jack asked.',
+            '"Can we have pizza" for dinner? Jack asked.'
+          ],
+          ans: '"Can we have pizza for dinner?" Jack asked.'
+        },
+        {
+          hint: '따옴표가 올바르게 들어간 문장을 골라봐!',
+          q: 'Where is my backpack? questioned Lily.',
+          opts: [
+            'Where is "my backpack?" questioned Lily.',
+            '"Where is my backpack?" questioned Lily.',
+            '"Where is my backpack" questioned Lily.'
+          ],
+          ans: '"Where is my backpack?" questioned Lily.'
+        },
+        {
+          hint: '따옴표가 올바르게 들어간 문장을 골라봐!',
+          q: 'Pass me the remote, asked Dad during the movie.',
+          opts: [
+            '"Pass me the remote," asked Dad during the movie.',
+            'Pass me "the remote," asked Dad during the movie.',
+            '"Pass me the remote" asked Dad during the movie.'
+          ],
+          ans: '"Pass me the remote," asked Dad during the movie.'
+        },
+        {
+          hint: '따옴표가 올바르게 들어간 문장을 골라봐!',
+          q: 'I love playing video games, said Jake.',
+          opts: [
+            '"I love playing video games," said Jake.',
+            'I love "playing video games," said Jake.',
+            '"I love playing" video games, said Jake.'
+          ],
+          ans: '"I love playing video games," said Jake.'
+        },
+        {
+          hint: '따옴표가 올바르게 들어간 문장을 골라봐!',
+          q: 'My favorite book is the Wizard of Oz.',
+          opts: [
+            'My favorite book is "the Wizard of Oz."',
+            '"My favorite book is the Wizard of Oz."',
+            'My favorite "book is the Wizard of Oz."'
+          ],
+          ans: 'My favorite book is "the Wizard of Oz."'
+        },
+        {
+          hint: '따옴표가 올바르게 들어간 문장을 골라봐!',
+          q: 'Did you finish your homework? asked the teacher.',
+          opts: [
+            '"Did you finish your homework?" asked the teacher.',
+            'Did you "finish your homework?" asked the teacher.',
+            '"Did you finish your homework" asked the teacher.'
+          ],
+          ans: '"Did you finish your homework?" asked the teacher.'
+        },
+        {
+          hint: '따옴표가 올바르게 들어간 문장을 골라봐!',
+          q: "I can't find my keys anywhere! shouted Sarah.",
+          opts: [
+            "\"I can't find my keys anywhere!\" shouted Sarah.",
+            "I can't find \"my keys anywhere!\" shouted Sarah.",
+            "\"I can't find my keys\" anywhere! shouted Sarah."
+          ],
+          ans: "\"I can't find my keys anywhere!\" shouted Sarah."
+        },
+        {
+          hint: '따옴표가 올바르게 들어간 문장을 골라봐!',
+          q: 'Meet me at the park at 4 PM, Tom said.',
+          opts: [
+            '"Meet me at the park at 4 PM," Tom said.',
+            'Meet me at "the park at 4 PM," Tom said.',
+            '"Meet me at the park at 4 PM" Tom said.'
+          ],
+          ans: '"Meet me at the park at 4 PM," Tom said.'
+        }
+      ]
+    },
+    {
+      id: 's8', emoji: '🔬',
+      title: '접두사 / 접미사',
+      subtitle: 'Prefixes & Suffixes',
+      tip: '단어 앞(접두사)이나 뒤(접미사)에 붙여서 새 단어를 만들어! 🔬',
+      questions: [
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"between or among" 의 뜻을 가진 접두사는?', opts: ['over-','inter-','sub-','un-'], ans: 'inter-' },
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"over or above" 의 뜻을 가진 접두사는?', opts: ['inter-','sub-','over-','re-'], ans: 'over-' },
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"under or below" 의 뜻을 가진 접두사는?', opts: ['over-','inter-','un-','sub-'], ans: 'sub-' },
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"not or opposite of" 의 뜻을 가진 접두사는?', opts: ['re-','sub-','un-','-ful'], ans: 'un-' },
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"again or back" 의 뜻을 가진 접두사는?', opts: ['un-','re-','-ly','over-'], ans: 're-' },
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"full of" 의 뜻을 가진 접미사는?', opts: ['-ic','-er','-ful','-ist'], ans: '-ful' },
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"of or related to" 의 뜻을 가진 접미사는?', opts: ['-ous','-ic','-ful','-ly'], ans: '-ic' },
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"a person doing the action" 의 뜻을 가진 접미사는?', opts: ['-ful','-ly','-ist','-er / -or'], ans: '-er / -or' },
+        { hint: '뜻에 맞는 접두사/접미사를 골라봐!', q: '"turns adjective into adverb" 의 뜻을 가진 접미사는?', opts: ['-ous','-ly','-ful','-ness'], ans: '-ly' },
+        { hint: '올바른 형태를 골라봐!', q: 'After the car accident, it was very ___ (chaos).', opts: ['chaosful','chaotic','chaoser','interchaos'], ans: 'chaotic' },
+        { hint: '올바른 형태를 골라봐!', q: 'Daniel was ___ (paid) when he received $50 extra.', opts: ['underpaid','repaid','overpaid','subpaid'], ans: 'overpaid' },
+        { hint: '올바른 형태를 골라봐!', q: 'I prefer domestic flights over ___ (national) ones.', opts: ['subnational','renational','overnational','international'], ans: 'international' },
+        { hint: '올바른 형태를 골라봐!', q: 'Cory wants to be a ___ (bake) when he grows up.', opts: ['bakist','baker','bakeor','bakeful'], ans: 'baker' },
+        { hint: '올바른 형태를 골라봐!', q: 'Australia is full of ___ (poison) snakes.', opts: ['poisonful','poisonic','poisonous','poisoner'], ans: 'poisonous' },
+        { hint: '올바른 형태를 골라봐!', q: 'The wheel was the most ___ (use) invention in history.', opts: ['useful','useous','useer','usely'], ans: 'useful' }
+      ]
+    }
+  ];
+
+  var TOTAL_Q = SECTIONS.reduce(function(a, s) { return a + s.questions.length; }, 0);
+
+  var state = {
+    sectionIdx: 0,
+    questionIdx: 0,
+    sectionScore: 0,
+    totalCorrect: 0,
+    sectionScores: []
+  };
+
+  var screenEl = document.getElementById('screen');
+
+  function globalDone() {
+    var n = 0;
+    for (var i = 0; i < state.sectionIdx; i++) n += SECTIONS[i].questions.length;
+    return n + state.questionIdx;
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  function starStr(correct, total) {
+    var p = correct / total;
+    if (p >= 0.9) return '⭐⭐⭐';
+    if (p >= 0.7) return '⭐⭐';
+    if (p >= 0.5) return '⭐';
+    return '💪';
+  }
+
+  /* ── HOME ── */
+  function renderHome() {
+    screenEl.innerHTML =
+      '<div class="mascot-row">' +
+        '<span class="mascot">🌟</span>' +
+        '<div class="speech">안녕! 같이 문법 시험 연습해보자! 화이팅! 💖</div>' +
+      '</div>' +
+      '<div class="card">' +
+        '<h2 class="section-title">📝 Grammar Quiz</h2>' +
+        '<p class="section-sub">8개 섹션 · 총 ' + TOTAL_Q + '문제</p>' +
+        '<div class="section-list">' +
+          SECTIONS.map(function(s) {
+            return '<div class="sec-chip">' + s.emoji + ' ' + esc(s.title) + '</div>';
+          }).join('') +
+        '</div>' +
+        '<button class="primary-btn" id="startBtn">시험 시작! 🚀</button>' +
+      '</div>';
+
+    document.getElementById('startBtn').addEventListener('click', function() {
+      state.sectionIdx = 0;
+      state.questionIdx = 0;
+      state.sectionScore = 0;
+      state.totalCorrect = 0;
+      state.sectionScores = [];
+      renderIntro();
+    });
+  }
+
+  /* ── INTRO ── */
+  function renderIntro() {
+    var s = SECTIONS[state.sectionIdx];
+    screenEl.innerHTML =
+      '<div class="card intro-card">' +
+        '<div class="intro-badge">섹션 ' + (state.sectionIdx + 1) + ' / ' + SECTIONS.length + '</div>' +
+        '<div class="intro-emoji">' + s.emoji + '</div>' +
+        '<h2 class="intro-title">' + esc(s.title) + '</h2>' +
+        '<p class="intro-sub">' + esc(s.subtitle) + '</p>' +
+        '<div class="intro-tip">💡 ' + esc(s.tip) + '</div>' +
+        '<p class="intro-count">✏️ ' + s.questions.length + '문제</p>' +
+        '<button class="primary-btn" id="goBtn">시작! ✏️</button>' +
+      '</div>';
+
+    document.getElementById('goBtn').addEventListener('click', function() {
+      state.questionIdx = 0;
+      state.sectionScore = 0;
+      renderQuestion();
+    });
+  }
+
+  /* ── QUESTION ── */
+  function renderQuestion() {
+    var s = SECTIONS[state.sectionIdx];
+    var q = s.questions[state.questionIdx];
+    var pct = Math.round((globalDone() / TOTAL_Q) * 100);
+
+    var isShort = q.opts.length <= 3 && q.opts.every(function(o) { return o.length <= 3; });
+    var isLong  = q.opts.some(function(o) { return o.length > 25; });
+
+    var qHtml = esc(q.q).replace(/___/g, '<span class="blank">___</span>');
+    var hintHtml = q.hint ? '<div class="q-hint">' + esc(q.hint) + '</div>' : '';
+    var optsClass = 'opts-list' + (isShort ? ' short' : '') + (isLong ? ' long' : '');
+    var isLast = state.questionIdx + 1 >= s.questions.length;
+
+    var optsHtml = q.opts.map(function(opt) {
+      return '<button class="opt-btn" data-ans="' + esc(opt) + '" type="button">' + esc(opt) + '</button>';
+    }).join('');
+
+    screenEl.innerHTML =
+      '<div class="prog-wrap"><div class="prog-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="prog-label">' +
+        '<span>' + s.emoji + ' ' + esc(s.title) + '</span>' +
+        '<span>' + (state.questionIdx + 1) + ' / ' + s.questions.length + '</span>' +
+      '</div>' +
+      '<div class="quiz-card">' +
+        hintHtml +
+        '<p class="q-text">' + qHtml + '</p>' +
+        '<div class="' + optsClass + '" id="opts">' + optsHtml + '</div>' +
+        '<div class="feedback" id="fb"></div>' +
+        '<div class="ans-reveal" id="ar"></div>' +
+        '<div class="next-row">' +
+          '<button class="next-btn hidden" id="nextBtn" type="button">' +
+            (isLast ? '섹션 완료! 🎉' : '다음 →') +
+          '</button>' +
+        '</div>' +
+      '</div>';
+
+    var praises = ['🌟 정답이에요!','✨ 완벽해요!','💖 대단해요!','🎉 맞았어요!','⭐ 잘했어요!','🌸 훌륭해요!'];
+    var answered = false;
+
+    document.querySelectorAll('.opt-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        answered = true;
+
+        var chosen = btn.getAttribute('data-ans');
+        var correct = q.ans;
+        var isCorrect = chosen === correct;
+
+        document.querySelectorAll('.opt-btn').forEach(function(b) {
+          b.disabled = true;
+          if (b.getAttribute('data-ans') === correct) b.classList.add('correct');
+          else if (b === btn && !isCorrect) b.classList.add('wrong');
+        });
+
+        var fb = document.getElementById('fb');
+        if (isCorrect) {
+          state.sectionScore++;
+          state.totalCorrect++;
+          fb.textContent = praises[Math.floor(Math.random() * praises.length)];
+          fb.className = 'feedback correct';
+        } else {
+          fb.textContent = '💡 아쉬워요! 정답은:';
+          fb.className = 'feedback wrong';
+          document.getElementById('ar').textContent = correct;
+        }
+        document.getElementById('nextBtn').classList.remove('hidden');
+      });
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', function() {
+      state.questionIdx++;
+      if (state.questionIdx < s.questions.length) {
+        renderQuestion();
+      } else {
+        state.sectionScores.push({ correct: state.sectionScore, total: s.questions.length });
+        renderSectionResult();
+      }
+    });
+  }
+
+  /* ── SECTION RESULT ── */
+  function renderSectionResult() {
+    var sc = state.sectionScores[state.sectionScores.length - 1];
+    var p = sc.correct / sc.total;
+    var trophy = p >= 0.9 ? '🏆' : p >= 0.7 ? '🥈' : p >= 0.5 ? '🥉' : '💪';
+    var msg = p >= 0.9 ? '완벽해요! 진짜 대단해! 🌟' :
+              p >= 0.7 ? '정말 잘했어요! 👏' :
+              p >= 0.5 ? '잘했어요! 조금만 더 연습해봐! 🌸' :
+                         '괜찮아요! 다음엔 더 잘 할 수 있어! 🌈';
+    var isLast = state.sectionIdx + 1 >= SECTIONS.length;
+
+    screenEl.innerHTML =
+      '<div class="card result-card">' +
+        '<div class="res-trophy">' + trophy + '</div>' +
+        '<div class="res-score">' + sc.correct + ' / ' + sc.total + '</div>' +
+        '<div class="res-stars">' + starStr(sc.correct, sc.total) + '</div>' +
+        '<div class="res-msg">' + msg + '</div>' +
+        '<button class="primary-btn" id="nextSecBtn">' +
+          (isLast ? '🏁 최종 결과 보기!' : '다음 섹션 →') +
+        '</button>' +
+      '</div>';
+
+    document.getElementById('nextSecBtn').addEventListener('click', function() {
+      if (isLast) {
+        renderFinal();
+      } else {
+        state.sectionIdx++;
+        renderIntro();
+      }
+    });
+  }
+
+  /* ── FINAL ── */
+  function renderFinal() {
+    var p = state.totalCorrect / TOTAL_Q;
+    var grade, msg, bigEmoji;
+    if      (p >= 0.93) { grade = 'A+'; msg = '완벽한 점수! 너무 대단해! 🏆'; bigEmoji = '🌟🎉🌟'; }
+    else if (p >= 0.83) { grade = 'A';  msg = '훌륭해요! 정말 잘했어! 🥇';    bigEmoji = '🌟⭐🌟'; }
+    else if (p >= 0.70) { grade = 'B';  msg = '잘했어요! 조금만 더 연습해봐! 💪'; bigEmoji = '⭐✨⭐'; }
+    else if (p >= 0.60) { grade = 'C';  msg = '괜찮아요! 틀린 부분 다시 공부해봐! 📚'; bigEmoji = '✨💖✨'; }
+    else                { grade = 'D';  msg = '다시 한 번 도전해봐! 할 수 있어! 🌈'; bigEmoji = '💪🌈💪'; }
+
+    var rows = SECTIONS.map(function(s, i) {
+      var sc = state.sectionScores[i] || { correct: 0, total: s.questions.length };
+      return '<div class="final-row">' +
+        '<span class="final-emoji">' + s.emoji + '</span>' +
+        '<span class="final-name">' + esc(s.title) + '</span>' +
+        '<span class="final-score">' + sc.correct + '/' + sc.total + '</span>' +
+        '<span class="final-stars">' + starStr(sc.correct, sc.total) + '</span>' +
+      '</div>';
+    }).join('');
+
+    screenEl.innerHTML =
+      '<div class="card final-card">' +
+        '<div class="final-emoji-big">' + bigEmoji + '</div>' +
+        '<div class="final-grade">' + grade + '</div>' +
+        '<div class="final-total">' + state.totalCorrect + ' / ' + TOTAL_Q + '</div>' +
+        '<div class="final-msg">' + msg + '</div>' +
+        '<div class="final-list">' + rows + '</div>' +
+        '<button class="primary-btn" id="retryBtn">🔄 처음부터 다시!</button>' +
+      '</div>';
+
+    document.getElementById('retryBtn').addEventListener('click', renderHome);
+  }
+
+  renderHome();
+
+})();
+</script>
+</body>
+</html>
