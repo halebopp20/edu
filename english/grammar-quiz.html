@@ -648,8 +648,8 @@
   function renderHome() {
     screenEl.innerHTML =
       '<div class="mascot-row">' +
-        '<span class="mascot">🌟</span>' +
-        '<div class="speech">안녕! 같이 문법 시험 연습해보자! 화이팅! 💖</div>' +
+        '<span class="mascot">🐱</span>' +
+        '<div class="speech">안녕! 나는 미미야! 같이 문법 연습해보자! 화이팅! 💖</div>' +
       '</div>' +
       '<div class="card">' +
         '<h2 class="section-title">📝 Grammar Quiz</h2>' +
@@ -675,7 +675,21 @@
   /* ── INTRO ── */
   function renderIntro() {
     var s = SECTIONS[state.sectionIdx];
+    var introMsgs = [
+      '전치사는 위치를 알려주는 말이야! 🏠',
+      'in·on·at 딱 3개만 기억해봐! ⏰',
+      '이름이랑 도시는 대문자로 시작해! 📚',
+      '문장 끝에 어떤 부호가 맞는지 봐! ✨',
+      '나열할 때랑 두 문장 이을 때 쉼표야! ✏️',
+      '두 단어를 붙이면 하나가 돼! ✂️',
+      '누군가 하는 말은 따옴표로 감싸줘! 💬',
+      '단어 앞뒤에 붙이면 뜻이 달라져! 🔬'
+    ];
     screenEl.innerHTML =
+      '<div class="mascot-row">' +
+        '<span class="mascot">🐱</span>' +
+        '<div class="speech">' + introMsgs[state.sectionIdx] + '</div>' +
+      '</div>' +
       '<div class="card intro-card">' +
         '<div class="intro-badge">섹션 ' + (state.sectionIdx + 1) + ' / ' + SECTIONS.length + '</div>' +
         '<div class="intro-emoji">' + s.emoji + '</div>' +
@@ -712,6 +726,10 @@
     }).join('');
 
     screenEl.innerHTML =
+      '<div class="mascot-row">' +
+        '<span class="mascot" id="charEl">🐱</span>' +
+        '<div class="speech" id="charSpeech">잘 생각해봐! 🤔</div>' +
+      '</div>' +
       '<div class="prog-wrap"><div class="prog-fill" style="width:' + pct + '%"></div></div>' +
       '<div class="prog-label">' +
         '<span>' + s.emoji + ' ' + esc(s.title) + '</span>' +
@@ -754,10 +772,14 @@
           state.totalCorrect++;
           fb.textContent = praises[Math.floor(Math.random() * praises.length)];
           fb.className = 'feedback correct';
+          document.getElementById('charEl').textContent = '😸';
+          document.getElementById('charSpeech').textContent = '야호! 정답이야! 🌟';
         } else {
           fb.textContent = '💡 아쉬워요! 정답은:';
           fb.className = 'feedback wrong';
           document.getElementById('ar').textContent = correct;
+          document.getElementById('charEl').textContent = '😿';
+          document.getElementById('charSpeech').textContent = '아쉬워! 같이 외워보자! 💪';
         }
         document.getElementById('nextBtn').classList.remove('hidden');
       });
@@ -783,9 +805,18 @@
               p >= 0.7 ? '정말 잘했어요! 👏' :
               p >= 0.5 ? '잘했어요! 조금만 더 연습해봐! 🌸' :
                          '괜찮아요! 다음엔 더 잘 할 수 있어! 🌈';
+    var charEmoji = p >= 0.7 ? '😸' : '😿';
+    var charMsg = p >= 0.9 ? '완벽해! 진짜 대단해! 🌟' :
+                  p >= 0.7 ? '잘했어! 거의 다 맞혔네! 👏' :
+                  p >= 0.5 ? '절반 이상 맞혔어! 더 할 수 있어! 💪' :
+                             '괜찮아! 다음 섹션 더 잘할 거야! 🌈';
     var isLast = state.sectionIdx + 1 >= SECTIONS.length;
 
     screenEl.innerHTML =
+      '<div class="mascot-row">' +
+        '<span class="mascot">' + charEmoji + '</span>' +
+        '<div class="speech">' + charMsg + '</div>' +
+      '</div>' +
       '<div class="card result-card">' +
         '<div class="res-trophy">' + trophy + '</div>' +
         '<div class="res-score">' + sc.correct + ' / ' + sc.total + '</div>' +
@@ -826,7 +857,17 @@
       '</div>';
     }).join('');
 
+    var finalChar = p >= 0.7 ? '😸' : '🐱';
+    var finalCharMsg = grade === 'A+' ? '우와!! 거의 만점! 진짜 대단해!! 🏆' :
+                       grade === 'A'  ? '훌륭해!! 열심히 공부했구나! 👏' :
+                       grade === 'B'  ? '잘했어!! 조금만 더 연습하면 A야! 💪' :
+                                        '잘 도전했어! 다시 하면 더 잘할 수 있어! 🌈';
+
     screenEl.innerHTML =
+      '<div class="mascot-row">' +
+        '<span class="mascot">' + finalChar + '</span>' +
+        '<div class="speech">' + finalCharMsg + '</div>' +
+      '</div>' +
       '<div class="card final-card">' +
         '<div class="final-emoji-big">' + bigEmoji + '</div>' +
         '<div class="final-grade">' + grade + '</div>' +
