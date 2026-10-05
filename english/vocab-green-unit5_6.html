@@ -343,7 +343,7 @@
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <div class="brand-mark">🐰</div>
+      <div class="brand-mark">🦦</div>
       <div>
         <p class="eyebrow">Vocabulary Workshop · Green</p>
         <h1>초록 단어 정원</h1>
@@ -382,7 +382,7 @@
 
   var SECRET_CODE = "ROSE🌸";   // ← 엄마가 원하는 코드로 바꾸세요
   var STORE_KEY = "vwgreen_progress_unit56_v1";
-  var FLOWER = ["🌱", "🌱", "🌿", "🌷", "🌸"];  // index = stars(0~4)
+  var FLOWER = ["🌱", "🌱", "🌿", "🍃", "🪷"];  // index = stars(0~4)
   var screenEl = document.getElementById("screen");
   var root = document.documentElement;
   var themeBtn = document.getElementById("themeToggle");
@@ -455,7 +455,7 @@
     var legendHtml = '<div class="garden-legend">' +
       '<span style="opacity:0.25">🌱 아직 안 봤어</span>' +
       '<span>🌱 1단계 통과</span><span>🌿 2단계</span>' +
-      '<span>🌷 3단계</span><span>🌸 완전히 외웠어</span>' +
+      '<span>🍃 3단계</span><span>🪷 완전히 외웠어</span>' +
     '</div>';
 
     var actionHtml = remaining > 0
@@ -463,8 +463,8 @@
       : '<button class="primary-btn" id="certBtn" type="button">🏆 수료증 보기!</button>';
 
     screenEl.innerHTML =
-      '<div class="mascot-row"><span class="mascot">🐰</span>' +
-        '<div class="speech">안녕! 오늘도 같이 단어를 키워보자! 🌸</div></div>' +
+      '<div class="mascot-row"><span class="mascot">🦦</span>' +
+        '<div class="speech">안녕! 오늘도 같이 단어를 키워보자! 🪷</div></div>' +
       '<div class="card">' +
         '<h2 class="section-title">🌸 내 단어 정원</h2>' +
         gardenHtml + legendHtml + actionHtml +
@@ -558,7 +558,7 @@
   function renderStage3(w) {
     var total = state.queue.length;
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌷</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🍃</span></div>' +
       '<div class="quiz-card">' +
         '<span class="stage-badge stage-3">🌟 3단계 · 힌트 보고 쓰기</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
@@ -578,7 +578,7 @@
   function renderStage4(w) {
     var total = state.queue.length;
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌸</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🪷</span></div>' +
       '<div class="quiz-card">' +
         '<span class="stage-badge stage-4">🖊️ 4단계 · 완전 암기</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
@@ -691,7 +691,7 @@
     state.answered = true;
     setStars(w.word, getStars(w.word) + 1);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🐰✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
+    fb.innerHTML = "🦦✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
     fb.className = "feedback-row correct";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -701,7 +701,7 @@
     state.answered = true;
     state.retryQueue.push(w);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🐰🌱 괜찮아요, 나중에 다시 해봐요!";
+    fb.innerHTML = "🦦🌱 괜찮아요, 나중에 다시 해봐요!";
     fb.className = "feedback-row wrong";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -725,7 +725,7 @@
   function renderCertificate() {
     screenEl.innerHTML =
       '<div class="card">' +
-        '<div class="cert-flowers">🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸<br>🌸🌸🌸🌸🌸</div>' +
+        '<div class="cert-flowers">🪷🪷🪷🪷🪷<br>🪷🪷🪷🪷🪷<br>🪷🪷🪷🪷🪷<br>🪷🪷🪷🪷🪷</div>' +
         '<div class="cert-title">정원 완성! 🎉</div>' +
         '<div class="cert-sub">Unit 5 · 6 단어 20개를 모두 외웠어요!</div>' +
         '<div class="cert-box">이 친구는 초록 단어 정원의<br>모든 꽃을 피웠습니다 🌸</div>' +
@@ -757,7 +757,7 @@
     screenEl.innerHTML =
       '<div class="card">' +
         '<div class="score-hero">' +
-          '<div class="score-mascot">🐰🌱</div>' +
+          '<div class="score-mascot">🦦🌿</div>' +
           '<div class="score-num">' + mastered + ' / 20</div>' +
           '<div class="score-label">꽃이 ' + mastered + '송이 피었어요! 계속 키워봐요 🌸</div>' +
         '</div>' +
