@@ -7,16 +7,16 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@300;400;700&family=Baloo+2:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    --bg: #fdf3fb;
-    --bg-soft: #f7e7f7;
+    --bg: #f0fdf9;
+    --bg-soft: #dcfdf2;
     --surface: #ffffff;
-    --surface-2: #fff8fc;
-    --ink: #4a3a55;
-    --ink-soft: #8d7c98;
-    --ink-faint: #bbaec4;
-    --accent: #ff8fb1;
-    --accent-strong: #f2557f;
-    --accent-tint: #ffe3ec;
+    --surface-2: #f5fffb;
+    --ink: #1a3d33;
+    --ink-soft: #4d7a6a;
+    --ink-faint: #8ec4b4;
+    --accent: #14b8a6;
+    --accent-strong: #0d9488;
+    --accent-tint: #ccfbf1;
     --secondary: #4fbf83;
     --secondary-strong: #339160;
     --secondary-tint: #ddf5e6;
@@ -26,31 +26,31 @@
     --correct-tint: #e2f6e9;
     --wrong: #ff7a68;
     --wrong-tint: #ffe9e4;
-    --line: #f3ddf0;
-    --opt1: #f2e6ff;
-    --opt1-line: #ddbcff;
-    --opt2: #fff3c9;
-    --opt2-line: #ffdd7a;
-    --opt3: #dcf3ff;
-    --opt3-line: #a8e2ff;
-    --opt4: #ffe4d6;
-    --opt4-line: #ffc19e;
-    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(242, 85, 127, 0.35);
+    --line: #a7f3e0;
+    --opt1: #f0fdf4;
+    --opt1-line: #bbf7d0;
+    --opt2: #fefce8;
+    --opt2-line: #fde68a;
+    --opt3: #eff6ff;
+    --opt3-line: #bfdbfe;
+    --opt4: #fdf4ff;
+    --opt4-line: #e9d5ff;
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(20, 184, 166, 0.30);
     --radius: 32px;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #221a3a;
-      --bg-soft: #2a2147;
-      --surface: #2e2450;
-      --surface-2: #362a5c;
-      --ink: #f5ecff;
-      --ink-soft: #c6b8de;
-      --ink-faint: #8c7ead;
-      --accent: #ff9fc2;
-      --accent-strong: #ffc0da;
-      --accent-tint: #452a41;
+      --bg: #0c2622;
+      --bg-soft: #113430;
+      --surface: #163c37;
+      --surface-2: #1c4a44;
+      --ink: #e0fdf4;
+      --ink-soft: #90c4b4;
+      --ink-faint: #4d8a7a;
+      --accent: #2dd4bf;
+      --accent-strong: #5eead4;
+      --accent-tint: #0d3d35;
       --secondary: #7fe0a8;
       --secondary-strong: #a4edc2;
       --secondary-tint: #1f3c2c;
@@ -60,23 +60,23 @@
       --correct-tint: #1f3c2c;
       --wrong: #ff9d8d;
       --wrong-tint: #452a26;
-      --line: #4a3b73;
-      --opt1: #3a2e5c; --opt1-line: #6a53a0;
-      --opt2: #4a3e2c; --opt2-line: #8a713a;
-      --opt3: #263c50; --opt3-line: #3f6f92;
-      --opt4: #452f2c; --opt4-line: #8a5a48;
+      --line: #1a5046;
+      --opt1: #1a3d2a; --opt1-line: #2d6b46;
+      --opt2: #3a2e10; --opt2-line: #7a6020;
+      --opt3: #1a2840; --opt3-line: #2a4a70;
+      --opt4: #2a1a40; --opt4-line: #5a3a80;
       --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
     }
   }
   :root[data-theme="dark"] {
-    --bg: #221a3a; --bg-soft: #2a2147; --surface: #2e2450; --surface-2: #362a5c;
-    --ink: #f5ecff; --ink-soft: #c6b8de; --ink-faint: #8c7ead;
-    --accent: #ff9fc2; --accent-strong: #ffc0da; --accent-tint: #452a41;
+    --bg: #0c2622; --bg-soft: #113430; --surface: #163c37; --surface-2: #1c4a44;
+    --ink: #e0fdf4; --ink-soft: #90c4b4; --ink-faint: #4d8a7a;
+    --accent: #2dd4bf; --accent-strong: #5eead4; --accent-tint: #0d3d35;
     --secondary: #7fe0a8; --secondary-strong: #a4edc2; --secondary-tint: #1f3c2c;
     --sun: #ffd166; --correct: #7fe0a8; --correct-strong: #4fae76; --correct-tint: #1f3c2c;
-    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #4a3b73;
-    --opt1: #3a2e5c; --opt1-line: #6a53a0; --opt2: #4a3e2c; --opt2-line: #8a713a;
-    --opt3: #263c50; --opt3-line: #3f6f92; --opt4: #452f2c; --opt4-line: #8a5a48;
+    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #1a5046;
+    --opt1: #1a3d2a; --opt1-line: #2d6b46; --opt2: #3a2e10; --opt2-line: #7a6020;
+    --opt3: #1a2840; --opt3-line: #2a4a70; --opt4: #2a1a40; --opt4-line: #5a3a80;
     --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
   }
 
