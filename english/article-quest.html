@@ -181,6 +181,36 @@
   }
 
   var screenEl = document.getElementById('screen');
+
+  function renderHome() {
+    var best = localStorage.getItem('aq-best') || null;
+    var bestHtml = best
+      ? '<p style="color:var(--cream2);font-size:18px;margin-top:12px">🏆 최고 기록: <strong>' + best + '%</strong> 첫 시도 정답률</p>'
+      : '';
+
+    screenEl.innerHTML =
+      '<div style="text-align:center;padding:20px 0 10px">' +
+        '<div style="font-size:72px;line-height:1">🍫</div>' +
+        '<h1 style="font-family:Jua,sans-serif;font-size:42px;color:var(--gold);margin:8px 0 4px">Choco Quest</h1>' +
+        '<p style="color:var(--cream2);font-size:20px;font-weight:700">Master a, an, the &amp; some!</p>' +
+      '</div>' +
+      '<div class="card">' +
+        '<p style="color:var(--cream);font-size:20px;line-height:1.7;margin-bottom:20px">' +
+          '🍫 Sort — 단어를 Count / Noncount로 분류해봐!<br>' +
+          '✏️ Drill — 빈칸에 알맞은 관사를 골라봐!<br>' +
+          '🏆 모두 맞혀야 Choco Master 완성! 틀리면 다시 나와!' +
+        '</p>' +
+        bestHtml +
+        '<button class="primary-btn" id="startBtn" style="margin-top:20px">Start Quest 🚀</button>' +
+      '</div>';
+
+    document.getElementById('startBtn').addEventListener('click', function() {
+      initQueues();
+      nextTurn();
+    });
+  }
+
+  renderHome();
 </script>
 </body>
 </html>
