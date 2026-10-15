@@ -182,6 +182,45 @@
 
   var screenEl = document.getElementById('screen');
 
+  function remainingCount() {
+    return state.sortQueue.length + state.drillQueue.length;
+  }
+
+  function totalCount() {
+    return state.totalSort + state.totalDrill;
+  }
+
+  function progressHtml() {
+    var remaining = remainingCount();
+    var done = totalCount() - remaining;
+    var pct = Math.round((done / totalCount()) * 100);
+    return (
+      '<div class="prog-label">' +
+        '<span>🍫 남은 문제 <strong>' + remaining + '개</strong></span>' +
+        '<span>' + pct + '%</span>' +
+      '</div>' +
+      '<div class="prog-wrap"><div class="prog-fill" style="width:' + pct + '%"></div></div>'
+    );
+  }
+
+  function nextTurn() {
+    if (state.sortQueue.length === 0 && state.drillQueue.length === 0) {
+      renderEnding();
+      return;
+    }
+    if (state.turn === 'sort' && state.sortQueue.length > 0) {
+      renderSort();
+      return;
+    }
+    if (state.turn === 'drill' && state.drillQueue.length > 0) {
+      renderDrill();
+      return;
+    }
+    // 한쪽 큐가 빈 경우 남은 쪽으로 전환
+    if (state.sortQueue.length > 0) { state.turn = 'sort'; renderSort(); }
+    else { state.turn = 'drill'; renderDrill(); }
+  }
+
   function renderHome() {
     var best = localStorage.getItem('aq-best') || null;
     var bestHtml = best
