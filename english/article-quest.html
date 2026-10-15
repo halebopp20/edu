@@ -209,7 +209,7 @@
           '<div style="font-size:60px;line-height:1;margin-bottom:10px">' + esc(item.emoji) + '</div>' +
           '<div style="font-size:28px;font-weight:700;color:var(--cream)">' + esc(item.word) + '</div>' +
         '</div>' +
-        '<div style="display:flex;gap:14px">' +
+        '<div class="sort-btns" style="display:flex;gap:14px">' +
           '<button class="sort-btn" data-type="count" style="flex:1;background:var(--surface2);border:3px solid var(--gold);border-radius:var(--radius);padding:20px 10px;cursor:pointer;color:var(--cream);font-family:\'Baloo 2\',sans-serif;font-size:20px;font-weight:700;transition:all 0.15s">' +
             '<div style="font-size:32px">📦</div>' +
             '<div>Count</div>' +
@@ -245,6 +245,7 @@
           state.turn = 'drill';
           setTimeout(nextTurn, 1400);
         } else {
+          document.querySelectorAll('.sort-btn').forEach(function(b) { b.disabled = true; });
           item.firstTry = false;
           state.sortQueue.shift();
           state.sortQueue.push(item);
@@ -405,8 +406,7 @@
 
     document.getElementById('parentBtn').addEventListener('click', showParentCard);
     document.getElementById('retryBtn').addEventListener('click', function() {
-      initQueues();
-      nextTurn();
+      renderHome();
     });
   }
 
