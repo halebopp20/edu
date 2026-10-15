@@ -114,7 +114,73 @@
 <body>
 <div class="app" id="screen"></div>
 <script>
-  // Task 2 이후에 채울 예정
+  var WORDS = [
+    { word: 'milk',    emoji: '🥛', type: 'noncount' },
+    { word: 'cheese',  emoji: '🧀', type: 'noncount' },
+    { word: 'bread',   emoji: '🍞', type: 'noncount' },
+    { word: 'oil',     emoji: '🫙', type: 'noncount' },
+    { word: 'water',   emoji: '💧', type: 'noncount' },
+    { word: 'apple',   emoji: '🍎', type: 'count' },
+    { word: 'book',    emoji: '📚', type: 'count' },
+    { word: 'cat',     emoji: '🐱', type: 'count' },
+    { word: 'bicycle', emoji: '🚲', type: 'count' },
+    { word: 'banana',  emoji: '🍌', type: 'count' },
+    { word: 'salt',    emoji: '🧂', type: 'noncount' },
+    { word: 'egg',     emoji: '🥚', type: 'count' },
+  ];
+
+  var SENTENCES = [
+    { text: 'I drink ___ milk.',                    ans: 'some', hint: 'milk은 셀 수 없어요 → some!' },
+    { text: 'She has ___ umbrella.',                ans: 'an',   hint: 'u로 시작하는 소리 → an!' },
+    { text: 'Look at ___ sun.',                     ans: 'the',  hint: '태양은 세상에 하나뿐이에요 → the!' },
+    { text: 'Tom has a dog. ___ dog is cute.',      ans: 'The',  hint: '앞에서 말한 바로 그 강아지 → The!' },
+    { text: 'We need ___ onion.',                   ans: 'an',   hint: 'o로 시작하는 소리 → an!' },
+    { text: 'I need ___ cheese.',                   ans: 'some', hint: 'cheese는 셀 수 없어요 → some!' },
+    { text: 'Jack has ___ smartphone.',             ans: 'a',    hint: 's는 자음 소리 → a!' },
+    { text: '___ sky is clear.',                    ans: 'The',  hint: '하늘은 세상에 하나뿐이에요 → The!' },
+    { text: 'She has a cat. ___ cat is small.',     ans: 'The',  hint: '앞에서 말한 바로 그 고양이 → The!' },
+    { text: 'I see ___ elephant.',                  ans: 'an',   hint: 'e로 시작하는 소리 → an!' },
+    { text: 'He drinks ___ water every day.',       ans: 'some', hint: 'water는 셀 수 없어요 → some!' },
+    { text: 'I have ___ idea!',                     ans: 'an',   hint: 'i로 시작하는 소리 → an!' },
+    { text: 'I like ___ moon.',                     ans: 'the',  hint: '달은 세상에 하나뿐이에요 → the!' },
+    { text: 'Ann has a bag. ___ bag is red.',       ans: 'The',  hint: '앞에서 말한 바로 그 가방 → The!' },
+    { text: 'Can I have ___ bread?',               ans: 'some', hint: 'bread는 셀 수 없어요 → some!' },
+    { text: 'She is ___ honest girl.',              ans: 'an',   hint: 'h는 묵음 → an honest!' },
+  ];
+
+  var state = {
+    sortQueue:  [],
+    drillQueue: [],
+    turn: 'sort',
+    totalSort:  0,
+    totalDrill: 0,
+    firstCorrectSort:  0,
+    firstCorrectDrill: 0,
+    startTime: null,
+  };
+
+  function initQueues() {
+    state.sortQueue = WORDS.map(function(w) {
+      return { word: w.word, emoji: w.emoji, type: w.type, firstTry: true };
+    });
+    state.drillQueue = SENTENCES.map(function(s) {
+      return { text: s.text, ans: s.ans, hint: s.hint, firstTry: true };
+    });
+    state.turn = 'sort';
+    state.totalSort  = state.sortQueue.length;
+    state.totalDrill = state.drillQueue.length;
+    state.firstCorrectSort  = 0;
+    state.firstCorrectDrill = 0;
+    state.startTime = new Date();
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  var screenEl = document.getElementById('screen');
 </script>
 </body>
 </html>
