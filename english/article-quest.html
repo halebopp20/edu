@@ -244,6 +244,71 @@
     });
   }
 
+  function renderDrill() {
+    var item = state.drillQueue[0];
+    var opts = ['a', 'an', 'the', 'some'];
+    var qHtml = esc(item.text).replace(/___/, '<span style="background:var(--gold);color:var(--bg);padding:2px 14px;border-radius:8px;font-weight:900;font-size:28px">___</span>');
+
+    screenEl.innerHTML =
+      progressHtml() +
+      '<div class="card" style="margin-top:14px">' +
+        '<div style="font-size:13px;font-weight:700;letter-spacing:2px;color:var(--cream2);margin-bottom:16px">✏️ FILL IN THE BLANK</div>' +
+        '<p style="font-size:24px;font-weight:600;color:var(--cream);line-height:1.7;margin-bottom:24px;text-align:center">' + qHtml + '</p>' +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="drillOpts">' +
+          opts.map(function(o) {
+            return '<button class="drill-btn" data-ans="' + esc(o) + '" ' +
+              'style="min-width:100px;padding:14px 20px;border-radius:var(--radius);background:var(--surface2);border:3px solid var(--gold2);color:var(--cream2);font-family:\'Baloo 2\',sans-serif;font-size:22px;font-weight:900;cursor:pointer;transition:all 0.15s">' +
+              esc(o) + '</button>';
+          }).join('') +
+        '</div>' +
+        '<div id="drillFb" style="margin-top:20px;font-size:18px;font-weight:700;text-align:center;min-height:48px;color:var(--cream2)"></div>' +
+      '</div>';
+
+    var answered = false;
+    document.querySelectorAll('.drill-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        answered = true;
+
+        var chosen = btn.getAttribute('data-ans');
+        var correct = item.ans;
+        var isCorrect = chosen === correct;
+        var fb = document.getElementById('drillFb');
+
+        document.querySelectorAll('.drill-btn').forEach(function(b) {
+          b.disabled = true;
+          if (b.getAttribute('data-ans') === correct) {
+            b.style.background = 'rgba(34,197,94,0.2)';
+            b.style.borderColor = 'var(--correct)';
+            b.style.color = 'var(--correct)';
+          }
+        });
+
+        if (isCorrect) {
+          if (item.firstTry) state.firstCorrectDrill++;
+          state.drillQueue.shift();
+          btn.style.background = 'rgba(34,197,94,0.3)';
+          fb.style.color = 'var(--correct)';
+          fb.textContent = '✓ 정답! 💡 ' + esc(item.hint);
+          state.turn = 'sort';
+          setTimeout(nextTurn, 1600);
+        } else {
+          item.firstTry = false;
+          state.drillQueue.shift();
+          state.drillQueue.push(item);
+          btn.style.background = 'rgba(220,38,38,0.2)';
+          btn.style.borderColor = 'var(--wrong)';
+          btn.style.color = 'var(--wrong)';
+          btn.classList.add('shake');
+          fb.style.color = 'var(--gold)';
+          fb.innerHTML = '💡 ' + esc(item.hint);
+          state.turn = 'sort';
+          setTimeout(nextTurn, 2200);
+        }
+      });
+    });
+  }
+
   function remainingCount() {
     return state.sortQueue.length + state.drillQueue.length;
   }
