@@ -109,6 +109,22 @@
     pointer-events: none;
     animation: burst 1.2s ease-out forwards;
   }
+
+  /* 터치 친화적 버튼 */
+  button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+  /* 버튼 hover 효과 */
+  .sort-btn:hover:not(:disabled),
+  .drill-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  /* 좁은 화면에서 Sort 버튼 세로 배치 */
+  @media (max-width: 380px) {
+    .sort-btns { flex-direction: column !important; }
+  }
 </style>
 </head>
 <body>
