@@ -309,6 +309,91 @@
     });
   }
 
+  function launchConfetti() {
+    var colors = ['#fbbf24','#d97706','#fef3c7','#f97316','#fde68a','#ffffff'];
+    var count = 60;
+    for (var i = 0; i < count; i++) {
+      (function() {
+        var el = document.createElement('div');
+        el.className = 'confetti';
+        var angle = Math.random() * 2 * Math.PI;
+        var dist  = 80 + Math.random() * 180;
+        el.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+        el.style.setProperty('--ty', Math.sin(angle) * dist - 120 + 'px');
+        el.style.left = (20 + Math.random() * 60) + 'vw';
+        el.style.top  = (30 + Math.random() * 30) + 'vh';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.animationDelay = (Math.random() * 0.5) + 's';
+        el.style.animationDuration = (0.9 + Math.random() * 0.6) + 's';
+        document.body.appendChild(el);
+        setTimeout(function() { el.remove(); }, 2000);
+      })();
+    }
+  }
+
+  function showParentCard() {
+    var total = state.totalSort + state.totalDrill;
+    var firstCorrect = state.firstCorrectSort + state.firstCorrectDrill;
+    var rate = Math.round((firstCorrect / total) * 100);
+    var now = new Date();
+    var timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+
+    var sortWrong  = state.totalSort  - state.firstCorrectSort;
+    var drillWrong = state.totalDrill - state.firstCorrectDrill;
+    var weakNote = '';
+    if (sortWrong > drillWrong) weakNote = '📦 Count/Noncount 분류 (' + sortWrong + '번 재도전)';
+    else if (drillWrong > sortWrong) weakNote = '✏️ 빈칸 채우기 (' + drillWrong + '번 재도전)';
+    else weakNote = '골고루 잘 했어요!';
+
+    var card = document.getElementById('parentCard');
+    card.style.display = 'block';
+    card.innerHTML =
+      '<div style="background:var(--surface2);border:2px solid var(--gold2);border-radius:var(--radius);padding:20px;margin-top:16px;text-align:left">' +
+        '<div style="font-size:16px;font-weight:700;color:var(--cream2);letter-spacing:1px;margin-bottom:14px">📋 학습 결과 리포트</div>' +
+        '<div style="display:flex;flex-direction:column;gap:10px;font-size:18px;color:var(--cream)">' +
+          '<div>📅 완료 시각: <strong style="color:var(--gold)">' + timeStr + '</strong></div>' +
+          '<div>📊 총 문제: <strong style="color:var(--gold)">' + total + '문제</strong></div>' +
+          '<div>🎯 첫 시도 정답률: <strong style="color:var(--gold)">' + rate + '%</strong></div>' +
+          '<div>🔍 약점: <strong style="color:var(--gold)">' + weakNote + '</strong></div>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById('parentBtn').style.display = 'none';
+  }
+
+  function renderEnding() {
+    var total = state.totalSort + state.totalDrill;
+    var firstCorrect = state.firstCorrectSort + state.firstCorrectDrill;
+    var rate = Math.round((firstCorrect / total) * 100);
+
+    var prev = parseInt(localStorage.getItem('aq-best') || '0', 10);
+    if (rate > prev) localStorage.setItem('aq-best', String(rate));
+
+    launchConfetti();
+    setTimeout(launchConfetti, 700);
+
+    screenEl.innerHTML =
+      '<div style="text-align:center;padding:30px 10px">' +
+        '<div style="font-size:80px;line-height:1;margin-bottom:16px">🏆</div>' +
+        '<h1 style="font-family:Jua,sans-serif;font-size:40px;color:var(--gold);margin-bottom:8px">Choco Master!</h1>' +
+        '<p style="font-size:26px;color:var(--cream);margin-bottom:4px">All Clear! 🍫✨</p>' +
+        '<p style="font-size:60px;line-height:1.2;margin:16px 0">⭐⭐⭐</p>' +
+      '</div>' +
+      '<div class="card" style="text-align:center">' +
+        '<p style="font-size:22px;color:var(--cream);margin-bottom:8px">총 <strong style="color:var(--gold)">' + total + '문제</strong> 완료!</p>' +
+        '<p style="font-size:20px;color:var(--cream2);margin-bottom:20px">첫 시도 정답률: <strong style="color:var(--gold);font-size:28px">' + rate + '%</strong></p>' +
+        '<button id="parentBtn" class="primary-btn" style="margin-bottom:12px">부모님께 보여주기 📣</button>' +
+        '<div id="parentCard" style="display:none"></div>' +
+        '<button id="retryBtn" class="primary-btn" style="margin-top:8px;background:var(--surface2);border-bottom-color:var(--surface);color:var(--cream2)">다시 도전! 🔄</button>' +
+      '</div>';
+
+    document.getElementById('parentBtn').addEventListener('click', showParentCard);
+    document.getElementById('retryBtn').addEventListener('click', function() {
+      initQueues();
+      nextTurn();
+    });
+  }
+
   function remainingCount() {
     return state.sortQueue.length + state.drillQueue.length;
   }
