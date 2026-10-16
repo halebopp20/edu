@@ -125,11 +125,69 @@
   @media (max-width: 380px) {
     .sort-btns { flex-direction: column !important; }
   }
+
+  /* 인트로 슬라이드 */
+  @keyframes introFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .intro-card {
+    animation: introFadeIn 0.4s ease forwards;
+  }
+  @keyframes chocoFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  .choco-float {
+    display: inline-block;
+    animation: chocoFloat 1.4s ease-in-out infinite;
+  }
 </style>
 </head>
 <body>
 <div class="app" id="screen"></div>
 <script>
+  var INTRO_SLIDES = [
+    {
+      lesson: 'LESSON 1',
+      speech: "Hi! I'm Choco! Let's learn articles! Use a or an before one thing.",
+      bubbleHtml: "Hi! I'm <strong>Choco</strong>! 🍫<br>Let's learn <strong>articles</strong>!",
+      cards: [
+        { article: 'a',  emoji: '🐱', word: 'cat' },
+        { article: 'an', emoji: '🍎', word: 'apple' },
+      ],
+    },
+    {
+      lesson: 'LESSON 2',
+      speech: "Use a before a consonant sound. Use an before a vowel sound!",
+      bubbleHtml: "<strong>a</strong> + consonant sound 🔤<br><strong>an</strong> + vowel sound 🅰️",
+      cards: [
+        { article: 'a',  emoji: '🚲', word: 'bicycle' },
+        { article: 'an', emoji: '🥚', word: 'egg' },
+      ],
+    },
+    {
+      lesson: 'LESSON 3',
+      speech: "Only one in the world? Say the! Can't count it? Say some!",
+      bubbleHtml: "딱 하나뿐 → <strong>the</strong> 🌍<br>셀 수 없으면 → <strong>some</strong> 💧",
+      cards: [
+        { article: 'the',  emoji: '☀️', word: 'sun' },
+        { article: 'some', emoji: '🥛', word: 'milk' },
+      ],
+    },
+    {
+      lesson: 'LESSON 4',
+      speech: "a, an, the, some — you've got this! Ready? Let's go!",
+      bubbleHtml: "a / an / the / some<br>— you've got this! 🚀",
+      cards: [
+        { article: 'a',    emoji: '📚', word: 'book' },
+        { article: 'an',   emoji: '🥚', word: 'egg' },
+        { article: 'the',  emoji: '🌙', word: 'moon' },
+        { article: 'some', emoji: '🍞', word: 'bread' },
+      ],
+    },
+  ];
+
   var WORDS = [
     { word: 'milk',    emoji: '🥛', type: 'noncount' },
     { word: 'cheese',  emoji: '🧀', type: 'noncount' },
@@ -149,17 +207,17 @@
     { text: 'I drink ___ milk.',                    ans: 'some', hint: 'milk은 셀 수 없어요 → some!' },
     { text: 'She has ___ umbrella.',                ans: 'an',   hint: 'u로 시작하는 소리 → an!' },
     { text: 'Look at ___ sun.',                     ans: 'the',  hint: '태양은 세상에 하나뿐이에요 → the!' },
-    { text: 'Tom has a dog. ___ dog is cute.',      ans: 'The',  hint: '앞에서 말한 바로 그 강아지 → The!' },
+    { text: 'Tom has a dog. ___ dog is cute.',      ans: 'the',  hint: '앞에서 말한 바로 그 강아지 → the!' },
     { text: 'We need ___ onion.',                   ans: 'an',   hint: 'o로 시작하는 소리 → an!' },
     { text: 'I need ___ cheese.',                   ans: 'some', hint: 'cheese는 셀 수 없어요 → some!' },
     { text: 'Jack has ___ smartphone.',             ans: 'a',    hint: 's는 자음 소리 → a!' },
-    { text: '___ sky is clear.',                    ans: 'The',  hint: '하늘은 세상에 하나뿐이에요 → The!' },
-    { text: 'She has a cat. ___ cat is small.',     ans: 'The',  hint: '앞에서 말한 바로 그 고양이 → The!' },
+    { text: '___ sky is clear.',                    ans: 'the',  hint: '하늘은 세상에 하나뿐이에요 → the!' },
+    { text: 'She has a cat. ___ cat is small.',     ans: 'the',  hint: '앞에서 말한 바로 그 고양이 → the!' },
     { text: 'I see ___ elephant.',                  ans: 'an',   hint: 'e로 시작하는 소리 → an!' },
     { text: 'He drinks ___ water every day.',       ans: 'some', hint: 'water는 셀 수 없어요 → some!' },
     { text: 'I have ___ idea!',                     ans: 'an',   hint: 'i로 시작하는 소리 → an!' },
     { text: 'I like ___ moon.',                     ans: 'the',  hint: '달은 세상에 하나뿐이에요 → the!' },
-    { text: 'Ann has a bag. ___ bag is red.',       ans: 'The',  hint: '앞에서 말한 바로 그 가방 → The!' },
+    { text: 'Ann has a bag. ___ bag is red.',       ans: 'the',  hint: '앞에서 말한 바로 그 가방 → the!' },
     { text: 'Can I have ___ bread?',               ans: 'some', hint: 'bread는 셀 수 없어요 → some!' },
     { text: 'She is ___ honest girl.',              ans: 'an',   hint: 'h는 묵음 → an honest!' },
   ];
