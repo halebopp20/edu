@@ -649,7 +649,21 @@
     });
   }
 
-  renderIntro();
+  function renderSplash() {
+    screenEl.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;padding:20px">' +
+        '<div style="font-size:90px;line-height:1;margin-bottom:20px;animation:chocoFloat 1.4s ease-in-out infinite">🍫</div>' +
+        '<h1 style="font-family:Jua,sans-serif;font-size:42px;color:var(--gold);margin-bottom:8px">Choco Quest</h1>' +
+        '<p style="color:var(--cream2);font-size:20px;font-weight:700;margin-bottom:40px">Master a, an, the &amp; some!</p>' +
+        '<button id="splashBtn" class="primary-btn" style="max-width:320px">🍫 Tap to Start</button>' +
+      '</div>';
+
+    document.getElementById('splashBtn').addEventListener('click', function() {
+      renderIntro();
+    });
+  }
+
+  renderSplash();
 </script>
 </body>
 </html>
