@@ -564,8 +564,8 @@
     window.speechSynthesis.cancel();
     var u = new SpeechSynthesisUtterance(text);
     u.lang  = 'en-US';
-    u.rate  = 0.88;  /* 자연스러운 속도 */
-    u.pitch = 1.7;   /* 높은 음조 — 8세 여자아이 느낌 */
+    u.rate  = 0.95;  /* 약간 경쾌하게 */
+    u.pitch = 1.95;  /* 최대에 가까운 높은 음조 — 어린 여자아이 느낌 */
     /* 여성 음성 우선 선택 (iOS: Samantha, Chrome: Google US English Female 등) */
     var voices = window.speechSynthesis.getVoices();
     var preferNames = ['samantha', 'karen', 'female', 'girl', 'zira', 'fiona', 'victoria'];
