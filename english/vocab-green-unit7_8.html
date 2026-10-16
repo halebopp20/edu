@@ -343,7 +343,7 @@
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <div class="brand-mark">🦊</div>
+      <div class="brand-mark">👧</div>
       <div>
         <p class="eyebrow">Vocabulary Workshop · Green</p>
         <h1>초록 단어 정원</h1>
@@ -382,6 +382,39 @@
 
   var SECRET_CODE = "ROSE🌸";   // ← 엄마가 원하는 코드로 바꾸세요
   var STORE_KEY = "vwgreen_progress_unit78_v1";
+  var greeted = false;  // 첫 인사는 한 번만
+
+  // 한국어 TTS: iOS는 사용자 제스처 후에만 동작하므로 양쪽 모두 시도
+  function speakGreeting() {
+    if (greeted || !window.speechSynthesis) return;
+    greeted = true;
+    var u = new SpeechSynthesisUtterance("안녕! 오늘도 같이 단어를 키워보자!");
+    u.lang  = "ko-KR";
+    u.pitch = 1.7;   // 높은 음조 — 어린 여자아이 느낌
+    u.rate  = 0.92;  // 약간 천천히, 귀엽게
+    // ko-KR 여성 음성 우선 선택
+    var voices = window.speechSynthesis.getVoices();
+    var picked = null;
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].lang.indexOf("ko") === 0) {
+        if (!picked) picked = voices[i];
+        if (/(female|yuna|미래|유나)/i.test(voices[i].name)) { picked = voices[i]; break; }
+      }
+    }
+    if (picked) u.voice = picked;
+    window.speechSynthesis.speak(u);
+  }
+
+  // voices 로딩 후 재시도 (Chrome은 비동기)
+  if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = function () {};
+  }
+
+  // iOS: 첫 터치 시 한 번만 실행
+  document.addEventListener("touchstart", function onFirstTouch() {
+    speakGreeting();
+    document.removeEventListener("touchstart", onFirstTouch);
+  }, { once: true });
   var FLOWER = ["🌱", "🌱", "🌿", "🍃", "🪷"];  // index = stars(0~4)
   var screenEl = document.getElementById("screen");
   var root = document.documentElement;
@@ -441,6 +474,7 @@
   }
   // ---------- START ----------
   function renderStart() {
+    speakGreeting();  // 첫 방문 시 인사말 TTS
     var remaining = WORDS.filter(function (w) { return getStars(w.word) < 4; }).length;
 
     var gardenHtml = '<div class="garden-grid">' +
@@ -463,7 +497,7 @@
       : '<button class="primary-btn" id="certBtn" type="button">🏆 수료증 보기!</button>';
 
     screenEl.innerHTML =
-      '<div class="mascot-row"><span class="mascot">🦊</span>' +
+      '<div class="mascot-row"><span class="mascot">👧</span>' +
         '<div class="speech">안녕! 오늘도 같이 단어를 키워보자! 🪷</div></div>' +
       '<div class="card">' +
         '<h2 class="section-title">🪷 내 단어 정원</h2>' +
@@ -691,7 +725,7 @@
     state.answered = true;
     setStars(w.word, getStars(w.word) + 1);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🦊✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
+    fb.innerHTML = "👧✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
     fb.className = "feedback-row correct";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -701,7 +735,7 @@
     state.answered = true;
     state.retryQueue.push(w);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🦊🌱 괜찮아요, 나중에 다시 해봐요!";
+    fb.innerHTML = "👧🌱 괜찮아요, 나중에 다시 해봐요!";
     fb.className = "feedback-row wrong";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -757,7 +791,7 @@
     screenEl.innerHTML =
       '<div class="card">' +
         '<div class="score-hero">' +
-          '<div class="score-mascot">🦊🌿</div>' +
+          '<div class="score-mascot">👧🌿</div>' +
           '<div class="score-num">' + mastered + ' / 20</div>' +
           '<div class="score-label">꽃이 ' + mastered + '송이 피었어요! 계속 키워봐요 🌸</div>' +
         '</div>' +
