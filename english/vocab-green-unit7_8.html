@@ -269,7 +269,13 @@
 
   footer.note { text-align: center; font-size: 18px; color: var(--ink-faint); margin-top: 4px; line-height: 1.6; }
 
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @keyframes waveArm {
+    0%, 100% { transform: rotate(-25deg); }
+    50%      { transform: rotate(25deg); }
+  }
+  .wave-arm { animation: waveArm 0.65s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } .wave-arm { animation: none; } }
 
   @media (max-width: 480px) {
     body { font-size: 19px; }
@@ -343,7 +349,7 @@
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <div class="brand-mark">👧</div>
+      <div class="brand-mark">🙋‍♀️</div>
       <div>
         <p class="eyebrow">Vocabulary Workshop · Green</p>
         <h1>초록 단어 정원</h1>
@@ -382,6 +388,53 @@
 
   var SECRET_CODE = "ROSE🌸";   // ← 엄마가 원하는 코드로 바꾸세요
   var STORE_KEY = "vwgreen_progress_unit78_v1";
+  /* 픽셀 아트 손 흔드는 여자아이 (82×108px, 주황 테마) */
+  var WAVE_GIRL =
+    '<div style="position:relative;width:82px;height:108px;flex-shrink:0">' +
+      /* 머리카락 위 */
+      '<div style="position:absolute;top:0;left:21px;width:40px;height:8px;background:#5c2d0e"></div>' +
+      /* 헤어밴드 */
+      '<div style="position:absolute;top:8px;left:13px;width:56px;height:8px;background:#5c2d0e"></div>' +
+      /* 양갈래 왼쪽 */
+      '<div style="position:absolute;top:8px;left:4px;width:12px;height:28px;background:#5c2d0e;border-radius:0 0 6px 6px"></div>' +
+      /* 리본 왼쪽 (노란색) */
+      '<div style="position:absolute;top:8px;left:4px;width:12px;height:6px;background:#eab308;border-radius:3px"></div>' +
+      /* 양갈래 오른쪽 */
+      '<div style="position:absolute;top:8px;left:66px;width:12px;height:28px;background:#5c2d0e;border-radius:0 0 6px 6px"></div>' +
+      /* 리본 오른쪽 (노란색) */
+      '<div style="position:absolute;top:8px;left:66px;width:12px;height:6px;background:#eab308;border-radius:3px"></div>' +
+      /* 얼굴 */
+      '<div style="position:absolute;top:16px;left:17px;width:48px;height:32px;background:#f4c07a;border-radius:4px"></div>' +
+      /* 눈 왼쪽 */
+      '<div style="position:absolute;top:23px;left:25px;width:8px;height:9px;background:#2c1206;border-radius:2px 2px 0 0"></div>' +
+      /* 눈 오른쪽 */
+      '<div style="position:absolute;top:23px;left:49px;width:8px;height:9px;background:#2c1206;border-radius:2px 2px 0 0"></div>' +
+      /* 눈 하이라이트 */
+      '<div style="position:absolute;top:23px;left:28px;width:3px;height:3px;background:white"></div>' +
+      '<div style="position:absolute;top:23px;left:52px;width:3px;height:3px;background:white"></div>' +
+      /* 볼 홍조 */
+      '<div style="position:absolute;top:31px;left:18px;width:10px;height:6px;background:rgba(255,100,100,0.4);border-radius:50%"></div>' +
+      '<div style="position:absolute;top:31px;left:54px;width:10px;height:6px;background:rgba(255,100,100,0.4);border-radius:50%"></div>' +
+      /* 입 (웃음) */
+      '<div style="position:absolute;top:37px;left:29px;width:24px;height:8px;background:#c8783a;border-radius:0 0 4px 4px"></div>' +
+      /* 드레스 몸통 (주황) */
+      '<div style="position:absolute;top:48px;left:21px;width:40px;height:20px;background:#f97316;border:2px solid #fbbf24"></div>' +
+      /* 왼팔 (내림) */
+      '<div style="position:absolute;top:50px;left:9px;width:12px;height:12px;background:#f4c07a;border-radius:4px"></div>' +
+      /* 오른팔 (손 흔들기) — transform-origin을 어깨 아래로 */
+      '<div class="wave-arm" style="position:absolute;top:30px;left:63px;width:12px;height:22px;background:#f4c07a;border-radius:4px;transform-origin:50% 100%"></div>' +
+      /* 스커트 */
+      '<div style="position:absolute;top:68px;left:13px;width:56px;height:16px;background:#ea580c;border-radius:0 0 8px 8px"></div>' +
+      /* 다리 왼쪽 */
+      '<div style="position:absolute;top:84px;left:25px;width:12px;height:18px;background:#f4c07a"></div>' +
+      /* 다리 오른쪽 */
+      '<div style="position:absolute;top:84px;left:45px;width:12px;height:18px;background:#f4c07a"></div>' +
+      /* 신발 왼쪽 */
+      '<div style="position:absolute;top:100px;left:21px;width:16px;height:8px;background:#3b1a08;border-radius:0 0 3px 3px"></div>' +
+      /* 신발 오른쪽 */
+      '<div style="position:absolute;top:100px;left:45px;width:16px;height:8px;background:#3b1a08;border-radius:0 0 3px 3px"></div>' +
+    '</div>';
+
   var greeted = false;  // 첫 인사는 한 번만
 
   // 한국어 TTS: iOS는 사용자 제스처 후에만 동작하므로 양쪽 모두 시도
@@ -497,7 +550,7 @@
       : '<button class="primary-btn" id="certBtn" type="button">🏆 수료증 보기!</button>';
 
     screenEl.innerHTML =
-      '<div class="mascot-row"><span class="mascot">👧</span>' +
+      '<div class="mascot-row">' + WAVE_GIRL +
         '<div class="speech">안녕! 오늘도 같이 단어를 키워보자! 🪷</div></div>' +
       '<div class="card">' +
         '<h2 class="section-title">🪷 내 단어 정원</h2>' +
