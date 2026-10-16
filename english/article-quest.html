@@ -603,6 +603,7 @@
       });
 
       document.getElementById('muteBtn').addEventListener('click', function() {
+        skipped = true; /* 이전 goNext 클로저 무효화 */
         var nowMuted = sessionStorage.getItem('aq-mute') === '1';
         sessionStorage.setItem('aq-mute', nowMuted ? '0' : '1');
         window.speechSynthesis && window.speechSynthesis.cancel();
