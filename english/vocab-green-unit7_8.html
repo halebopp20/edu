@@ -435,39 +435,47 @@
       '<div style="position:absolute;top:100px;left:45px;width:16px;height:8px;background:#3b1a08;border-radius:0 0 3px 3px"></div>' +
     '</div>';
 
-  var greeted = false;  // 첫 인사는 한 번만
+  var greeted = false;
 
-  // 한국어 TTS: iOS는 사용자 제스처 후에만 동작하므로 양쪽 모두 시도
   function speakGreeting() {
     if (greeted || !window.speechSynthesis) return;
     greeted = true;
-    var u = new SpeechSynthesisUtterance("안녕! 오늘도 같이 단어를 키워보자!");
-    u.lang  = "ko-KR";
-    u.pitch = 1.7;   // 높은 음조 — 어린 여자아이 느낌
-    u.rate  = 0.92;  // 약간 천천히, 귀엽게
-    // ko-KR 여성 음성 우선 선택
-    var voices = window.speechSynthesis.getVoices();
-    var picked = null;
-    for (var i = 0; i < voices.length; i++) {
-      if (voices[i].lang.indexOf("ko") === 0) {
-        if (!picked) picked = voices[i];
-        if (/(female|yuna|미래|유나)/i.test(voices[i].name)) { picked = voices[i]; break; }
+    window.speechSynthesis.cancel();
+
+    function doSpeak() {
+      var u = new SpeechSynthesisUtterance("안녕! 오늘도 같이 단어를 키워보자!");
+      u.lang  = "ko-KR";
+      u.pitch = 1.7;
+      u.rate  = 0.92;
+      var voices = window.speechSynthesis.getVoices();
+      for (var i = 0; i < voices.length; i++) {
+        if (voices[i].lang.indexOf("ko") === 0) {
+          u.voice = voices[i];
+          if (/(female|yuna|유나)/i.test(voices[i].name)) break;
+        }
       }
+      window.speechSynthesis.speak(u);
     }
-    if (picked) u.voice = picked;
-    window.speechSynthesis.speak(u);
+
+    // voices가 이미 로딩됐으면 바로, 아니면 이벤트 대기
+    if (window.speechSynthesis.getVoices().length > 0) {
+      doSpeak();
+    } else {
+      window.speechSynthesis.onvoiceschanged = function () {
+        window.speechSynthesis.onvoiceschanged = null;
+        doSpeak();
+      };
+      setTimeout(doSpeak, 400);  // fallback
+    }
   }
 
-  // voices 로딩 후 재시도 (Chrome은 비동기)
-  if (window.speechSynthesis) {
-    window.speechSynthesis.onvoiceschanged = function () {};
-  }
-
-  // iOS: 첫 터치 시 한 번만 실행
-  document.addEventListener("touchstart", function onFirstTouch() {
-    speakGreeting();
-    document.removeEventListener("touchstart", onFirstTouch);
-  }, { once: true });
+  // 첫 인터랙션 시 재생 — iOS(touchend)·데스크탑(mouseup) 모두 커버
+  ["touchend", "mouseup"].forEach(function (evt) {
+    document.addEventListener(evt, function h() {
+      speakGreeting();
+      document.removeEventListener(evt, h);
+    }, { once: true });
+  });
   var FLOWER = ["🌱", "🌱", "🌿", "🍃", "🪷"];  // index = stars(0~4)
   var screenEl = document.getElementById("screen");
   var root = document.documentElement;
@@ -527,7 +535,6 @@
   }
   // ---------- START ----------
   function renderStart() {
-    speakGreeting();  // 첫 방문 시 인사말 TTS
     var remaining = WORDS.filter(function (w) { return getStars(w.word) < 4; }).length;
 
     var gardenHtml = '<div class="garden-grid">' +
