@@ -147,6 +147,35 @@
 <body>
 <div class="app" id="screen"></div>
 <script>
+  /* 픽셀 아트 초코 캐릭터 HTML (48×88px, 8px 그리드) */
+  var CHOCO_CHAR =
+    '<div class="choco-float" style="position:relative;width:48px;height:88px;flex-shrink:0;image-rendering:pixelated">' +
+      /* 머리카락 */
+      '<div style="position:absolute;top:0;left:8px;width:32px;height:8px;background:#3b1a08"></div>' +
+      '<div style="position:absolute;top:8px;left:0;width:48px;height:8px;background:#3b1a08"></div>' +
+      /* 얼굴 */
+      '<div style="position:absolute;top:8px;left:8px;width:32px;height:8px;background:#f4c07a"></div>' +
+      '<div style="position:absolute;top:16px;left:0;width:48px;height:24px;background:#f4c07a"></div>' +
+      /* 눈 */
+      '<div style="position:absolute;top:22px;left:8px;width:8px;height:8px;background:#2c1206"></div>' +
+      '<div style="position:absolute;top:22px;left:32px;width:8px;height:8px;background:#2c1206"></div>' +
+      /* 눈 하이라이트 */
+      '<div style="position:absolute;top:22px;left:10px;width:4px;height:4px;background:white"></div>' +
+      '<div style="position:absolute;top:22px;left:34px;width:4px;height:4px;background:white"></div>' +
+      /* 볼 홍조 */
+      '<div style="position:absolute;top:28px;left:2px;width:10px;height:6px;background:rgba(255,120,120,0.4);border-radius:50%"></div>' +
+      '<div style="position:absolute;top:28px;left:36px;width:10px;height:6px;background:rgba(255,120,120,0.4);border-radius:50%"></div>' +
+      /* 입 */
+      '<div style="position:absolute;top:32px;left:12px;width:24px;height:8px;background:#c8783a;border-radius:0 0 4px 4px"></div>' +
+      /* 몸통 */
+      '<div style="position:absolute;top:40px;left:4px;width:40px;height:24px;background:#5c2d0e;border:2px solid #fbbf24"></div>' +
+      /* 🍫 배지 */
+      '<div style="position:absolute;top:44px;left:16px;width:16px;height:14px;background:#fbbf24;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:9px">🍫</div>' +
+      /* 다리 */
+      '<div style="position:absolute;top:64px;left:4px;width:16px;height:24px;background:#3b1a08"></div>' +
+      '<div style="position:absolute;top:64px;left:28px;width:16px;height:24px;background:#3b1a08"></div>' +
+    '</div>';
+
   var INTRO_SLIDES = [
     {
       lesson: 'LESSON 1',
@@ -513,8 +542,19 @@
     window.speechSynthesis.cancel();
     var u = new SpeechSynthesisUtterance(text);
     u.lang  = 'en-US';
-    u.rate  = 0.9;
-    u.pitch = 1.2;
+    u.rate  = 1.1;   /* 약간 빠르게 — 어린이 느낌 */
+    u.pitch = 1.7;   /* 높은 음조 — 8세 여자아이 느낌 */
+    /* 여성 음성 우선 선택 (iOS: Samantha, Chrome: Google US English Female 등) */
+    var voices = window.speechSynthesis.getVoices();
+    var preferNames = ['samantha', 'karen', 'female', 'girl', 'zira', 'fiona', 'victoria'];
+    for (var i = 0; i < voices.length; i++) {
+      var vname = voices[i].name.toLowerCase();
+      if (voices[i].lang.indexOf('en') !== 0) continue;
+      for (var j = 0; j < preferNames.length; j++) {
+        if (vname.indexOf(preferNames[j]) !== -1) { u.voice = voices[i]; break; }
+      }
+      if (u.voice) break;
+    }
     u.onend = onEnd;
     u.onerror = onEnd;
     window.speechSynthesis.speak(u);
@@ -564,7 +604,7 @@
           '</div>' +
           /* 캐릭터 + 말풍선 */
           '<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:24px">' +
-            '<div class="choco-float" style="font-size:56px;line-height:1;flex-shrink:0">🍫</div>' +
+            CHOCO_CHAR +
             '<div style="background:var(--gold);color:var(--bg);border-radius:18px 18px 18px 4px;padding:14px 16px;font-size:18px;font-weight:700;line-height:1.5;flex:1">' +
               slide.bubbleHtml +
             '</div>' +
@@ -652,7 +692,7 @@
   function renderSplash() {
     screenEl.innerHTML =
       '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;padding:20px">' +
-        '<div style="font-size:90px;line-height:1;margin-bottom:20px;animation:chocoFloat 1.4s ease-in-out infinite">🍫</div>' +
+        '<div style="transform:scale(1.6);margin-bottom:36px">' + CHOCO_CHAR + '</div>' +
         '<h1 style="font-family:Jua,sans-serif;font-size:42px;color:var(--gold);margin-bottom:8px">Choco Quest</h1>' +
         '<p style="color:var(--cream2);font-size:20px;font-weight:700;margin-bottom:40px">Master a, an, the &amp; some!</p>' +
         '<button id="splashBtn" class="primary-btn" style="max-width:320px">🍫 Tap to Start</button>' +
