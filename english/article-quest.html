@@ -590,16 +590,14 @@
         if (idx + 1 < total) {
           showSlide(idx + 1);
         } else {
-          initQueues();
-          nextTurn();
+          renderHome();
         }
       }
 
       document.getElementById('skipBtn').addEventListener('click', function() {
         skipped = true;
         window.speechSynthesis && window.speechSynthesis.cancel();
-        initQueues();
-        nextTurn();
+        renderHome();
       });
 
       document.getElementById('muteBtn').addEventListener('click', function() {
@@ -646,11 +644,12 @@
       '</div>';
 
     document.getElementById('startBtn').addEventListener('click', function() {
-      renderIntro();
+      initQueues();
+      nextTurn();
     });
   }
 
-  renderHome();
+  renderIntro();
 </script>
 </body>
 </html>
