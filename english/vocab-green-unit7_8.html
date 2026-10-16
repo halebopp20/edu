@@ -7,61 +7,61 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@300;400;700&family=Baloo+2:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    --bg: #f0fdf9;
-    --bg-soft: #dcfdf2;
+    --bg: #fff8f0;
+    --bg-soft: #fff0dc;
     --surface: #ffffff;
-    --surface-2: #f5fffb;
-    --ink: #1a3d33;
-    --ink-soft: #4d7a6a;
-    --ink-faint: #8ec4b4;
-    --accent: #14b8a6;
-    --accent-strong: #0d9488;
-    --accent-tint: #ccfbf1;
-    --secondary: #4fbf83;
-    --secondary-strong: #339160;
-    --secondary-tint: #ddf5e6;
+    --surface-2: #fff3e6;
+    --ink: #3d1f00;
+    --ink-soft: #a05a20;
+    --ink-faint: #d4956a;
+    --accent: #f97316;
+    --accent-strong: #ea6c08;
+    --accent-tint: #ffedd5;
+    --secondary: #eab308;
+    --secondary-strong: #a16207;
+    --secondary-tint: #fef9c3;
     --sun: #ffc93c;
     --correct: #3fa564;
     --correct-strong: #2c7a49;
     --correct-tint: #e2f6e9;
     --wrong: #ff7a68;
     --wrong-tint: #ffe9e4;
-    --line: #a7f3e0;
-    --opt1: #f0fdf4;
-    --opt1-line: #bbf7d0;
+    --line: #fcd9a8;
+    --opt1: #fff7ed;
+    --opt1-line: #fed7aa;
     --opt2: #fefce8;
     --opt2-line: #fde68a;
     --opt3: #eff6ff;
     --opt3-line: #bfdbfe;
     --opt4: #fdf4ff;
     --opt4-line: #e9d5ff;
-    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(20, 184, 166, 0.30);
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(249, 115, 22, 0.22);
     --radius: 32px;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0c2622;
-      --bg-soft: #113430;
-      --surface: #163c37;
-      --surface-2: #1c4a44;
-      --ink: #e0fdf4;
-      --ink-soft: #90c4b4;
-      --ink-faint: #4d8a7a;
-      --accent: #2dd4bf;
-      --accent-strong: #5eead4;
-      --accent-tint: #0d3d35;
-      --secondary: #7fe0a8;
-      --secondary-strong: #a4edc2;
-      --secondary-tint: #1f3c2c;
+      --bg: #2a1200;
+      --bg-soft: #3d1e00;
+      --surface: #4a2800;
+      --surface-2: #5c3200;
+      --ink: #fff0d9;
+      --ink-soft: #f0b070;
+      --ink-faint: #a06030;
+      --accent: #fb923c;
+      --accent-strong: #fdba74;
+      --accent-tint: #431a00;
+      --secondary: #fbbf24;
+      --secondary-strong: #fcd34d;
+      --secondary-tint: #3d2e00;
       --sun: #ffd166;
       --correct: #7fe0a8;
       --correct-strong: #4fae76;
       --correct-tint: #1f3c2c;
       --wrong: #ff9d8d;
       --wrong-tint: #452a26;
-      --line: #1a5046;
-      --opt1: #1a3d2a; --opt1-line: #2d6b46;
+      --line: #7a3a00;
+      --opt1: #3d1e00; --opt1-line: #7a3a00;
       --opt2: #3a2e10; --opt2-line: #7a6020;
       --opt3: #1a2840; --opt3-line: #2a4a70;
       --opt4: #2a1a40; --opt4-line: #5a3a80;
@@ -69,13 +69,13 @@
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0c2622; --bg-soft: #113430; --surface: #163c37; --surface-2: #1c4a44;
-    --ink: #e0fdf4; --ink-soft: #90c4b4; --ink-faint: #4d8a7a;
-    --accent: #2dd4bf; --accent-strong: #5eead4; --accent-tint: #0d3d35;
-    --secondary: #7fe0a8; --secondary-strong: #a4edc2; --secondary-tint: #1f3c2c;
+    --bg: #2a1200; --bg-soft: #3d1e00; --surface: #4a2800; --surface-2: #5c3200;
+    --ink: #fff0d9; --ink-soft: #f0b070; --ink-faint: #a06030;
+    --accent: #fb923c; --accent-strong: #fdba74; --accent-tint: #431a00;
+    --secondary: #fbbf24; --secondary-strong: #fcd34d; --secondary-tint: #3d2e00;
     --sun: #ffd166; --correct: #7fe0a8; --correct-strong: #4fae76; --correct-tint: #1f3c2c;
-    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #1a5046;
-    --opt1: #1a3d2a; --opt1-line: #2d6b46; --opt2: #3a2e10; --opt2-line: #7a6020;
+    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #7a3a00;
+    --opt1: #3d1e00; --opt1-line: #7a3a00; --opt2: #3a2e10; --opt2-line: #7a6020;
     --opt3: #1a2840; --opt3-line: #2a4a70; --opt4: #2a1a40; --opt4-line: #5a3a80;
     --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
   }
@@ -343,7 +343,7 @@
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <div class="brand-mark">🦦</div>
+      <div class="brand-mark">🦊</div>
       <div>
         <p class="eyebrow">Vocabulary Workshop · Green</p>
         <h1>초록 단어 정원</h1>
@@ -463,7 +463,7 @@
       : '<button class="primary-btn" id="certBtn" type="button">🏆 수료증 보기!</button>';
 
     screenEl.innerHTML =
-      '<div class="mascot-row"><span class="mascot">🦦</span>' +
+      '<div class="mascot-row"><span class="mascot">🦊</span>' +
         '<div class="speech">안녕! 오늘도 같이 단어를 키워보자! 🪷</div></div>' +
       '<div class="card">' +
         '<h2 class="section-title">🪷 내 단어 정원</h2>' +
@@ -691,7 +691,7 @@
     state.answered = true;
     setStars(w.word, getStars(w.word) + 1);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🦦✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
+    fb.innerHTML = "🦊✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
     fb.className = "feedback-row correct";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -701,7 +701,7 @@
     state.answered = true;
     state.retryQueue.push(w);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🦦🌱 괜찮아요, 나중에 다시 해봐요!";
+    fb.innerHTML = "🦊🌱 괜찮아요, 나중에 다시 해봐요!";
     fb.className = "feedback-row wrong";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -757,7 +757,7 @@
     screenEl.innerHTML =
       '<div class="card">' +
         '<div class="score-hero">' +
-          '<div class="score-mascot">🦦🌿</div>' +
+          '<div class="score-mascot">🦊🌿</div>' +
           '<div class="score-num">' + mastered + ' / 20</div>' +
           '<div class="score-label">꽃이 ' + mastered + '송이 피었어요! 계속 키워봐요 🌸</div>' +
         '</div>' +
