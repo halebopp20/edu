@@ -521,9 +521,11 @@
   }
 
   function renderIntro() {
-    var slideIndex = 0;
+    var fallbackTimer = null;
 
     function showSlide(idx) {
+      clearTimeout(fallbackTimer);
+
       var slide    = INTRO_SLIDES[idx];
       var total    = INTRO_SLIDES.length;
       var pct      = Math.round(((idx + 1) / total) * 100);
@@ -531,14 +533,19 @@
 
       /* 점 인디케이터 HTML */
       var dotsHtml = INTRO_SLIDES.map(function(_, i) {
-        return '<div class="dot' + (i === idx ? ' dot-active' : '') + '"></div>';
+        var isActive = i === idx;
+        return '<div style="width:8px;height:8px;border-radius:50%;background:' +
+          (isActive ? 'var(--gold)' : 'var(--surface2)') +
+          ';border:2px solid ' +
+          (isActive ? 'var(--gold)' : 'var(--gold2)') +
+          '"></div>';
       }).join('');
 
       /* 예문 카드 HTML */
       var cardsHtml = slide.cards.map(function(c) {
-        return '<div class="intro-ex-card">' +
-          '<span class="intro-article">' + esc(c.article) + '</span>' +
-          '<span class="intro-word">' + c.emoji + ' ' + esc(c.word) + '</span>' +
+        return '<div style="background:var(--surface2);border:2px solid var(--gold2);border-radius:14px;padding:10px 16px;text-align:center;font-size:18px;font-weight:700">' +
+          '<span style="color:var(--gold);font-size:22px;font-weight:900;display:block">' + esc(c.article) + '</span>' +
+          '<span style="color:var(--cream2)">' + c.emoji + ' ' + esc(c.word) + '</span>' +
         '</div>';
       }).join('');
 
@@ -573,23 +580,6 @@
           '</div>' +
         '</div>';
 
-      /* 예문 카드 인라인 스타일 (동적 생성이므로 JS로 적용) */
-      document.querySelectorAll('.intro-ex-card').forEach(function(el) {
-        el.style.cssText = 'background:var(--surface2);border:2px solid var(--gold2);border-radius:14px;padding:10px 16px;text-align:center;font-size:18px;font-weight:700';
-      });
-      document.querySelectorAll('.intro-article').forEach(function(el) {
-        el.style.cssText = 'color:var(--gold);font-size:22px;font-weight:900;display:block';
-      });
-      document.querySelectorAll('.intro-word').forEach(function(el) {
-        el.style.cssText = 'color:var(--cream2)';
-      });
-      document.querySelectorAll('.dot').forEach(function(el) {
-        el.style.cssText = 'width:8px;height:8px;border-radius:50%;background:var(--surface2);border:2px solid var(--gold2)';
-      });
-      document.querySelectorAll('.dot-active').forEach(function(el) {
-        el.style.cssText = 'width:8px;height:8px;border-radius:50%;background:var(--gold);border:2px solid var(--gold)';
-      });
-
       /* 이벤트 바인딩 */
       var skipped = false;
 
@@ -620,7 +610,7 @@
       });
 
       /* TTS 재생 → 종료 후 1초 뒤 자동 다음 슬라이드 */
-      var fallbackTimer = setTimeout(function() { goNext(); }, 5000); /* 최대 폴백 */
+      fallbackTimer = setTimeout(function() { goNext(); }, 5000); /* 최대 폴백 */
       speakLine(slide.speech, function() {
         clearTimeout(fallbackTimer);
         setTimeout(goNext, 1000);
