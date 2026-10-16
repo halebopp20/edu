@@ -610,11 +610,13 @@
         showSlide(idx); /* 아이콘 갱신을 위해 재렌더 */
       });
 
-      /* TTS 재생 → 종료 후 1초 뒤 자동 다음 슬라이드 */
-      fallbackTimer = setTimeout(function() { goNext(); }, 5000); /* 최대 폴백 */
+      /* TTS 재생 → 종료 후 자동 다음 슬라이드 (슬라이드당 최소 3.5초 보장) */
+      var slideShownAt = Date.now();
+      fallbackTimer = setTimeout(function() { goNext(); }, 8000); /* 최대 폴백 */
       speakLine(slide.speech, function() {
         clearTimeout(fallbackTimer);
-        setTimeout(goNext, 1000);
+        var elapsed = Date.now() - slideShownAt;
+        setTimeout(goNext, Math.max(1000, 3500 - elapsed));
       });
     }
 
