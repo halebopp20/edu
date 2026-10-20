@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>🎯 Grammar Quest</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Baloo+2:wght@400;600;700;800&display=swap">
+<style>
+:root {
+  --bg:#FFE000; --bg2:#FFC400;
+  --surface:#FFFFFF; --surf2:#FFF9DC;
+  --yellow:#FFD600; --yellow2:#F0B800;
+  --red:#E53E00; --red2:#BF2E00;
+  --ink:#1A1A1A; --ink2:#4A2A00; --ink3:#9E7020;
+  --correct:#16A34A; --correct-tint:#DCFCE7;
+  --wrong:#DC2626; --wrong-tint:#FEE2E2;
+  --radius:20px;
+  --shadow:0 4px 0 rgba(0,0,0,.18), 0 6px 20px rgba(0,0,0,.10);
+  --cshadow:0 4px 0 var(--ink);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh}
+body{background:linear-gradient(160deg,var(--bg),var(--bg2));color:var(--ink);font-family:"Baloo 2",sans-serif;font-size:18px}
+#app{max-width:680px;margin:0 auto;padding:20px 16px 80px}
+
+/* 카드 */
+.card{background:var(--surface);border:2.5px solid var(--ink);border-radius:var(--radius);padding:24px 20px;box-shadow:var(--cshadow)}
+.card+.card{margin-top:14px}
+
+/* 버튼 */
+.btn{display:block;width:100%;border:2.5px solid var(--ink);border-bottom:5px solid var(--ink);background:var(--red);color:#fff;font-family:"Jua",sans-serif;font-size:24px;padding:16px;border-radius:var(--radius);cursor:pointer;text-align:center;transition:transform .1s}
+.btn:active{transform:translateY(3px);border-bottom-width:2px}
+.btn-y{background:var(--yellow);color:var(--ink)}
+.btn-sm{font-size:18px;padding:11px 22px;width:auto;display:inline-block}
+.btn-ghost{background:var(--surface);color:var(--ink);font-size:17px;padding:11px 20px;border-radius:14px;border:2.5px solid var(--ink);box-shadow:0 3px 0 var(--ink);cursor:pointer;font-family:"Baloo 2",sans-serif;font-weight:700}
+
+/* 진행 바 */
+.prog-wrap{background:rgba(0,0,0,.1);border-radius:999px;height:12px;overflow:hidden;border:2px solid var(--ink);margin-bottom:6px}
+.prog-fill{height:100%;background:var(--red);border-radius:999px;transition:width .3s ease}
+.prog-label{display:flex;justify-content:space-between;font-size:14px;color:var(--ink2);font-weight:700;margin-bottom:8px}
+
+/* 상단 바 */
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.topbar-title{font-family:"Jua",sans-serif;font-size:20px;color:var(--ink);flex:1}
+
+/* 스플래시 */
+.splash{text-align:center;padding:20px 0 10px}
+.sc-wrap{display:flex;justify-content:center;margin-bottom:10px}
+@keyframes scBounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-18px) rotate(-4deg)}70%{transform:translateY(-18px) rotate(4deg)}}
+.sc-bounce{animation:scBounce 1.8s ease-in-out infinite;display:inline-block}
+.splash h1{font-family:"Jua",sans-serif;font-size:52px;color:var(--red);-webkit-text-stroke:2px var(--ink);text-shadow:4px 4px 0 var(--ink);margin-bottom:6px}
+.splash p{font-size:18px;font-weight:700;color:var(--ink2);margin-bottom:20px}
+
+/* 세계지도 */
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.tc{background:var(--surface);border:2.5px solid var(--ink);border-radius:18px;padding:16px 12px;text-align:center;cursor:pointer;position:relative;transition:transform .12s;box-shadow:0 4px 0 var(--ink)}
+.tc:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--ink)}
+.tc.done{border-color:var(--correct);background:var(--correct-tint)}
+.tc.active{border-color:var(--red);background:#FFF0EB}
+.tc .t-icon{font-size:28px;margin-bottom:4px}
+.tc .t-name{font-size:14px;font-weight:800;line-height:1.3}
+.tc .t-count{font-size:12px;color:var(--ink3);margin-top:3px}
+.tc .t-badge{position:absolute;top:8px;right:10px;font-size:14px}
+.tc .t-stars{font-size:13px;margin-top:4px;letter-spacing:1px}
+
+/* 규칙 슬라이드 */
+.char-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+.char-box{flex:none;background:var(--yellow);border:2.5px solid var(--ink);border-radius:16px;padding:8px;width:82px;height:90px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 var(--ink)}
+.bubble{background:var(--red);color:#fff;border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:16px;font-weight:700;line-height:1.6;flex:1;border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink)}
+.chalk{background:#1a3320;border:2.5px solid var(--ink);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 4px 0 var(--ink)}
+.chalk-title{font-size:12px;font-weight:700;letter-spacing:2px;color:#4ade80;margin-bottom:10px}
+.chalk table{width:100%;border-collapse:collapse;color:#f0fff4}
+.chalk th{background:#213d28;color:#86efac;font-size:13px;font-weight:700;padding:8px 10px;text-align:left;border-bottom:1px solid #2d6e3a}
+.chalk td{padding:9px 10px;font-size:16px;font-weight:700;border-top:1px solid #2d6e3a}
+.chalk td.hl{color:var(--yellow);font-size:18px}
+.chalk td.dim{color:#a8d8b0}
+.ex-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.ex-chip{background:var(--yellow);border:2px solid var(--ink);border-radius:10px;padding:8px 14px;text-align:center;min-width:90px;box-shadow:0 3px 0 var(--ink)}
+.ex-chip b{display:block;font-size:17px;color:var(--ink)}
+.ex-chip small{font-size:13px;color:var(--ink2)}
+.slide-dots{display:flex;gap:6px;margin-bottom:14px}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(0,0,0,.15);border:2px solid var(--ink)}
+.dot.on{background:var(--red);border-color:var(--red)}
+
+/* 문제 */
+.q-label{font-size:12px;font-weight:700;letter-spacing:2.5px;color:var(--ink2);margin-bottom:10px}
+.q-badge{display:inline-block;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;margin-bottom:12px;border:1.5px solid var(--ink)}
+.q-sent{font-size:24px;font-weight:700;color:var(--ink);line-height:1.7;margin-bottom:14px;text-align:center;font-family:"Jua",sans-serif}
+.q-blank{background:var(--yellow);color:var(--ink);padding:2px 16px;border-radius:8px;font-weight:900;border:2px solid var(--ink)}
+.q-sub{font-size:15px;color:var(--ink2);margin-bottom:16px;padding:10px 14px;background:var(--yellow);border-radius:12px;border:2px solid var(--ink);line-height:1.7;box-shadow:0 3px 0 var(--ink)}
+.q-sub .exam-tag{color:var(--red);font-weight:700;font-size:13px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.opt{background:var(--surface);border:2.5px solid var(--ink);border-radius:14px;padding:16px 8px;color:var(--ink);font-family:"Baloo 2",sans-serif;font-size:20px;font-weight:900;cursor:pointer;text-align:center;box-shadow:0 4px 0 var(--ink);transition:transform .1s}
+.opt:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 0 var(--ink)}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--correct-tint);border-color:var(--correct);color:var(--correct);box-shadow:0 4px 0 var(--correct)}
+.opt.ng{background:var(--wrong-tint);border-color:var(--wrong);color:var(--wrong);box-shadow:0 4px 0 var(--wrong)}
+.fb{font-size:16px;font-weight:700;padding:10px 14px;border-radius:12px;border:2px solid;text-align:center;margin-bottom:14px;display:none}
+.fb.ok{color:var(--correct);background:var(--correct-tint);border-color:var(--correct);display:block}
+.fb.ng{color:var(--wrong);background:var(--wrong-tint);border-color:var(--wrong);display:block}
+.type-input{width:100%;background:var(--surface);border:2.5px solid var(--ink);border-radius:14px;padding:16px 18px;color:var(--ink);font-family:"Baloo 2",sans-serif;font-size:24px;font-weight:700;margin-bottom:10px;outline:none;box-shadow:0 4px 0 var(--ink)}
+.type-input.ok{border-color:var(--correct);box-shadow:0 4px 0 var(--correct);background:var(--correct-tint)}
+.type-input.ng{border-color:var(--wrong);box-shadow:0 4px 0 var(--wrong);background:var(--wrong-tint)}
+.type-hint{font-size:13px;color:var(--ink3);margin-bottom:14px}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.shake{animation:shake .4s ease}
+
+/* 결과 */
+.result-hero{text-align:center;padding:20px 0 8px}
+.result-emoji{font-size:72px;line-height:1;margin-bottom:8px}
+.result-title{font-family:"Jua",sans-serif;font-size:44px;color:var(--red);-webkit-text-stroke:1.5px var(--ink);line-height:1.2}
+.stars-big{font-size:36px;letter-spacing:6px;margin:10px 0}
+.result-sub{font-size:18px;color:var(--ink2);margin-top:6px}
+.tr-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1.5px solid #EEE;font-size:15px}
+.tr-row:last-child{border-bottom:none}
+.tr-bar-bg{flex:1;background:#EEE;border-radius:999px;height:9px;overflow:hidden;border:1.5px solid var(--ink)}
+.tr-bar{height:100%;border-radius:999px;background:var(--red)}
+.overall-card{background:var(--surface);border:2.5px solid var(--ink);border-radius:var(--radius);padding:20px;box-shadow:var(--cshadow)}
+
+/* 미션 칩 */
+.mission-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px}
+.m-chip{background:var(--yellow);border:2px solid var(--ink);border-radius:12px;padding:9px 6px;text-align:center;font-size:13px;font-weight:700;line-height:1.4;box-shadow:0 3px 0 var(--ink)}
+.m-chip .m-icon{font-size:20px;display:block;margin-bottom:3px}
+
+/* 최종 완료 */
+.final-hero{text-align:center;padding:30px 0 16px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card,.map-grid,.result-hero,.final-hero{animation:fadeUp .3s ease}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ── SVG 짱구 ── */
+var SC = function(w,h){
+  return '<svg viewBox="0 0 100 132" width="'+w+'" height="'+h+'" xmlns="http://www.w3.org/2000/svg">' +
+    '<ellipse cx="50" cy="28" rx="36" ry="21" fill="#1a1a1a"/>' +
+    '<ellipse cx="20" cy="11" rx="5" ry="11" fill="#1a1a1a" transform="rotate(-20 20 11)"/>' +
+    '<ellipse cx="33" cy="6"  rx="5" ry="13" fill="#1a1a1a" transform="rotate(-8 33 6)"/>' +
+    '<ellipse cx="50" cy="4"  rx="6" ry="14" fill="#1a1a1a"/>' +
+    '<ellipse cx="67" cy="6"  rx="5" ry="13" fill="#1a1a1a" transform="rotate(8 67 6)"/>' +
+    '<ellipse cx="80" cy="11" rx="5" ry="11" fill="#1a1a1a" transform="rotate(20 80 11)"/>' +
+    '<ellipse cx="50" cy="38" rx="34" ry="28" fill="#F5C07A"/>' +
+    '<rect x="23" y="24" width="17" height="4" rx="2" fill="#1a1a1a" transform="rotate(-10 23 24)"/>' +
+    '<rect x="60" y="24" width="17" height="4" rx="2" fill="#1a1a1a" transform="rotate(10 60 24)"/>' +
+    '<circle cx="34" cy="33" r="7.5" fill="#1a1a1a"/>' +
+    '<circle cx="66" cy="33" r="7.5" fill="#1a1a1a"/>' +
+    '<circle cx="37" cy="30" r="3" fill="white"/>' +
+    '<circle cx="69" cy="30" r="3" fill="white"/>' +
+    '<ellipse cx="50" cy="44" rx="5" ry="3.5" fill="#E89050"/>' +
+    '<rect x="20" y="50" width="60" height="17" rx="8" fill="#1a1a1a"/>' +
+    '<rect x="22" y="51" width="16" height="12" fill="white" rx="1"/>' +
+    '<rect x="42" y="51" width="16" height="12" fill="white" rx="1"/>' +
+    '<rect x="62" y="51" width="16" height="12" fill="white" rx="1"/>' +
+    '<ellipse cx="12" cy="40" rx="9" ry="6" fill="rgba(255,100,80,0.38)"/>' +
+    '<ellipse cx="88" cy="40" rx="9" ry="6" fill="rgba(255,100,80,0.38)"/>' +
+    '<rect x="22" y="66" width="56" height="24" rx="2" fill="white"/>' +
+    '<rect x="22" y="66" width="56" height="24" rx="2" fill="none" stroke="#E0E0E0" stroke-width="1.5"/>' +
+    '<rect x="6"  y="68" width="18" height="14" rx="7" fill="#F5C07A"/>' +
+    '<rect x="76" y="68" width="18" height="14" rx="7" fill="#F5C07A"/>' +
+    '<rect x="22" y="88" width="56" height="20" rx="2" fill="#1a1a1a"/>' +
+    '<rect x="26" y="106" width="16" height="17" fill="#F5C07A"/>' +
+    '<rect x="58" y="106" width="16" height="17" fill="#F5C07A"/>' +
+    '<rect x="20" y="121" width="24" height="11" rx="4" fill="#E53E00"/>' +
+    '<rect x="56" y="121" width="24" height="11" rx="4" fill="#E53E00"/>' +
+  '</svg>';
+};
+
+/* ── 토픽 데이터 ── */
+var TOPICS = [
+  {id:'pos', name:'Parts of Speech',    icon:'🔤', color:'#7B1FA2', light:'#F3E5F5', q:12},
+  {id:'pro', name:'Pronouns',            icon:'👥', color:'#1565C0', light:'#E3F2FD', q:12},
+  {id:'art', name:'Articles',            icon:'📖', color:'#2E7D32', light:'#E8F5E9', q:10},
+  {id:'ppp', name:'Prep. of Place',      icon:'📍', color:'#E65100', light:'#FBE9E7', q:8 },
+  {id:'ppt', name:'Prep. of Time',       icon:'⏰', color:'#C62828', light:'#FFEBEE', q:10},
+  {id:'con', name:'Contractions',        icon:'✂️', color:'#00838F', light:'#E0F7FA', q:8 },
+  {id:'cap', name:'Capitalization',      icon:'🔠', color:'#6A1B9A', light:'#F3E5F5', q:8 },
+  {id:'snt', name:'Sentence Types',      icon:'📝', color:'#1B5E20', light:'#E8F5E9', q:8 },
+  {id:'pst', name:'Past Simple',         icon:'⏪', color:'#1A237E', light:'#E8EAF6', q:8 },
+  {id:'fut', name:'Future Simple',       icon:'⏩', color:'#BF360C', light:'#FBE9E7', q:8 },
+  {id:'pfx', name:'Prefixes & Suffixes', icon:'🔧', color:'#4527A0', light:'#EDE7F6', q:6 },
+];
+
+/* ── 규칙 슬라이드 ── */
+var RULES = {
+pos:[
+  {msg:'모든 단어는 4가지 품사 중 하나야!<br>자세히 보면 쉬워! 🔥',
+   html:'<div class="chalk"><div class="chalk-title">📌 PARTS OF SPEECH — 4가지</div><table><tr><th>품사</th><th>역할</th><th>예시</th></tr><tr><td class="dim">Noun</td><td>사람/장소/사물/개념</td><td class="hl">dog, London, love</td></tr><tr><td class="dim">Verb</td><td>행동/상태</td><td class="hl">run, eat, is</td></tr><tr><td class="dim">Adjective</td><td>명사를 설명</td><td class="hl">big, happy, smart</td></tr><tr><td class="dim">Adverb</td><td>동사/형용사를 설명</td><td class="hl">quickly, very, well</td></tr></table></div>'},
+  {msg:'헷갈리는 것들! 꼭 기억해! 💡',
+   html:'<div class="chalk"><div class="chalk-title">⚠️ 자주 틀리는 패턴</div><table><tr><th>단어</th><th>품사</th><th>이유</th></tr><tr><td class="dim">explore</td><td class="hl">Verb</td><td>행동 = Verb!</td></tr><tr><td class="dim">big, happy</td><td class="hl">Adjective</td><td>명사 설명 = Adj!</td></tr><tr><td class="dim">quickly, -ly</td><td class="hl">Adverb</td><td>-ly 끝 → 보통 Adverb</td></tr><tr><td class="dim">London, Max</td><td class="hl">Proper Noun</td><td>이름 = Proper Noun</td></tr></table></div>'},
+],
+pro:[
+  {msg:'대명사는 이름 대신 쓰는 단어야!<br>주격이냐 목적격이냐 잘 봐! 🎯',
+   html:'<div class="chalk"><div class="chalk-title">📌 SUBJECT vs OBJECT PRONOUNS</div><table><tr><th>주격 (Subject)</th><th>목적격 (Object)</th></tr><tr><td class="hl">I</td><td class="hl">me</td></tr><tr><td class="hl">he</td><td class="hl">him</td></tr><tr><td class="hl">she</td><td class="hl">her</td></tr><tr><td class="hl">they</td><td class="hl">them</td></tr><tr><td class="hl">we</td><td class="hl">us</td></tr></table></div>'},
+  {msg:'지시대명사는 거리랑 개수로 결정해! 📏',
+   html:'<div class="chalk"><div class="chalk-title">📌 DEMONSTRATIVE PRONOUNS</div><table><tr><th></th><th>가까이 (near)</th><th>멀리 (far)</th></tr><tr><td class="dim">단수 (1개)</td><td class="hl">This</td><td class="hl">That</td></tr><tr><td class="dim">복수 (2+개)</td><td class="hl">These</td><td class="hl">Those</td></tr></table></div><div class="ex-row"><div class="ex-chip"><b>This</b><small>📖 near,1</small></div><div class="ex-chip"><b>That</b><small>🚗 far,1</small></div><div class="ex-chip"><b>These</b><small>🌸 near,+</small></div><div class="ex-chip"><b>Those</b><small>🐦 far,+</small></div></div>'},
+],
+art:[
+  {msg:'a, an, the — 딱 3개야! 규칙 잘 봐! 📖',
+   html:'<div class="chalk"><div class="chalk-title">📌 ARTICLES</div><table><tr><th>관사</th><th>언제?</th><th>예시</th></tr><tr><td class="hl">a</td><td>자음 소리로 시작</td><td class="dim">a dog, a book</td></tr><tr><td class="hl">an</td><td>모음 소리로 시작</td><td class="dim">an apple, an hour</td></tr><tr><td class="hl">the</td><td>특정한 것, 하나뿐인 것</td><td class="dim">the sun, the moon</td></tr></table></div>'},
+  {msg:'모음 소리 = a,e,i,o,u — 하지만 소리가 중요해! 🔊',
+   html:'<div class="chalk"><div class="chalk-title">⚠️ 헷갈리는 케이스!</div><table><tr><th>단어</th><th>관사</th><th>이유</th></tr><tr><td class="dim">hour</td><td class="hl">an hour</td><td>h가 묵음 → "아워"</td></tr><tr><td class="dim">honest</td><td class="hl">an honest</td><td>h가 묵음 → "아네스트"</td></tr><tr><td class="dim">university</td><td class="hl">a university</td><td>"유"니버시티 = 자음소리</td></tr><tr><td class="dim">unique</td><td class="hl">a unique</td><td>"유"니크 = 자음소리</td></tr></table></div>'},
+],
+ppp:[
+  {msg:'물건이 어디 있는지 표현하는 전치사야! 위치를 잘 봐! 📍',
+   html:'<div class="chalk"><div class="chalk-title">📌 PREPOSITIONS OF PLACE</div><table><tr><th>전치사</th><th>뜻</th><th>예시</th></tr><tr><td class="hl">in</td><td>~ 안에</td><td class="dim">in the box</td></tr><tr><td class="hl">on</td><td>~ 위에(붙어서)</td><td class="dim">on the table</td></tr><tr><td class="hl">above</td><td>~ 높이 위에</td><td class="dim">above the clouds</td></tr><tr><td class="hl">under</td><td>~ 아래에</td><td class="dim">under the bed</td></tr><tr><td class="hl">behind</td><td>~ 뒤에</td><td class="dim">behind the door</td></tr><tr><td class="hl">next to</td><td>~ 바로 옆에</td><td class="dim">next to the school</td></tr><tr><td class="hl">between</td><td>~ 사이에</td><td class="dim">between A and B</td></tr></table></div>'},
+],
+ppt:[
+  {msg:'시간 전치사 3개! AT-ON-IN 순서로 기억해! ⏰',
+   html:'<div class="chalk"><div class="chalk-title">📌 AT · ON · IN</div><table><tr><th>전치사</th><th>언제?</th><th>예시</th></tr><tr><td class="hl">AT</td><td>정확한 시각</td><td class="dim">at 3:00, at noon</td></tr><tr><td class="hl">ON</td><td>요일 · 날짜</td><td class="dim">on Monday, on Dec 25</td></tr><tr><td class="hl">IN</td><td>월 · 계절 · 연도 · 시간대</td><td class="dim">in July, in spring, in 2025, in the morning</td></tr></table></div>'},
+  {msg:'자주 틀리는 것들 한번 더! 🔥',
+   html:'<div class="chalk"><div class="chalk-title">⚠️ 실수 포인트</div><table><tr><th>표현</th><th>정답</th><th>틀린 예</th></tr><tr><td class="dim">July (월)</td><td class="hl">in July</td><td>❌ at July</td></tr><tr><td class="dim">Monday (요일)</td><td class="hl">on Monday</td><td>❌ in Monday</td></tr><tr><td class="dim">3:45 PM (시각)</td><td class="hl">at 3:45 PM</td><td>❌ in 3:45</td></tr><tr><td class="dim">the weekend</td><td class="hl">on the weekend</td><td>❌ at the weekend</td></tr></table></div>'},
+],
+con:[
+  {msg:"축약형 = 두 단어를 합쳐서 줄인 것! 아포스트로피(')를 꼭 써! ✂️",
+   html:'<div class="chalk"><div class="chalk-title">📌 CONTRACTIONS</div><table><tr><th>원형</th><th>축약형</th></tr><tr><td class="dim">I am</td><td class="hl">I\'m</td></tr><tr><td class="dim">you are</td><td class="hl">you\'re</td></tr><tr><td class="dim">she is</td><td class="hl">she\'s</td></tr><tr><td class="dim">they are</td><td class="hl">they\'re</td></tr><tr><td class="dim">we are</td><td class="hl">we\'re</td></tr><tr><td class="dim">can not</td><td class="hl">can\'t</td></tr><tr><td class="dim">did not</td><td class="hl">didn\'t</td></tr><tr><td class="dim">is not</td><td class="hl">isn\'t</td></tr></table></div>'},
+],
+cap:[
+  {msg:'대문자 쓸 때와 문장 끝 기호! 간단해! 🔠',
+   html:'<div class="chalk"><div class="chalk-title">📌 CAPITALIZATION & PUNCTUATION</div><table><tr><th>규칙</th><th>예시</th></tr><tr><td class="dim">문장 첫 단어</td><td class="hl">She likes cats.</td></tr><tr><td class="dim">항상 I (대문자)</td><td class="hl">I love pizza.</td></tr><tr><td class="dim">고유명사 (이름/도시/나라)</td><td class="hl">London, Max, Korea</td></tr><tr><td class="dim">평서문 끝</td><td class="hl">She is happy.</td></tr><tr><td class="dim">의문문 끝</td><td class="hl">How are you?</td></tr><tr><td class="dim">감탄/명령문 끝</td><td class="hl">Watch out!</td></tr></table></div>'},
+],
+snt:[
+  {msg:'문장 종류 3가지! 접속사를 잘 봐! 📝',
+   html:'<div class="chalk"><div class="chalk-title">📌 SENTENCE TYPES</div><table><tr><th>종류</th><th>구조</th><th>예시</th></tr><tr><td class="hl">Simple</td><td class="dim">독립절 1개</td><td class="dim">I like cats.</td></tr><tr><td class="hl">Compound</td><td class="dim">독립절+독립절<br>+ FANBOYS</td><td class="dim">I like cats, but she likes dogs.</td></tr><tr><td class="hl">Complex</td><td class="dim">독립절+종속절<br>because/if/when/although</td><td class="dim">Although it rained, we went out.</td></tr></table></div>'},
+  {msg:'FANBOYS = Compound 접속사들이야! 🎸',
+   html:'<div class="chalk"><div class="chalk-title">📌 FANBOYS (등위접속사)</div><table><tr><th>F</th><td class="hl">for</td><th>A</th><td class="hl">and</td></tr><tr><th>N</th><td class="hl">nor</td><th>B</th><td class="hl">but</td></tr><tr><th>O</th><td class="hl">or</td><th>Y</th><td class="hl">yet</td></tr><tr><th>S</th><td class="hl" colspan="3">so</td></tr></table><br><div style="color:#a8d8b0;font-size:14px">※ Compound → 쉼표 + FANBOYS<br>※ Complex → because / if / when / although</div></div>'},
+],
+pst:[
+  {msg:'과거에 일어난 일은 Past Simple! 규칙/불규칙 둘 다 기억해! ⏪',
+   html:'<div class="chalk"><div class="chalk-title">📌 PAST SIMPLE</div><table><tr><th>규칙 동사</th><th>불규칙 동사</th></tr><tr><td class="dim">play → <span style="color:var(--yellow)">played</span></td><td class="dim">go → <span style="color:var(--yellow)">went</span></td></tr><tr><td class="dim">walk → <span style="color:var(--yellow)">walked</span></td><td class="dim">eat → <span style="color:var(--yellow)">ate</span></td></tr><tr><td class="dim">stop → <span style="color:var(--yellow)">stopped</span></td><td class="dim">see → <span style="color:var(--yellow)">saw</span></td></tr><tr><td class="dim"></td><td class="dim">have → <span style="color:var(--yellow)">had</span></td></tr><tr><td class="dim"></td><td class="dim">run → <span style="color:var(--yellow)">ran</span></td></tr><tr><td class="dim"></td><td class="dim">come → <span style="color:var(--yellow)">came</span></td></tr></table></div>'},
+],
+fut:[
+  {msg:'미래는 will 또는 going to를 써! ⏩',
+   html:'<div class="chalk"><div class="chalk-title">📌 FUTURE SIMPLE</div><table><tr><th>형태</th><th>구조</th><th>예시</th></tr><tr><td class="hl">will</td><td class="dim">will + 동사원형</td><td class="dim">I will go.</td></tr><tr><td class="hl">won\'t</td><td class="dim">will not + 동사원형</td><td class="dim">I won\'t go.</td></tr><tr><td class="hl">going to</td><td class="dim">be + going to + 동사원형</td><td class="dim">She is going to run.</td></tr></table><br><div style="color:#a8d8b0;font-size:14px">⚠️ will 다음엔 항상 동사원형!<br>will goes ❌ → will go ✅</div></div>'},
+],
+pfx:[
+  {msg:'단어 앞뒤에 붙여서 뜻을 바꿔! 🔧',
+   html:'<div class="chalk"><div class="chalk-title">📌 PREFIXES & SUFFIXES</div><table><tr><th>종류</th><th>뜻</th><th>예시</th></tr><tr><td class="hl">un-</td><td class="dim">not (반대)</td><td class="dim">unhappy, unkind</td></tr><tr><td class="hl">re-</td><td class="dim">again (다시)</td><td class="dim">recharge, rewrite</td></tr><tr><td class="hl">over-</td><td class="dim">too much</td><td class="dim">overpaid, overeat</td></tr><tr><td class="hl">-ness</td><td class="dim">state of (상태)</td><td class="dim">kindness, sadness</td></tr><tr><td class="hl">-er/-or</td><td class="dim">one who does</td><td class="dim">baker, teacher</td></tr><tr><td class="hl">-ful</td><td class="dim">full of</td><td class="dim">cheerful, helpful</td></tr><tr><td class="hl">-ly</td><td class="dim">how (방법)</td><td class="dim">quickly, slowly</td></tr></table></div>'},
+],
+};
+
+/* ── 문제 데이터 ── */
+var QUESTIONS = {
+pos:[
+  {type:'mcq',sent:'"I <u>run</u> every day."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Verb',exp:'"run" = 행동 → Verb'},
+  {type:'mcq',sent:'"She is very <u>happy</u> today."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Adjective',exp:'"happy"는 "she"를 설명 → Adjective'},
+  {type:'mcq',sent:'"He ran <u>quickly</u>."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Adverb',exp:'-ly로 끝나는 단어 = 보통 Adverb'},
+  {type:'mcq',sent:'"I read a <u>book</u>."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Noun',exp:'"book" = 사물(thing) → Noun'},
+  {type:'mcq',sent:'"The <u>big</u> dog barks."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Adjective',exp:'"big"은 "dog"을 설명 → Adjective',exam:true},
+  {type:'mcq',sent:'"We <u>explore</u> new places."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Verb',exp:'"explore" = 행동 → Verb',exam:true},
+  {type:'mcq',sent:'"The turtle moves <u>slowly</u>."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Adverb',exp:'"slowly" = how를 나타냄 → Adverb'},
+  {type:'mcq',sent:'"<u>Happiness</u> is important."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Noun',exp:'"happiness" = 개념(idea) → Noun'},
+  {type:'mcq',sent:'"She has a <u>beautiful</u> voice."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Adjective',exp:'"beautiful"은 "voice"를 설명 → Adjective'},
+  {type:'mcq',sent:'"I live in <u>London</u>."',q:'Is "London" a proper noun or a common noun?',opts:['Proper Noun','Common Noun','Verb','Adverb'],ans:'Proper Noun',exp:'도시 이름 = Proper Noun'},
+  {type:'mcq',sent:'"She <u>sings</u> beautifully."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Verb',exp:'"sings" = 행동 → Verb'},
+  {type:'mcq',sent:'"The <u>smart</u> girl solved the puzzle."',q:'What part of speech is the underlined word?',opts:['Noun','Verb','Adjective','Adverb'],ans:'Adjective',exp:'"smart"은 "girl"을 설명 → Adjective',exam:true},
+],
+pro:[
+  {type:'mcq',sent:'"Give ___ the ball." (she)',q:'Choose the correct object pronoun.',opts:['she','her','hers','they'],ans:'her',exp:'she → her (목적격)'},
+  {type:'mcq',sent:'"Please help ___." (I)',q:'Choose the correct object pronoun.',opts:['I','my','me','mine'],ans:'me',exp:'I → me (목적격)',exam:true},
+  {type:'mcq',sent:'"I can see ___." (they)',q:'Choose the correct object pronoun.',opts:['they','their','theirs','them'],ans:'them',exp:'they → them (목적격)',exam:true},
+  {type:'mcq',sent:'"She called ___." (we)',q:'Choose the correct object pronoun.',opts:['we','our','ours','us'],ans:'us',exp:'we → us (목적격)',exam:true},
+  {type:'mcq',sent:'"Can you see ___?" (he)',q:'Choose the correct object pronoun.',opts:['he','his','him','himself'],ans:'him',exp:'he → him (목적격)'},
+  {type:'mcq',sent:'"___ is my cat." (1 cat, near)',q:'Choose the correct demonstrative.',opts:['This','That','These','Those'],ans:'This',exp:'단수 + 가까이 → This',exam:true},
+  {type:'mcq',sent:'"___ are my friends over there." (many, far)',q:'Choose the correct demonstrative.',opts:['This','That','These','Those'],ans:'Those',exp:'복수 + 멀리 → Those',exam:true},
+  {type:'mcq',sent:'"___ pen is mine." (1 pen, far)',q:'Choose the correct demonstrative.',opts:['This','That','These','Those'],ans:'That',exp:'단수 + 멀리 → That'},
+  {type:'mcq',sent:'"___ flowers are beautiful!" (many, near)',q:'Choose the correct demonstrative.',opts:['This','That','These','Those'],ans:'These',exp:'복수 + 가까이 → These',exam:true},
+  {type:'mcq',sent:'"___ and I went to school." (Tom)',q:'Choose the correct subject pronoun for Tom.',opts:['Him','His','He','Them'],ans:'He',exp:'문장 주어 자리 → 주격 He'},
+  {type:'mcq',sent:'"___ is a great teacher." (Ms. Park)',q:'Choose the correct subject pronoun.',opts:['Her','She','Hers','They'],ans:'She',exp:'Ms. Park (여성) → She'},
+  {type:'fill',sent:'"The teacher gave ___ homework." (we)',q:'Type the correct object pronoun.',ans:'us',accept:['us'],exp:'we → us (목적격)',exam:true},
+],
+art:[
+  {type:'mcq',sent:'"___ apple a day keeps the doctor away."',q:'Choose the correct article.',opts:['a','an','the','—'],ans:'an',exp:'"apple"은 모음 a로 시작 → an'},
+  {type:'mcq',sent:'"She has ___ interesting idea."',q:'Choose the correct article.',opts:['a','an','the','—'],ans:'an',exp:'"interesting"은 i로 시작 → an',exam:true},
+  {type:'mcq',sent:'"I need ___ hour to finish."',q:'Choose the correct article.',opts:['a','an','the','—'],ans:'an',exp:'"hour"의 h는 묵음 → "아워" → an',exam:true},
+  {type:'mcq',sent:'"She has ___ unique idea."',q:'Choose the correct article.',opts:['a','an','the','—'],ans:'a',exp:'"unique"는 "유니크" → 자음 소리 → a',exam:true},
+  {type:'mcq',sent:'"___ sun is very bright today."',q:'Choose the correct article.',opts:['a','an','the','—'],ans:'the',exp:'하나뿐인 것(태양) → the'},
+  {type:'mcq',sent:'"He is ___ honest man."',q:'Choose the correct article.',opts:['a','an','the','—'],ans:'an',exp:'"honest"의 h는 묵음 → "아네스트" → an',exam:true},
+  {type:'mcq',sent:'"I have ___ cat at home."',q:'Choose the correct article.',opts:['a','an','the','—'],ans:'a',exp:'"cat"은 자음 c로 시작 → a'},
+  {type:'mcq',sent:'"She saw ___ elephant at the zoo."',q:'Choose the correct article.',opts:['a','an','the','—'],ans:'an',exp:'"elephant"은 모음 e로 시작 → an'},
+  {type:'fill',sent:'"She is ___ engineer."',q:'Type the correct article (a / an / the).',ans:'an',accept:['an'],exp:'"engineer"는 e로 시작 → an'},
+  {type:'fill',sent:'"___ moon is full tonight."',q:'Type the correct article.',ans:'The',accept:['the','The'],exp:'하나뿐인 것(달) → The'},
+],
+ppp:[
+  {type:'mcq',sent:'"The cat is ___ the box." (inside)',q:'Choose the correct preposition.',opts:['in','on','above','behind'],ans:'in',exp:'"안에" → in'},
+  {type:'mcq',sent:'"The picture is ___ the wall." (touching)',q:'Choose the correct preposition.',opts:['in','on','above','under'],ans:'on',exp:'"(벽에 붙어서) 위에" → on'},
+  {type:'mcq',sent:'"The bird flies ___ the tree." (higher)',q:'Choose the correct preposition.',opts:['on','above','under','behind'],ans:'above',exp:'"높이 위에" → above'},
+  {type:'mcq',sent:'"The dog is hiding ___ the table." (lower)',q:'Choose the correct preposition.',opts:['on','above','under','next to'],ans:'under',exp:'"아래에" → under'},
+  {type:'mcq',sent:'"The school is ___ the park and the library."',q:'Choose the correct preposition.',opts:['behind','next to','between','above'],ans:'between',exp:'"두 가지 사이에" → between',exam:true},
+  {type:'mcq',sent:'"She is standing ___ the door." (at the side)',q:'Choose the correct preposition.',opts:['behind','next to','between','above'],ans:'next to',exp:'"바로 옆에" → next to',exam:true},
+  {type:'mcq',sent:'"The car is parked ___ the building."',q:'Choose the correct preposition.',opts:['in front of','next to','behind','above'],ans:'behind',exp:'"뒤에" → behind',exam:true},
+  {type:'fill',sent:'"The children are playing ___ the park."',q:'Type the correct preposition.',ans:'in',accept:['in'],exp:'"공원 안에서" → in'},
+],
+ppt:[
+  {type:'mcq',sent:'"School starts ___ 8:00 AM."',q:'Choose the correct preposition.',opts:['at','on','in','by'],ans:'at',exp:'정확한 시각 → at'},
+  {type:'mcq',sent:'"I was born ___ July."',q:'Choose the correct preposition.',opts:['at','on','in','by'],ans:'in',exp:'월(month) → in',exam:true},
+  {type:'mcq',sent:'"We have class ___ Monday."',q:'Choose the correct preposition.',opts:['at','on','in','by'],ans:'on',exp:'요일 → on',exam:true},
+  {type:'mcq',sent:'"My birthday is ___ December 25."',q:'Choose the correct preposition.',opts:['at','on','in','by'],ans:'on',exp:'날짜 → on'},
+  {type:'mcq',sent:'"It is cold ___ winter."',q:'Choose the correct preposition.',opts:['at','on','in','by'],ans:'in',exp:'계절 → in'},
+  {type:'mcq',sent:'"The train arrives ___ 3:45 PM."',q:'Choose the correct preposition.',opts:['at','on','in','by'],ans:'at',exp:'정확한 시각 → at',exam:true},
+  {type:'mcq',sent:'"We often go hiking ___ the weekend."',q:'Choose the correct preposition.',opts:['at','on','in','by'],ans:'on',exp:'"the weekend" → on the weekend',exam:true},
+  {type:'mcq',sent:'"I study hard ___ the morning."',q:'Choose the correct preposition.',opts:['at','on','in','by'],ans:'in',exp:'시간대(morning/afternoon/evening) → in',exam:true},
+  {type:'fill',sent:'"He was born ___ 2015."',q:'Type the correct preposition.',ans:'in',accept:['in'],exp:'연도 → in'},
+  {type:'fill',sent:'"The party starts ___ noon."',q:'Type the correct preposition.',ans:'at',accept:['at'],exp:'"noon(정오)" = 정확한 시각 → at'},
+],
+con:[
+  {type:'mcq',sent:'"they + are = ___"',q:'Choose the correct contraction.',opts:["they're","they'd","theyre","they'r"],ans:"they're",exp:"they are → they're",exam:true},
+  {type:'mcq',sent:'"she + is = ___"',q:'Choose the correct contraction.',opts:["she's","sho's","shes","she'd"],ans:"she's",exp:"she is → she's",exam:true},
+  {type:'mcq',sent:'"you + are = ___"',q:'Choose the correct contraction.',opts:["you're","youdo","youre","you'd"],ans:"you're",exp:"you are → you're",exam:true},
+  {type:'mcq',sent:'"can + not = ___"',q:'Choose the correct contraction.',opts:["can't","cans","cannot't","cant"],ans:"can't",exp:"cannot → can't",exam:true},
+  {type:'mcq',sent:'"did + not = ___"',q:'Choose the correct contraction.',opts:["didn't","did'nt","didnt","didn'"],ans:"didn't",exp:"did not → didn't"},
+  {type:'fill',sent:'"I + am = ___"',q:"Type the correct contraction.",ans:"I'm",accept:["i'm","I'm"],exp:"I am → I'm"},
+  {type:'fill',sent:'"we + are = ___"',q:"Type the correct contraction.",ans:"we're",accept:["we're","We're"],exp:"we are → we're"},
+  {type:'fill',sent:'"is + not = ___"',q:"Type the correct contraction.",ans:"isn't",accept:["isn't","Isn't","isnt"],exp:"is not → isn't"},
+],
+cap:[
+  {type:'mcq',sent:'"i love pizza."',q:'Which word needs to be capitalized?',opts:['i → I','love → Love','pizza → Pizza','nothing'],ans:'i → I',exp:'단독 I는 항상 대문자',exam:true},
+  {type:'mcq',sent:'"Where do you live ___"',q:'Which punctuation mark goes at the end?',opts:['.','!','?',','],ans:'?',exp:'의문문 → ?'},
+  {type:'mcq',sent:'"Watch out ___"',q:'Which punctuation mark goes at the end?',opts:['.','!','?',','],ans:'!',exp:'경고/감탄 → !'},
+  {type:'mcq',sent:'"she lives in new york."',q:'Which words need capitals?',opts:['She & New York','she & new','New York only','nothing'],ans:'She & New York',exp:'문장 시작 + 도시 이름 → 대문자',exam:true},
+  {type:'mcq',sent:'"How are you ___"',q:'Which punctuation mark goes at the end?',opts:['.','!','?',','],ans:'?',exp:'의문문 → ?'},
+  {type:'mcq',sent:'"we went to paris last summer."',q:'Which words need capitals?',opts:['We & Paris','paris only','we only','nothing'],ans:'We & Paris',exp:'문장 시작 + 도시 이름 → 대문자',exam:true},
+  {type:'fill',sent:'"my dog\'s name is max."',q:'Type the first word correctly (capitalize it).',ans:'My',accept:['My','MY','my'],exp:'문장의 첫 단어 → 대문자'},
+  {type:'fill',sent:'"i like apples."',q:'Type the corrected first word.',ans:'I',accept:['I'],exp:'"i" (혼자) → 항상 대문자 I'},
+],
+snt:[
+  {type:'mcq',sent:'"I like cats."',q:'What type of sentence is this?',opts:['Simple','Compound','Complex','Fragment'],ans:'Simple',exp:'독립절 1개 → Simple sentence'},
+  {type:'mcq',sent:'"I like cats, but my sister likes dogs."',q:'What type of sentence is this?',opts:['Simple','Compound','Complex','Fragment'],ans:'Compound',exp:'독립절 2개 + but → Compound'},
+  {type:'mcq',sent:'"Although it was raining, we went outside."',q:'What type of sentence is this?',opts:['Simple','Compound','Complex','Fragment'],ans:'Complex',exp:'"Although" = 종속접속사 → Complex'},
+  {type:'mcq',sent:'"She reads books and he watches TV."',q:'What type of sentence is this?',opts:['Simple','Compound','Complex','Fragment'],ans:'Compound',exp:'독립절 2개 + and → Compound'},
+  {type:'mcq',sent:'"Because I was tired, I went to bed early."',q:'What type of sentence is this?',opts:['Simple','Compound','Complex','Fragment'],ans:'Complex',exp:'"Because" = 종속접속사 → Complex'},
+  {type:'mcq',sent:'"The dog barked loudly."',q:'What type of sentence is this?',opts:['Simple','Compound','Complex','Fragment'],ans:'Simple',exp:'독립절 1개 → Simple'},
+  {type:'mcq',sent:'"I will help you if you ask me."',q:'What type of sentence is this?',opts:['Simple','Compound','Complex','Fragment'],ans:'Complex',exp:'"if" = 종속접속사 → Complex'},
+  {type:'mcq',sent:'"We played soccer, so we were tired."',q:'What type of sentence is this?',opts:['Simple','Compound','Complex','Fragment'],ans:'Compound',exp:'"so" = FANBOYS → Compound'},
+],
+pst:[
+  {type:'mcq',sent:'"Yesterday, I ___ (go) to school."',q:'Choose the correct past form.',opts:['goed','went','gone','going'],ans:'went',exp:'go → went (불규칙)',exam:true},
+  {type:'mcq',sent:'"She ___ (eat) pizza last night."',q:'Choose the correct past form.',opts:['eated','eaten','ate','eating'],ans:'ate',exp:'eat → ate (불규칙)'},
+  {type:'mcq',sent:'"They ___ (play) soccer yesterday."',q:'Choose the correct past form.',opts:['plays','played','playing','play'],ans:'played',exp:'규칙동사: play + ed = played'},
+  {type:'mcq',sent:'"He ___ (see) a movie last week."',q:'Choose the correct past form.',opts:['seed','seen','saw','sawed'],ans:'saw',exp:'see → saw (불규칙)'},
+  {type:'mcq',sent:'"We ___ (have) a great time."',q:'Choose the correct past form.',opts:['haved','has','had','having'],ans:'had',exp:'have → had (불규칙)'},
+  {type:'mcq',sent:'"She ___ (walk) to school this morning."',q:'Choose the correct past form.',opts:['walks','walked','walking','walk'],ans:'walked',exp:'규칙동사: walk + ed = walked'},
+  {type:'fill',sent:'"They ___ (come) home late."',q:'Type the correct past form.',ans:'came',accept:['came'],exp:'come → came (불규칙)'},
+  {type:'fill',sent:'"I ___ (run) 5 km yesterday."',q:'Type the correct past form.',ans:'ran',accept:['ran'],exp:'run → ran (불규칙)'},
+],
+fut:[
+  {type:'mcq',sent:'"I ___ visit my grandma tomorrow."',q:'Choose the correct word.',opts:['will','am','was','did'],ans:'will',exp:'미래: will + 동사원형'},
+  {type:'mcq',sent:'"She ___ be a doctor someday."',q:'Choose the correct word.',opts:['will','is','was','were'],ans:'will',exp:'미래: will + 동사원형'},
+  {type:'mcq',sent:'"They are ___ to play soccer next week."',q:'Choose the correct word.',opts:['going','go','went','gone'],ans:'going',exp:'be going to + 동사원형'},
+  {type:'mcq',sent:'"It ___ rain tomorrow."',q:'Choose the correct word.',opts:['will','is','was','were'],ans:'will',exp:'미래 예측: will + 동사원형'},
+  {type:'mcq',sent:'"I will not ___ to the party."',q:'Choose the correct verb form.',opts:['came','come','coming','comes'],ans:'come',exp:'will + 동사원형 (원형!)'},
+  {type:'mcq',sent:'Which is the negative future of "I will go"?',q:'Choose the correct form.',opts:["I won't go","I didn't go","I wasn't go","I not will go"],ans:"I won't go",exp:"will not = won't"},
+  {type:'fill',sent:'"She is going ___ buy a new phone."',q:'Type the missing word.',ans:'to',accept:['to'],exp:'be going to + 동사원형'},
+  {type:'fill',sent:'"We ___ watch a movie tonight."',q:'Type "will".',ans:'will',accept:['will'],exp:'긍정 미래 → will'},
+],
+pfx:[
+  {type:'mcq',sent:'"un + happy = unhappy"',q:'What does the prefix "un-" mean?',opts:['again','not','too much','full of'],ans:'not',exp:'"un-" = not (반대 의미)'},
+  {type:'mcq',sent:'"re + charge = recharge"',q:'What does the prefix "re-" mean?',opts:['not','again','under','between'],ans:'again',exp:'"re-" = again (다시)'},
+  {type:'mcq',sent:'"kind + ness = kindness"',q:'What does the suffix "-ness" create?',opts:['a verb','an adjective','a noun','an adverb'],ans:'a noun',exp:'"-ness" → 명사를 만듦'},
+  {type:'mcq',sent:'"A person who bakes is a ___."',q:'Which suffix is used?',opts:['-ful','-ness','-er','-tion'],ans:'-er',exp:'"-er" = one who does → baker'},
+  {type:'mcq',sent:'"over + paid = overpaid"',q:'What does "over-" mean?',opts:['not','again','too much','under'],ans:'too much',exp:'"over-" = too much (너무 많이)'},
+  {type:'fill',sent:'"cheer + ful = ___"',q:'Type the complete word.',ans:'cheerful',accept:['cheerful'],exp:'-ful = full of → cheerful'},
+],
+};
+
+/* ── 저장소 ── */
+var STORE_KEY = 'gquest_v1';
+var progress = {};
+(function(){
+  try{ var d=JSON.parse(localStorage.getItem(STORE_KEY)); if(d) progress=d; }catch(e){}
+})();
+function saveProgress(){ try{ localStorage.setItem(STORE_KEY,JSON.stringify(progress)); }catch(e){} }
+
+/* ── 상태 ── */
+var phase='splash', curTopic=null, ruleSlide=0, qIdx=0;
+var curAnswers=[], curAttempt=0; // curAttempt: 현재 문제 시도 횟수
+
+/* ── 도우미 ── */
+function totalDone(){ return TOPICS.filter(function(t){ return progress[t.id] && progress[t.id].done; }).length; }
+function totalQ(){ return TOPICS.reduce(function(s,t){ return s+t.q; },0); }
+function getStars(correct,total){ var r=correct/total; return r>=0.9?3:r>=0.7?2:1; }
+function topicOf(id){ return TOPICS.find(function(t){ return t.id===id; }); }
+function qs(id){ return QUESTIONS[id]; }
+function rules(id){ return RULES[id]; }
+
+/* ── 렌더 ── */
+var app=document.getElementById('app');
+function render(html){ app.innerHTML=html; window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ── SPLASH ── */
+function showSplash(){
+  phase='splash';
+  var chips=TOPICS.map(function(t){
+    return '<div class="m-chip"><span class="m-icon">'+t.icon+'</span>'+t.name+'</div>';
+  }).join('');
+  render(
+    '<div class="splash">'+
+      '<div class="sc-wrap"><div class="sc-bounce">'+SC(104,138)+'</div></div>'+
+      '<h1>Grammar Quest</h1>'+
+      '<p>🏆 시험 대비 Grammar 완전 정복!</p>'+
+    '</div>'+
+    '<div class="card">'+
+      '<p style="color:var(--ink2);font-size:16px;line-height:2;margin-bottom:18px">'+
+        '📖 11가지 Grammar 미션을 완료해봐!<br>'+
+        '🔮 Rule → 4-Choice → Typing 3단계<br>'+
+        '🏆 모두 클리어하면 시험 80점 이상 GO!'+
+      '</p>'+
+      '<div class="mission-grid">'+chips+'</div>'+
+      '<button class="btn" onclick="showMap()">🚀 Quest 시작!</button>'+
+    '</div>'
+  );
+}
+
+/* ── WORLD MAP ── */
+function showMap(){
+  phase='map';
+  var done=totalDone();
+  var doneQ=TOPICS.reduce(function(s,t){ return s+(progress[t.id]?progress[t.id].score:0); },0);
+  var pct=Math.round(doneQ/totalQ()*100);
+  var cards=TOPICS.map(function(t,i){
+    var p=progress[t.id]||{};
+    var badge= p.done ? '✅' : '';
+    var stars= p.done ? starsHtml(p.stars) : '';
+    var cls='tc'+(p.done?' done':'');
+    return '<div class="'+cls+'" onclick="startTopic(\''+t.id+'\')">'+
+      '<div class="t-badge">'+badge+'</div>'+
+      '<div class="t-icon">'+t.icon+'</div>'+
+      '<div class="t-name">'+t.name+'</div>'+
+      '<div class="t-count">'+t.q+' questions</div>'+
+      '<div class="t-stars">'+stars+'</div>'+
+    '</div>';
+  }).join('');
+  render(
+    '<h2 style="font-family:\'Jua\',sans-serif;font-size:28px;color:var(--ink);margin-bottom:4px">🗺️ Grammar World Map</h2>'+
+    '<p style="font-size:15px;color:var(--ink2);margin-bottom:14px">미션을 골라봐! ('+done+'/'+TOPICS.length+' 완료)</p>'+
+    '<div class="card" style="margin-bottom:14px">'+
+      '<div class="prog-label"><span>전체 진행도</span><span>'+pct+'%</span></div>'+
+      '<div class="prog-wrap"><div class="prog-fill" style="width:'+pct+'%"></div></div>'+
+    '</div>'+
+    '<div class="map-grid">'+cards+'</div>'+
+    (done===TOPICS.length?'<button class="btn" onclick="showFinal()">🏆 최종 결과 보기!</button>':'')+
+    '<button class="btn-ghost" style="width:100%;margin-top:8px;display:block;text-align:center" onclick="showSplash()">🏠 홈으로</button>'
+  );
+}
+
+function starsHtml(n){
+  var s=''; for(var i=0;i<3;i++) s+=(i<n?'⭐':'☆'); return s;
+}
+
+/* ── TOPIC START → RULES ── */
+function startTopic(id){
+  curTopic=id; ruleSlide=0; phase='rules';
+  showRule();
+}
+
+function showRule(){
+  var t=topicOf(curTopic);
+  var rs=rules(curTopic);
+  var r=rs[ruleSlide];
+  var total=rs.length;
+  var dots=rs.map(function(_,i){ return '<div class="dot'+(i===ruleSlide?' on':'')+'"></div>'; }).join('');
+  var isLast=(ruleSlide===total-1);
+  render(
+    '<div class="topbar">'+
+      '<button class="btn-ghost btn-sm" onclick="showMap()">← 나가기</button>'+
+      '<div class="topbar-title">'+t.icon+' '+t.name+'</div>'+
+    '</div>'+
+    '<div class="prog-label"><span>Rule Study</span><span>'+(ruleSlide+1)+' / '+total+'</span></div>'+
+    '<div class="prog-wrap"><div class="prog-fill" style="width:'+Math.round((ruleSlide+1)/total*100)+'%"></div></div>'+
+    '<div class="card">'+
+      '<div class="slide-dots">'+dots+'</div>'+
+      '<div class="char-row">'+
+        '<div class="char-box">'+SC(62,82)+'</div>'+
+        '<div class="bubble">'+r.msg+'</div>'+
+      '</div>'+
+      r.html+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">'+
+        '<button class="btn-ghost btn-sm" onclick="skipRules()">Skip ⏩</button>'+
+        (isLast?
+          '<button class="btn btn-sm" onclick="startQuiz()">연습 시작! →</button>':
+          '<button class="btn btn-sm" onclick="nextRule()">다음 →</button>')+
+      '</div>'+
+    '</div>'
+  );
+}
+function nextRule(){ ruleSlide++; showRule(); }
+function skipRules(){ startQuiz(); }
+
+/* ── QUIZ ── */
+function startQuiz(){
+  phase='quiz'; qIdx=0; curAnswers=[]; curAttempt=0;
+  showQuestion();
+}
+
+function showQuestion(){
+  var t=topicOf(curTopic);
+  var qs_=qs(curTopic);
+  var q=qs_[qIdx];
+  var total=qs_.length;
+  var pct=Math.round(qIdx/total*100);
+  curAttempt=0;
+
+  var qHtml='';
+  if(q.type==='mcq'){
+    var btns=q.opts.map(function(o,i){
+      return '<button class="opt" onclick="checkMcq(this,\''+escQ(o)+'\')" data-opt="'+escQ(o)+'">'+o+'</button>';
+    }).join('');
+    qHtml=
+      '<div class="q-label">✏️ CHOOSE THE ANSWER</div>'+
+      (q.exam?'<span class="q-badge" style="background:#FFF0EB;color:var(--red)">⚠️ 시험에 나왔던 유형!</span><br>':'')+
+      '<p class="q-sent">'+q.sent+'</p>'+
+      '<p class="q-sub">'+q.q+'</p>'+
+      '<div class="opts">'+btns+'</div>'+
+      '<div class="fb" id="fb"></div>'+
+      '<div style="display:flex;justify-content:space-between;margin-top:4px">'+
+        '<button class="btn-ghost btn-sm" onclick="showMap()">나가기</button>'+
+        '<button class="btn btn-sm" id="nextBtn" style="display:none" onclick="nextQ()">다음 →</button>'+
+      '</div>';
+  } else {
+    qHtml=
+      '<div class="q-label">🖊️ TYPE THE ANSWER</div>'+
+      (q.exam?'<span class="q-badge" style="background:#FFF0EB;color:var(--red)">⚠️ 시험에 나왔던 유형!</span><br>':'')+
+      '<p class="q-sent">'+q.sent+'</p>'+
+      '<p class="q-sub">'+q.q+'</p>'+
+      '<input class="type-input" id="fillInput" type="text" placeholder="정답을 입력하세요" autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key===\'Enter\')checkFill()">'+
+      '<div class="type-hint">대문자·소문자 모두 OK</div>'+
+      '<div class="fb" id="fb"></div>'+
+      '<div style="display:flex;justify-content:space-between;margin-top:4px">'+
+        '<button class="btn-ghost btn-sm" onclick="showMap()">나가기</button>'+
+        '<button class="btn btn-sm" onclick="checkFill()">확인 ✓</button>'+
+        '<button class="btn btn-sm" id="nextBtn" style="display:none" onclick="nextQ()">다음 →</button>'+
+      '</div>';
+  }
+
+  render(
+    '<div class="topbar">'+
+      '<button class="btn-ghost btn-sm" onclick="showMap()">← 나가기</button>'+
+      '<div class="topbar-title">'+t.icon+' '+t.name+'</div>'+
+    '</div>'+
+    '<div class="prog-label"><span>Practice '+qIdx+' / '+total+'</span><span>'+pct+'%</span></div>'+
+    '<div class="prog-wrap"><div class="prog-fill" style="width:'+pct+'%"></div></div>'+
+    '<div class="card">'+qHtml+'</div>'
+  );
+  var inp=document.getElementById('fillInput');
+  if(inp) inp.focus();
+}
+
+function escQ(s){ return s.replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
+
+function checkMcq(btn, selected){
+  var q=qs(curTopic)[qIdx];
+  var isCorrect=(selected===q.ans);
+  var firstTry=(curAttempt===0);
+  curAttempt++;
+
+  var allBtns=document.querySelectorAll('.opt');
+  allBtns.forEach(function(b){
+    b.disabled=true;
+    if(b.getAttribute('data-opt')===q.ans) b.className='opt ok';
+    else if(b===btn && !isCorrect) b.className='opt ng';
+  });
+
+  var fb=document.getElementById('fb');
+  if(fb){
+    fb.className='fb '+(isCorrect?'ok':'ng');
+    fb.textContent=isCorrect?'✅ '+q.exp:'❌ 정답: '+q.ans+' — '+q.exp;
+    fb.style.display='block';
+  }
+
+  curAnswers.push({correct:isCorrect, firstTry:firstTry});
+  var nb=document.getElementById('nextBtn');
+  if(nb) nb.style.display='inline-block';
+}
+
+function checkFill(){
+  var q=qs(curTopic)[qIdx];
+  var inp=document.getElementById('fillInput');
+  if(!inp) return;
+  var val=inp.value.trim();
+  var accepted=q.accept||[q.ans];
+  var isCorrect=accepted.some(function(a){ return a.toLowerCase()===val.toLowerCase(); });
+  var firstTry=(curAttempt===0);
+  curAttempt++;
+
+  var fb=document.getElementById('fb');
+  if(isCorrect){
+    inp.className='type-input ok';
+    if(fb){ fb.className='fb ok'; fb.textContent='✅ '+q.exp; fb.style.display='block'; }
+    curAnswers.push({correct:true, firstTry:firstTry});
+    var nb=document.getElementById('nextBtn');
+    if(nb) nb.style.display='inline-block';
+    inp.disabled=true;
+    // hide submit button
+    var confirmBtn=inp.nextElementSibling && inp.nextElementSibling.nextElementSibling;
+  } else {
+    inp.className='type-input ng';
+    inp.classList.add('shake');
+    setTimeout(function(){ inp.classList.remove('shake'); }, 400);
+    if(curAttempt>=2){
+      // 두 번째 시도도 틀리면 정답 보여주고 넘어가기
+      if(fb){ fb.className='fb ng'; fb.textContent='❌ 정답: '+q.ans+' — '+q.exp; fb.style.display='block'; }
+      curAnswers.push({correct:false, firstTry:false});
+      var nb2=document.getElementById('nextBtn');
+      if(nb2) nb2.style.display='inline-block';
+      inp.disabled=true;
+    } else {
+      if(fb){ fb.className='fb ng'; fb.textContent='❌ 다시 한번 해봐! 힌트: '+q.exp.split('→')[0]; fb.style.display='block'; }
+    }
+  }
+}
+
+function nextQ(){
+  var total=qs(curTopic).length;
+  qIdx++;
+  if(qIdx>=total){
+    showTopicResult();
+  } else {
+    showQuestion();
+  }
+}
+
+/* ── TOPIC RESULT ── */
+function showTopicResult(){
+  var t=topicOf(curTopic);
+  var total=qs(curTopic).length;
+  var correct=curAnswers.filter(function(a){ return a.correct; }).length;
+  var firstTryOk=curAnswers.filter(function(a){ return a.correct&&a.firstTry; }).length;
+  var stars=getStars(firstTryOk, total);
+
+  progress[curTopic]={ done:true, score:correct, total:total, stars:stars };
+  saveProgress();
+
+  var done=totalDone();
+  var allDone=(done===TOPICS.length);
+
+  // 전체 진행 현황
+  var rows=TOPICS.map(function(t2){
+    var p=progress[t2.id]||{};
+    var pct2=p.done?Math.round(p.score/p.total*100):0;
+    return '<div class="tr-row">'+
+      '<span style="font-size:18px">'+t2.icon+'</span>'+
+      '<span style="min-width:120px;font-weight:700;font-size:14px;color:'+(p.done?'var(--ink)':'var(--ink3)')+'">'+t2.name+'</span>'+
+      '<div class="tr-bar-bg"><div class="tr-bar" style="width:'+pct2+'%"></div></div>'+
+      '<span style="font-weight:700;font-size:14px;min-width:36px;text-align:right;color:'+(p.done?'var(--red)':'var(--ink3)')+'">'+
+        (p.done?p.score+'/'+p.total:'—')+
+      '</span>'+
+    '</div>';
+  }).join('');
+
+  render(
+    '<div class="result-hero">'+
+      '<div class="result-emoji">'+(stars===3?'🏆':stars===2?'🎉':'🌟')+'</div>'+
+      '<div class="result-title">'+t.name+'<br>Clear!</div>'+
+      '<div class="stars-big">'+starsHtml(stars)+'</div>'+
+      '<div class="result-sub">'+total+'문제 중 <strong style="color:var(--red)">'+correct+'문제</strong> 정답!</div>'+
+    '</div>'+
+    '<div class="card" style="margin-bottom:14px">'+
+      '<div style="font-size:12px;font-weight:700;letter-spacing:2px;color:var(--ink2);margin-bottom:14px">📊 PROGRESS REPORT</div>'+
+      rows+
+    '</div>'+
+    (allDone?
+      '<button class="btn" onclick="showFinal()">🏆 전체 완료! 결과 보기!</button>':
+      '<button class="btn" onclick="showMap()">🗺️ 다음 미션 선택하기</button>')+
+    '<button class="btn-ghost" style="width:100%;margin-top:10px;display:block;text-align:center" onclick="startTopic(curTopic)">🔄 다시 풀기</button>'
+  );
+}
+
+/* ── FINAL ── */
+function showFinal(){
+  var totalCorrect=TOPICS.reduce(function(s,t){ return s+(progress[t.id]?progress[t.id].score:0); },0);
+  var totalQuestions=totalQ();
+  var pct=Math.round(totalCorrect/totalQuestions*100);
+  var msg=pct>=90?'완벽해! 시험 무조건 100점! 🎊':pct>=80?'굉장해! 시험 80점 이상 확실해! 🏆':pct>=70?'잘했어! 조금만 더 복습하자! 💪':'다시 도전해보자! 할 수 있어! 🔥';
+
+  var rows=TOPICS.map(function(t){
+    var p=progress[t.id]||{};
+    var pct2=p.done?Math.round(p.score/p.total*100):0;
+    return '<div class="tr-row">'+
+      '<span style="font-size:18px">'+t.icon+'</span>'+
+      '<span style="min-width:110px;font-weight:700;font-size:14px">'+t.name+'</span>'+
+      '<div class="tr-bar-bg"><div class="tr-bar" style="width:'+pct2+'%"></div></div>'+
+      '<span style="font-weight:700;font-size:13px;min-width:38px;text-align:right;color:var(--red)">'+
+        (p.done?p.score+'/'+p.total:'—')+
+      '</span>'+
+    '</div>';
+  }).join('');
+
+  render(
+    '<div class="final-hero">'+
+      '<div style="font-size:80px">🏆</div>'+
+      '<div style="font-family:\'Jua\',sans-serif;font-size:42px;color:var(--red);-webkit-text-stroke:1.5px var(--ink)">모든 미션 완료!</div>'+
+      '<div style="font-size:36px;font-weight:900;color:var(--ink);margin:8px 0">'+totalCorrect+' / '+totalQuestions+'</div>'+
+      '<div style="font-size:18px;font-weight:700;color:var(--ink2)">'+msg+'</div>'+
+    '</div>'+
+    '<div class="overall-card" style="margin-bottom:14px">'+
+      '<div style="font-size:12px;font-weight:700;letter-spacing:2px;color:var(--ink2);margin-bottom:14px">📊 FINAL REPORT</div>'+
+      rows+
+    '</div>'+
+    '<button class="btn" onclick="showMap()">🗺️ 지도로 돌아가기</button>'+
+    '<button class="btn-ghost" style="width:100%;margin-top:10px;display:block;text-align:center" onclick="resetAll()">🔄 처음부터 다시하기</button>'
+  );
+}
+
+function resetAll(){
+  if(confirm('정말 처음부터 다시할까요?')){
+    progress={};
+    saveProgress();
+    showSplash();
+  }
+}
+
+/* ── INIT ── */
+showSplash();
+</script>
+</body>
+</html>
