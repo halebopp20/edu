@@ -436,7 +436,7 @@
       document.removeEventListener(evt, h);
     }, { once: true });
   });
-  var FLOWER = ["🌼", "💛", "💛💛", "🐝", "🍯"];  // index = stars(0~4)
+  var FLOWER = ["🌼", "💧", "💧💧", "🐝", "🍯"];  // index = stars(0~4)
   var screenEl = document.getElementById("screen");
   var root = document.documentElement;
   var themeBtn = document.getElementById("themeToggle");
@@ -508,7 +508,7 @@
 
     var legendHtml = '<div class="garden-legend">' +
       '<span style="opacity:0.25">🌼 아직 안 봤어</span>' +
-      '<span>💛 꿀 한방울</span><span>💛💛 꿀 여러방울</span>' +
+      '<span>💧 꿀 한방울</span><span>💧💧 꿀 여러방울</span>' +
       '<span>🐝 벌집</span><span>🍯 꿀단지 완성!</span>' +
     '</div>';
 
@@ -592,7 +592,7 @@
   function renderStage2(w) {
     var total = state.queue.length;
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">💛</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">💧</span></div>' +
       '<div class="quiz-card">' +
         '<span class="stage-badge stage-2">✏️ 2단계 · 보면서 쓰기</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
@@ -612,7 +612,7 @@
   function renderStage3(w) {
     var total = state.queue.length;
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">💛💛</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">💧💧</span></div>' +
       '<div class="quiz-card">' +
         '<span class="stage-badge stage-3">🌟 3단계 · 힌트 보고 쓰기</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
