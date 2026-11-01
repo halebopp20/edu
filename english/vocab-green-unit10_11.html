@@ -7,76 +7,76 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@300;400;700&family=Baloo+2:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    --bg: #faf5ff;
-    --bg-soft: #f3e8ff;
+    --bg: #fffbeb;
+    --bg-soft: #fef3c7;
     --surface: #ffffff;
-    --surface-2: #f5f0ff;
-    --ink: #2d1458;
-    --ink-soft: #7c3aed;
-    --ink-faint: #c084fc;
-    --accent: #a855f7;
-    --accent-strong: #9333ea;
-    --accent-tint: #f3e8ff;
-    --secondary: #ec4899;
-    --secondary-strong: #db2777;
-    --secondary-tint: #fce7f3;
+    --surface-2: #fefce8;
+    --ink: #451a03;
+    --ink-soft: #b45309;
+    --ink-faint: #d97706;
+    --accent: #f59e0b;
+    --accent-strong: #d97706;
+    --accent-tint: #fef3c7;
+    --secondary: #f97316;
+    --secondary-strong: #ea580c;
+    --secondary-tint: #ffedd5;
     --sun: #fbbf24;
     --correct: #3fa564;
     --correct-strong: #2c7a49;
     --correct-tint: #e2f6e9;
     --wrong: #ff7a68;
     --wrong-tint: #ffe9e4;
-    --line: #e9d5ff;
-    --opt1: #faf5ff;
-    --opt1-line: #e9d5ff;
-    --opt2: #fdf2f8;
-    --opt2-line: #fbcfe8;
+    --line: #fde68a;
+    --opt1: #fffbeb;
+    --opt1-line: #fde68a;
+    --opt2: #fff7ed;
+    --opt2-line: #fed7aa;
     --opt3: #eff6ff;
     --opt3-line: #bfdbfe;
-    --opt4: #fefce8;
-    --opt4-line: #fde68a;
-    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(168, 85, 247, 0.22);
+    --opt4: #f0fdf4;
+    --opt4-line: #bbf7d0;
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(245, 158, 11, 0.22);
     --radius: 32px;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #1a0a2e;
-      --bg-soft: #2d1458;
-      --surface: #3b1a6e;
-      --surface-2: #4a2080;
-      --ink: #f3e8ff;
-      --ink-soft: #d8b4fe;
-      --ink-faint: #9333ea;
-      --accent: #c084fc;
-      --accent-strong: #e879f9;
-      --accent-tint: #2d1458;
-      --secondary: #f472b6;
-      --secondary-strong: #f9a8d4;
-      --secondary-tint: #3b1a40;
+      --bg: #1c0f00;
+      --bg-soft: #2d1a00;
+      --surface: #3d2400;
+      --surface-2: #4a2e00;
+      --ink: #fef3c7;
+      --ink-soft: #fcd34d;
+      --ink-faint: #d97706;
+      --accent: #fbbf24;
+      --accent-strong: #fcd34d;
+      --accent-tint: #2d1a00;
+      --secondary: #fb923c;
+      --secondary-strong: #fdba74;
+      --secondary-tint: #3d1a00;
       --sun: #fbbf24;
       --correct: #7fe0a8;
       --correct-strong: #4fae76;
       --correct-tint: #1f3c2c;
       --wrong: #ff9d8d;
       --wrong-tint: #452a26;
-      --line: #5b21b6;
-      --opt1: #2d1458; --opt1-line: #5b21b6;
-      --opt2: #3b1a40; --opt2-line: #7c3aed;
+      --line: #7a5a00;
+      --opt1: #2d1a00; --opt1-line: #7a5a00;
+      --opt2: #3d1a00; --opt2-line: #9a4a00;
       --opt3: #1a2840; --opt3-line: #2a4a70;
-      --opt4: #3a2e10; --opt4-line: #7a6020;
+      --opt4: #1a2e1a; --opt4-line: #2a5a2a;
       --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
     }
   }
   :root[data-theme="dark"] {
-    --bg: #1a0a2e; --bg-soft: #2d1458; --surface: #3b1a6e; --surface-2: #4a2080;
-    --ink: #f3e8ff; --ink-soft: #d8b4fe; --ink-faint: #9333ea;
-    --accent: #c084fc; --accent-strong: #e879f9; --accent-tint: #2d1458;
-    --secondary: #f472b6; --secondary-strong: #f9a8d4; --secondary-tint: #3b1a40;
+    --bg: #1c0f00; --bg-soft: #2d1a00; --surface: #3d2400; --surface-2: #4a2e00;
+    --ink: #fef3c7; --ink-soft: #fcd34d; --ink-faint: #d97706;
+    --accent: #fbbf24; --accent-strong: #fcd34d; --accent-tint: #2d1a00;
+    --secondary: #fb923c; --secondary-strong: #fdba74; --secondary-tint: #3d1a00;
     --sun: #fbbf24; --correct: #7fe0a8; --correct-strong: #4fae76; --correct-tint: #1f3c2c;
-    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #5b21b6;
-    --opt1: #2d1458; --opt1-line: #5b21b6; --opt2: #3b1a40; --opt2-line: #7c3aed;
-    --opt3: #1a2840; --opt3-line: #2a4a70; --opt4: #3a2e10; --opt4-line: #7a6020;
+    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #7a5a00;
+    --opt1: #2d1a00; --opt1-line: #7a5a00; --opt2: #3d1a00; --opt2-line: #9a4a00;
+    --opt3: #1a2840; --opt3-line: #2a4a70; --opt4: #1a2e1a; --opt4-line: #2a5a2a;
     --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
   }
 
@@ -349,7 +349,7 @@
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <div class="brand-mark">🐼</div>
+      <div class="brand-mark">🐝</div>
       <div>
         <p class="eyebrow">Vocabulary Workshop · Green</p>
         <h1>초록 단어 정원</h1>
@@ -391,8 +391,8 @@
   /* 판다 얼굴 + 흔드는 손 */
   var WAVE_GIRL =
     '<div style="flex-shrink:0;display:inline-flex;align-items:flex-end;gap:2px">' +
-      '<span style="font-size:64px;line-height:1">🐼</span>' +
-      '<span class="wave-hand" style="font-size:28px;margin-bottom:6px">👋</span>' +
+      '<span style="font-size:64px;line-height:1">🐝</span>' +
+      '<span class="wave-hand" style="font-size:28px;margin-bottom:6px">✨</span>' +
     '</div>';
 
   var greeted = false;
@@ -745,7 +745,7 @@
     state.answered = true;
     setStars(w.word, getStars(w.word) + 1);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🐼✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
+    fb.innerHTML = "🐝✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
     fb.className = "feedback-row correct";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -755,7 +755,7 @@
     state.answered = true;
     state.retryQueue.push(w);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🐼🌰 괜찮아요, 나중에 다시 해봐요!";
+    fb.innerHTML = "🐝🌰 괜찮아요, 나중에 다시 해봐요!";
     fb.className = "feedback-row wrong";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -811,7 +811,7 @@
     screenEl.innerHTML =
       '<div class="card">' +
         '<div class="score-hero">' +
-          '<div class="score-mascot">🐼🌻</div>' +
+          '<div class="score-mascot">🐝🌻</div>' +
           '<div class="score-num">' + mastered + ' / 20</div>' +
           '<div class="score-label">꽃이 ' + mastered + '송이 피었어요! 계속 키워봐요 🌸</div>' +
         '</div>' +
