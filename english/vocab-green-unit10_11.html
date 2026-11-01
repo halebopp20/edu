@@ -436,7 +436,7 @@
       document.removeEventListener(evt, h);
     }, { once: true });
   });
-  var FLOWER = ["🌰", "🌱", "🌸", "🌺", "🌻"];  // index = stars(0~4)
+  var FLOWER = ["🥚", "🐛", "🐝", "🍯", "🌻"];  // index = stars(0~4)
   var screenEl = document.getElementById("screen");
   var root = document.documentElement;
   var themeBtn = document.getElementById("themeToggle");
@@ -507,9 +507,9 @@
     '</div>';
 
     var legendHtml = '<div class="garden-legend">' +
-      '<span style="opacity:0.25">🌰 아직 안 봤어</span>' +
-      '<span>🌱 1단계 통과</span><span>🌸 2단계</span>' +
-      '<span>🌺 3단계</span><span>🌻 완전히 외웠어</span>' +
+      '<span style="opacity:0.25">🥚 아직 안 봤어</span>' +
+      '<span>🐛 1단계 통과</span><span>🐝 2단계</span>' +
+      '<span>🍯 3단계</span><span>🌻 완전히 외웠어</span>' +
     '</div>';
 
     var actionHtml = remaining > 0
@@ -518,7 +518,7 @@
 
     screenEl.innerHTML =
       '<div class="mascot-row">' + WAVE_GIRL +
-        '<div class="speech">안녕! 오늘도 같이 단어를 키워보자! 🌻</div></div>' +
+        '<div class="speech">안녕! 오늘도 같이 꿀 단어를 모아보자! 🍯</div></div>' +
       '<div class="card">' +
         '<h2 class="section-title">🌻 내 단어 정원</h2>' +
         gardenHtml + legendHtml + actionHtml +
@@ -556,7 +556,7 @@
     var options = shuffle([w].concat(distractors));
 
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌰</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🥚</span></div>' +
       '<div class="quiz-card">' +
         '<span class="stage-badge stage-1">🧩 1단계 · 객관식</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
@@ -592,7 +592,7 @@
   function renderStage2(w) {
     var total = state.queue.length;
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌸</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🐛</span></div>' +
       '<div class="quiz-card">' +
         '<span class="stage-badge stage-2">✏️ 2단계 · 보면서 쓰기</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
@@ -612,7 +612,7 @@
   function renderStage3(w) {
     var total = state.queue.length;
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌺</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🐝</span></div>' +
       '<div class="quiz-card">' +
         '<span class="stage-badge stage-3">🌟 3단계 · 힌트 보고 쓰기</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
@@ -632,7 +632,7 @@
   function renderStage4(w) {
     var total = state.queue.length;
     screenEl.innerHTML =
-      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🌻</span></div>' +
+      '<div class="progress-row"><span>문항 ' + (state.index + 1) + ' / ' + total + '</span><span class="growth">🍯</span></div>' +
       '<div class="quiz-card">' +
         '<span class="stage-badge stage-4">🖊️ 4단계 · 완전 암기</span>' +
         '<p class="meaning-en">' + esc(w.en) + '</p>' +
@@ -779,7 +779,7 @@
   function renderCertificate() {
     screenEl.innerHTML =
       '<div class="card">' +
-        '<div class="cert-flowers">🌻🌻🌻🌻🌻<br>🌻🌻🌻🌻🌻<br>🌻🌻🌻🌻🌻<br>🌻🌻🌻🌻🌻</div>' +
+        '<div class="cert-flowers">🍯🐝🍯🐝🍯<br>🐝🍯🐝🍯🐝<br>🍯🐝🍯🐝🍯<br>🐝🍯🐝🍯🐝</div>' +
         '<div class="cert-title">정원 완성! 🎉</div>' +
         '<div class="cert-sub">Unit 10 · 11 단어 20개를 모두 외웠어요!</div>' +
         '<div class="cert-box">이 친구는 초록 단어 정원의<br>모든 꽃을 피웠습니다 🌸</div>' +
@@ -813,7 +813,7 @@
         '<div class="score-hero">' +
           '<div class="score-mascot">🐝🌻</div>' +
           '<div class="score-num">' + mastered + ' / 20</div>' +
-          '<div class="score-label">꽃이 ' + mastered + '송이 피었어요! 계속 키워봐요 🌸</div>' +
+          '<div class="score-label">꿀단지가 ' + mastered + '개 찼어요! 계속 모아봐요 🍯</div>' +
         '</div>' +
         '<div class="result-actions">' +
           (remaining > 0
