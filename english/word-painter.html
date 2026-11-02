@@ -418,15 +418,8 @@ function shakeWrong(wrongIdxs, q) {
     setTimeout(function() { chip.classList.remove('shake'); }, 400);
   });
 
-  var firstWrong = wrongIdxs[0];
-  var hintText = q.words[firstWrong].hint;
-
-  /* 두 번째 시도 이상 → 정답 공개 + 자동 넘김 */
-  if (STATE.tried >= 2) {
-    var correctLabel = {noun:'🟦 Noun', verb:'🟥 Verb', adj:'🟩 Adjective', adv:'🟨 Adverb'};
-    hintText += '<br><b>정답: "' + q.words[firstWrong].w + '" → ' +
-      correctLabel[q.words[firstWrong].pos] + '</b>';
-
+  /* 첫 번째 틀렸을 때 wrongWords 기록 */
+  if (STATE.tried === 1) {
     wrongIdxs.forEach(function(i) {
       var already = STATE.wrongWords.some(function(x){ return x.w === q.words[i].w; });
       if (!already) {
@@ -437,11 +430,12 @@ function shakeWrong(wrongIdxs, q) {
         });
       }
     });
-
-    setTimeout(function() { nextQuestion(); }, 2400);
   }
 
-  /* 힌트 박스 표시 */
+  /* 힌트 박스 표시 — 자동 넘김 없음, 고쳐서 다시 확인해야 함 */
+  var firstWrong = wrongIdxs[0];
+  var hintText = q.words[firstWrong].hint;
+
   var card = document.getElementById('qcard');
   var old = document.getElementById('hint-box');
   if (old) old.remove();
