@@ -120,119 +120,118 @@ var BEAR = (function(){
 /* ── 20문장 데이터 ── */
 var SENTENCES = [
   { words: [
-    {w:'Dogs',  pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'run',   pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'fast',  pos:'adv',  hint:'run이 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'Fish',   pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'swim',   pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'slowly', pos:'adv',  hint:'swim이 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
   ]},
   { words: [
-    {w:'The',     pos:'skip'},
-    {w:'cat',     pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'sleeps',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'quietly', pos:'adv',  hint:'sleeps가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'The',    pos:'skip'},
+    {w:'blue',   pos:'adj',  hint:'sky가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'sky',    pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'shines', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
   ]},
   { words: [
-    {w:'She',   pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'eats',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'lunch', pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'}
+    {w:'He',     pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
+    {w:'plays',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'soccer', pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'}
   ]},
   { words: [
-    {w:'The',      pos:'skip'},
-    {w:'red',      pos:'adj',  hint:'ball이 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'ball',     pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'bounces',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
+    {w:'The',   pos:'skip'},
+    {w:'smart', pos:'adj',  hint:'girl이 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'girl',  pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'reads', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
+  ]},
+  { words: [
+    {w:'Rabbits', pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'hop',     pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'quickly', pos:'adv',  hint:'hop이 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+  ]},
+  { words: [
+    {w:'She',     pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
+    {w:'smiles',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'happily', pos:'adv',  hint:'smiles가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+  ]},
+  { words: [
+    {w:'The',   pos:'skip'},
+    {w:'white', pos:'adj',  hint:'snow가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'snow',  pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'falls', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
   ]},
   { words: [
     {w:'He',      pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'runs',    pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'quickly', pos:'adv',  hint:'runs가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
-  ]},
-  { words: [
-    {w:'Birds',   pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'sing',    pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'sweetly', pos:'adv',  hint:'sing이 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
-  ]},
-  { words: [
-    {w:'The',   pos:'skip'},
-    {w:'big',   pos:'adj',  hint:'dog이 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'dog',   pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'barks', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
-  ]},
-  { words: [
-    {w:'She',   pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'reads', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'books', pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'daily', pos:'adv',  hint:'reads가 언제 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'speaks',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'softly',  pos:'adv',  hint:'speaks가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
   ]},
   { words: [
     {w:'The',    pos:'skip'},
-    {w:'happy',  pos:'adj',  hint:'child가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'child',  pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'laughs', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
+    {w:'hungry', pos:'adj',  hint:'bear가 어떤 상태인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'bear',   pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'eats',   pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
   ]},
   { words: [
-    {w:'He',    pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'jumps', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'high',  pos:'adv',  hint:'jumps가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'They',    pos:'noun', hint:'사람들 이름 대신 쓰는 단어야 → 🟦 Noun!'},
+    {w:'run',     pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'outside', pos:'adv',  hint:'run이 어디서 일어나는지 말해줘 → 🟨 Adverb!'}
   ]},
   { words: [
     {w:'The',   pos:'skip'},
-    {w:'tiny',  pos:'adj',  hint:'mouse가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'mouse', pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'hides', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
+    {w:'small', pos:'adj',  hint:'bird가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'bird',  pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'flies', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
   ]},
   { words: [
     {w:'She',    pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'writes', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'neatly', pos:'adv',  hint:'writes가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'sings',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'loudly', pos:'adv',  hint:'sings가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
   ]},
   { words: [
     {w:'The',   pos:'skip'},
-    {w:'cold',  pos:'adj',  hint:'wind가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'wind',  pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'blows', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
+    {w:'green', pos:'adj',  hint:'frog이 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'frog',  pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'jumps', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
   ]},
   { words: [
     {w:'He',     pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'talks',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'loudly', pos:'adv',  hint:'talks가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'walks',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'slowly', pos:'adv',  hint:'walks가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
   ]},
   { words: [
-    {w:'The',   pos:'skip'},
-    {w:'brave', pos:'adj',  hint:'lion이 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'lion',  pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'roars', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
+    {w:'The',     pos:'skip'},
+    {w:'kind',    pos:'adj',  hint:'teacher가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'teacher', pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'smiles',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'}
   ]},
   { words: [
-    {w:'She',         pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'dances',      pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'beautifully', pos:'adv',  hint:'dances가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
-  ]},
-  { words: [
-    {w:'The',    pos:'skip'},
-    {w:'tall',   pos:'adj',  hint:'tree가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'tree',   pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'stands', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'firmly', pos:'adv',  hint:'stands가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
-  ]},
-  { words: [
-    {w:'He',     pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'eats',   pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'slowly', pos:'adv',  hint:'eats가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'Butterflies', pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'fly',         pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'gracefully',  pos:'adv',  hint:'fly가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
   ]},
   { words: [
     {w:'The',      pos:'skip'},
-    {w:'yellow',   pos:'adj',  hint:'sun이 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'sun',      pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'shines',   pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'brightly', pos:'adv',  hint:'shines가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'fast',     pos:'adj',  hint:'horse가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'horse',    pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'runs',     pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'strongly', pos:'adv',  hint:'runs가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
   ]},
   { words: [
     {w:'She',       pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
-    {w:'sings',     pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
-    {w:'a',         pos:'skip'},
-    {w:'beautiful', pos:'adj',  hint:'song이 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
-    {w:'song',      pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
-    {w:'softly',    pos:'adv',  hint:'sings가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+    {w:'draws',     pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'carefully', pos:'adv',  hint:'draws가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+  ]},
+  { words: [
+    {w:'The',      pos:'skip'},
+    {w:'bright',   pos:'adj',  hint:'star가 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'star',     pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'twinkles', pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'softly',   pos:'adv',  hint:'twinkles가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
+  ]},
+  { words: [
+    {w:'He',     pos:'noun', hint:'사람 이름 대신 쓰는 단어야 → 🟦 Noun!'},
+    {w:'kicks',  pos:'verb', hint:'무엇을 하는지 나타내는 단어야 → 🟥 Verb!'},
+    {w:'a',      pos:'skip'},
+    {w:'round',  pos:'adj',  hint:'ball이 어떤 모습인지 설명해줘, 명사 옆에 붙는 단어야 → 🟩 Adjective!'},
+    {w:'ball',   pos:'noun', hint:'사람·동물·물건 이름이야 → 🟦 Noun!'},
+    {w:'gently', pos:'adv',  hint:'kicks가 어떻게 일어나는지 말해줘 → 🟨 Adverb!'}
   ]}
 ];
 
