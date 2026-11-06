@@ -7,76 +7,76 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@300;400;700&family=Baloo+2:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    --bg: #fffbeb;
-    --bg-soft: #fef3c7;
+    --bg: #f0f7ff;
+    --bg-soft: #dbeafe;
     --surface: #ffffff;
-    --surface-2: #fefce8;
-    --ink: #451a03;
-    --ink-soft: #b45309;
-    --ink-faint: #d97706;
-    --accent: #f59e0b;
-    --accent-strong: #d97706;
-    --accent-tint: #fef3c7;
-    --secondary: #f97316;
-    --secondary-strong: #ea580c;
-    --secondary-tint: #ffedd5;
-    --sun: #fbbf24;
+    --surface-2: #eff6ff;
+    --ink: #1e3a5f;
+    --ink-soft: #2563eb;
+    --ink-faint: #60a5fa;
+    --accent: #3b82f6;
+    --accent-strong: #2563eb;
+    --accent-tint: #dbeafe;
+    --secondary: #06b6d4;
+    --secondary-strong: #0891b2;
+    --secondary-tint: #cffafe;
+    --sun: #67e8f9;
     --correct: #3fa564;
     --correct-strong: #2c7a49;
     --correct-tint: #e2f6e9;
     --wrong: #ff7a68;
     --wrong-tint: #ffe9e4;
-    --line: #fde68a;
-    --opt1: #fffbeb;
-    --opt1-line: #fde68a;
-    --opt2: #fff7ed;
-    --opt2-line: #fed7aa;
+    --line: #bfdbfe;
+    --opt1: #f0f7ff;
+    --opt1-line: #bfdbfe;
+    --opt2: #ecfeff;
+    --opt2-line: #a5f3fc;
     --opt3: #eff6ff;
-    --opt3-line: #bfdbfe;
+    --opt3-line: #93c5fd;
     --opt4: #f0fdf4;
     --opt4-line: #bbf7d0;
-    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(245, 158, 11, 0.22);
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(59, 130, 246, 0.18);
     --radius: 32px;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #1c0f00;
-      --bg-soft: #2d1a00;
-      --surface: #3d2400;
-      --surface-2: #4a2e00;
-      --ink: #fef3c7;
-      --ink-soft: #fcd34d;
-      --ink-faint: #d97706;
-      --accent: #fbbf24;
-      --accent-strong: #fcd34d;
-      --accent-tint: #2d1a00;
-      --secondary: #fb923c;
-      --secondary-strong: #fdba74;
-      --secondary-tint: #3d1a00;
-      --sun: #fbbf24;
+      --bg: #0a1628;
+      --bg-soft: #0f2040;
+      --surface: #162035;
+      --surface-2: #1e2d47;
+      --ink: #e0f0ff;
+      --ink-soft: #93c5fd;
+      --ink-faint: #3b82f6;
+      --accent: #60a5fa;
+      --accent-strong: #93c5fd;
+      --accent-tint: #0f2040;
+      --secondary: #22d3ee;
+      --secondary-strong: #67e8f9;
+      --secondary-tint: #0a2030;
+      --sun: #38bdf8;
       --correct: #7fe0a8;
       --correct-strong: #4fae76;
       --correct-tint: #1f3c2c;
       --wrong: #ff9d8d;
       --wrong-tint: #452a26;
-      --line: #7a5a00;
-      --opt1: #2d1a00; --opt1-line: #7a5a00;
-      --opt2: #3d1a00; --opt2-line: #9a4a00;
-      --opt3: #1a2840; --opt3-line: #2a4a70;
+      --line: #1e3a5f;
+      --opt1: #0f2040; --opt1-line: #1e3a5f;
+      --opt2: #0a2030; --opt2-line: #0e3a40;
+      --opt3: #0f2040; --opt3-line: #1a3060;
       --opt4: #1a2e1a; --opt4-line: #2a5a2a;
       --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
     }
   }
   :root[data-theme="dark"] {
-    --bg: #1c0f00; --bg-soft: #2d1a00; --surface: #3d2400; --surface-2: #4a2e00;
-    --ink: #fef3c7; --ink-soft: #fcd34d; --ink-faint: #d97706;
-    --accent: #fbbf24; --accent-strong: #fcd34d; --accent-tint: #2d1a00;
-    --secondary: #fb923c; --secondary-strong: #fdba74; --secondary-tint: #3d1a00;
-    --sun: #fbbf24; --correct: #7fe0a8; --correct-strong: #4fae76; --correct-tint: #1f3c2c;
-    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #7a5a00;
-    --opt1: #2d1a00; --opt1-line: #7a5a00; --opt2: #3d1a00; --opt2-line: #9a4a00;
-    --opt3: #1a2840; --opt3-line: #2a4a70; --opt4: #1a2e1a; --opt4-line: #2a5a2a;
+    --bg: #0a1628; --bg-soft: #0f2040; --surface: #162035; --surface-2: #1e2d47;
+    --ink: #e0f0ff; --ink-soft: #93c5fd; --ink-faint: #3b82f6;
+    --accent: #60a5fa; --accent-strong: #93c5fd; --accent-tint: #0f2040;
+    --secondary: #22d3ee; --secondary-strong: #67e8f9; --secondary-tint: #0a2030;
+    --sun: #38bdf8; --correct: #7fe0a8; --correct-strong: #4fae76; --correct-tint: #1f3c2c;
+    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #1e3a5f;
+    --opt1: #0f2040; --opt1-line: #1e3a5f; --opt2: #0a2030; --opt2-line: #0e3a40;
+    --opt3: #0f2040; --opt3-line: #1a3060; --opt4: #1a2e1a; --opt4-line: #2a5a2a;
     --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
   }
 
@@ -349,7 +349,7 @@
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <div class="brand-mark">🐝</div>
+      <div class="brand-mark">🐳</div>
       <div>
         <p class="eyebrow">Vocabulary Workshop · Green</p>
         <h1>초록 단어 정원</h1>
@@ -388,11 +388,11 @@
 
   var SECRET_CODE = "STAR⭐";   // ← 엄마가 원하는 코드로 바꾸세요
   var STORE_KEY = "vwgreen_progress_unit1213_v1";
-  /* 판다 얼굴 + 흔드는 손 */
+  /* 고래 + 물보라 */
   var WAVE_GIRL =
     '<div style="flex-shrink:0;display:inline-flex;align-items:flex-end;gap:2px">' +
-      '<span style="font-size:64px;line-height:1">🐝</span>' +
-      '<span class="wave-hand" style="font-size:28px;margin-bottom:6px">✨</span>' +
+      '<span style="font-size:64px;line-height:1">🐳</span>' +
+      '<span class="wave-hand" style="font-size:28px;margin-bottom:6px">💦</span>' +
     '</div>';
 
   var greeted = false;
@@ -403,7 +403,7 @@
     window.speechSynthesis.cancel();
 
     function doSpeak() {
-      var u = new SpeechSynthesisUtterance("안녕! 오늘도 같이 꿀 단어를 모아보자!");
+      var u = new SpeechSynthesisUtterance("안녕! 오늘도 같이 바다 단어를 헤엄쳐보자!");
       u.lang  = "ko-KR";
       u.pitch = 1.7;
       u.rate  = 0.92;
@@ -436,7 +436,7 @@
       document.removeEventListener(evt, h);
     }, { once: true });
   });
-  var FLOWER = ["🌼", "⭐", "🌟", "🧇", "🍯"];  // index = stars(0~4)
+  var FLOWER = ["💧", "🌊", "🐟", "🐬", "🐳"];  // index = stars(0~4)
   var screenEl = document.getElementById("screen");
   var root = document.documentElement;
   var themeBtn = document.getElementById("themeToggle");
@@ -507,9 +507,9 @@
     '</div>';
 
     var legendHtml = '<div class="garden-legend">' +
-      '<span style="opacity:0.25">🌼 아직 안 봤어</span>' +
-      '<span>⭐ 꿀 한방울</span><span>🌟 꿀 여러방울</span>' +
-      '<span>🧇 벌집</span><span>🍯 꿀단지 완성!</span>' +
+      '<span style="opacity:0.25">💧 아직 안 봤어</span>' +
+      '<span>🌊 파도 한 번</span><span>🐟 물고기 등장</span>' +
+      '<span>🐬 돌고래!</span><span>🐳 고래 완성!</span>' +
     '</div>';
 
     var actionHtml = remaining > 0
@@ -518,9 +518,9 @@
 
     screenEl.innerHTML =
       '<div class="mascot-row">' + WAVE_GIRL +
-        '<div class="speech">안녕! 오늘도 같이 꿀 단어를 모아보자! 🍯</div></div>' +
+        '<div class="speech">안녕! 오늘도 같이 바다 단어를 헤엄쳐보자! 🌊</div></div>' +
       '<div class="card">' +
-        '<h2 class="section-title">🌻 내 단어 정원</h2>' +
+        '<h2 class="section-title">🌊 내 단어 바다</h2>' +
         gardenHtml + legendHtml + actionHtml +
       '</div>';
 
@@ -745,7 +745,7 @@
     state.answered = true;
     setStars(w.word, getStars(w.word) + 1);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🐝✨ 잘했어요! 별이 하나 더 생겼어요 ⭐";
+    fb.innerHTML = "🐳💦 잘했어요! 별이 하나 더 생겼어요 ⭐";
     fb.className = "feedback-row correct";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -755,7 +755,7 @@
     state.answered = true;
     state.retryQueue.push(w);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🐝🌰 괜찮아요, 나중에 다시 해봐요!";
+    fb.innerHTML = "🐳🌊 괜찮아요, 나중에 다시 해봐요!";
     fb.className = "feedback-row wrong";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -779,10 +779,10 @@
   function renderCertificate() {
     screenEl.innerHTML =
       '<div class="card">' +
-        '<div class="cert-flowers">🍯🍯🍯🍯🍯<br>🍯🐝🍯🐝🍯<br>🍯🍯🍯🍯🍯<br>🍯🐝🍯🐝🍯</div>' +
-        '<div class="cert-title">꿀단지 완성! 🎉</div>' +
+        '<div class="cert-flowers">🐳🌊🐳🌊🐳<br>🌊🐬🌊🐬🌊<br>🐳🌊🐳🌊🐳<br>🌊🐬🌊🐬🌊</div>' +
+        '<div class="cert-title">바다 정복 완성! 🎉</div>' +
         '<div class="cert-sub">Unit 12 · 13 단어 20개를 모두 외웠어요!</div>' +
-        '<div class="cert-box">이 친구는 꿀벌처럼 열심히 날아다니며<br>꿀단지를 가득 채웠습니다 🍯</div>' +
+        '<div class="cert-box">이 친구는 고래처럼 넓은 바다를 헤엄치며<br>단어를 모두 정복했습니다 🐳</div>' +
         '<div class="secret-box">' +
           '<div class="secret-label">🔑 비밀코드</div>' +
           '<div class="secret-code">' + esc(SECRET_CODE) + '</div>' +
@@ -811,9 +811,9 @@
     screenEl.innerHTML =
       '<div class="card">' +
         '<div class="score-hero">' +
-          '<div class="score-mascot">🐝🍯</div>' +
+          '<div class="score-mascot">🐳🌊</div>' +
           '<div class="score-num">' + mastered + ' / 20</div>' +
-          '<div class="score-label">꿀단지가 ' + mastered + '개 찼어요! 계속 모아봐요 🍯</div>' +
+          '<div class="score-label">바다를 ' + mastered + '개 헤엄쳤어요! 계속 나아가요 🌊</div>' +
         '</div>' +
         '<div class="result-actions">' +
           (remaining > 0
