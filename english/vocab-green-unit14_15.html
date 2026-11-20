@@ -7,76 +7,72 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@300;400;700&family=Baloo+2:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    --bg: #f5f3ff;
-    --bg-soft: #ede9fe;
+    --bg: #fff8f0;
+    --bg-soft: #ffe9d4;
     --surface: #ffffff;
-    --surface-2: #f5f3ff;
-    --ink: #1e1b4b;
-    --ink-soft: #4f46e5;
-    --ink-faint: #818cf8;
-    --accent: #6366f1;
-    --accent-strong: #4f46e5;
-    --accent-tint: #ede9fe;
-    --secondary: #a78bfa;
-    --secondary-strong: #7c3aed;
-    --secondary-tint: #f3e8ff;
-    --sun: #c4b5fd;
-    --correct: #3fa564;
-    --correct-strong: #2c7a49;
-    --correct-tint: #e2f6e9;
-    --wrong: #ff7a68;
-    --wrong-tint: #ffe9e4;
-    --line: #c7d2fe;
-    --opt1: #f5f3ff;
-    --opt1-line: #c7d2fe;
-    --opt2: #f3e8ff;
-    --opt2-line: #d8b4fe;
-    --opt3: #ede9fe;
-    --opt3-line: #a5b4fc;
-    --opt4: #f0fdf4;
-    --opt4-line: #bbf7d0;
-    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(99, 102, 241, 0.18);
+    --surface-2: #fff8f0;
+    --ink: #3b0a0a;
+    --ink-soft: #b91c1c;
+    --ink-faint: #ea580c;
+    --accent: #e11d48;
+    --accent-strong: #9f1239;
+    --accent-tint: #fff1f2;
+    --secondary: #ea580c;
+    --secondary-strong: #9a3412;
+    --secondary-tint: #fff7ed;
+    --sun: #fde68a;
+    --correct: #16a34a;
+    --correct-strong: #15803d;
+    --correct-tint: #dcfce7;
+    --wrong: #f97316;
+    --wrong-tint: #fff7ed;
+    --line: #fca5a5;
+    --opt1: #fff1f2;  --opt1-line: #fecdd3;
+    --opt2: #fff7ed;  --opt2-line: #fed7aa;
+    --opt3: #fef9c3;  --opt3-line: #fde68a;
+    --opt4: #f0fdf4;  --opt4-line: #bbf7d0;
+    --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(225, 29, 72, 0.14);
     --radius: 32px;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #1e1b4b;
-      --bg-soft: #312e81;
-      --surface: #2e2862;
-      --surface-2: #3b3785;
-      --ink: #e0e7ff;
-      --ink-soft: #a5b4fc;
-      --ink-faint: #6366f1;
-      --accent: #818cf8;
-      --accent-strong: #a5b4fc;
-      --accent-tint: #312e81;
-      --secondary: #c084fc;
-      --secondary-strong: #e879f9;
-      --secondary-tint: #2a1a4a;
-      --sun: #7c3aed;
-      --correct: #7fe0a8;
-      --correct-strong: #4fae76;
-      --correct-tint: #1f3c2c;
-      --wrong: #ff9d8d;
-      --wrong-tint: #452a26;
-      --line: #312e81;
-      --opt1: #312e81; --opt1-line: #3b3785;
-      --opt2: #2a1a4a; --opt2-line: #3b2060;
-      --opt3: #312e81; --opt3-line: #4338ca;
-      --opt4: #1a2e1a; --opt4-line: #2a5a2a;
+      --bg: #1a0505;
+      --bg-soft: #3b0a0a;
+      --surface: #2a0a0d;
+      --surface-2: #350d10;
+      --ink: #fff1f2;
+      --ink-soft: #fca5a5;
+      --ink-faint: #fb923c;
+      --accent: #f43f5e;
+      --accent-strong: #fb7185;
+      --accent-tint: #3b0a0a;
+      --secondary: #fb923c;
+      --secondary-strong: #fed7aa;
+      --secondary-tint: #431a00;
+      --sun: #c2410c;
+      --correct: #4ade80;
+      --correct-strong: #22c55e;
+      --correct-tint: #052e16;
+      --wrong: #fdba74;
+      --wrong-tint: #431a00;
+      --line: #7f1d1d;
+      --opt1: #3b0a0a; --opt1-line: #7f1d1d;
+      --opt2: #431a00; --opt2-line: #7c2d12;
+      --opt3: #422006; --opt3-line: #78350f;
+      --opt4: #052e16; --opt4-line: #14532d;
       --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
     }
   }
   :root[data-theme="dark"] {
-    --bg: #1e1b4b; --bg-soft: #312e81; --surface: #2e2862; --surface-2: #3b3785;
-    --ink: #e0e7ff; --ink-soft: #a5b4fc; --ink-faint: #6366f1;
-    --accent: #818cf8; --accent-strong: #a5b4fc; --accent-tint: #312e81;
-    --secondary: #c084fc; --secondary-strong: #e879f9; --secondary-tint: #2a1a4a;
-    --sun: #7c3aed; --correct: #7fe0a8; --correct-strong: #4fae76; --correct-tint: #1f3c2c;
-    --wrong: #ff9d8d; --wrong-tint: #452a26; --line: #312e81;
-    --opt1: #312e81; --opt1-line: #3b3785; --opt2: #2a1a4a; --opt2-line: #3b2060;
-    --opt3: #312e81; --opt3-line: #4338ca; --opt4: #1a2e1a; --opt4-line: #2a5a2a;
+    --bg: #1a0505; --bg-soft: #3b0a0a; --surface: #2a0a0d; --surface-2: #350d10;
+    --ink: #fff1f2; --ink-soft: #fca5a5; --ink-faint: #fb923c;
+    --accent: #f43f5e; --accent-strong: #fb7185; --accent-tint: #3b0a0a;
+    --secondary: #fb923c; --secondary-strong: #fed7aa; --secondary-tint: #431a00;
+    --sun: #c2410c; --correct: #4ade80; --correct-strong: #22c55e; --correct-tint: #052e16;
+    --wrong: #fdba74; --wrong-tint: #431a00; --line: #7f1d1d;
+    --opt1: #3b0a0a; --opt1-line: #7f1d1d; --opt2: #431a00; --opt2-line: #7c2d12;
+    --opt3: #422006; --opt3-line: #78350f; --opt4: #052e16; --opt4-line: #14532d;
     --shadow: 0 3px 0 var(--line), 0 16px 34px -16px rgba(0, 0, 0, 0.55);
   }
 
@@ -109,7 +105,7 @@
   .brand { display: flex; align-items: center; gap: 16px; }
   .brand-mark {
     width: 76px; height: 76px; flex: none; border-radius: 24px;
-    background: linear-gradient(150deg, var(--secondary), var(--accent));
+    background: linear-gradient(150deg, var(--sun), var(--accent));
     display: flex; align-items: center; justify-content: center; font-size: 40px;
     box-shadow: 0 5px 0 rgba(0,0,0,0.08);
   }
@@ -183,7 +179,7 @@
   .growth { font-size: 34px; }
 
   .quiz-card { position: relative; background: var(--surface); border: 3px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 38px 30px 32px; overflow: hidden; }
-  .quiz-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: linear-gradient(90deg, var(--secondary), var(--sun), var(--accent)); }
+  .quiz-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: linear-gradient(90deg, var(--accent), var(--sun), var(--secondary)); }
 
   .unit-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 20px; font-weight: 700; color: var(--secondary-strong); background: var(--secondary-tint); padding: 8px 18px; border-radius: 999px; margin-bottom: 22px; }
 
@@ -304,10 +300,10 @@
     display: inline-block; font-size: 20px; font-weight: 700;
     padding: 8px 18px; border-radius: 999px; margin-bottom: 18px;
   }
-  .stage-1 { background: var(--secondary-tint); color: var(--secondary-strong); }
-  .stage-2 { background: #efe0ff; color: #7b2ff7; }
-  .stage-3 { background: #fff0c2; color: #b07800; }
-  .stage-4 { background: var(--accent-tint); color: var(--accent-strong); }
+  .stage-1 { background: var(--accent-tint); color: var(--accent-strong); }
+  .stage-2 { background: #fff7ed; color: #9a3412; }
+  .stage-3 { background: #fef3c7; color: #92400e; }
+  .stage-4 { background: var(--secondary-tint); color: var(--secondary-strong); }
 
   /* ── 힌트 박스 ── */
   .hint-box {
@@ -315,8 +311,8 @@
     font-family: "Baloo 2", sans-serif; font-size: 36px; font-weight: 700;
     letter-spacing: 3px; margin-bottom: 12px;
   }
-  .hint-full  { background: #efe0ff; border: 3px dashed #c49eff; color: #7b2ff7; }
-  .hint-partial { background: #fff0c2; border: 3px dashed #ffc93c; color: #b07800; }
+  .hint-full  { background: #fef3c7; border: 3px dashed #f59e0b; color: #92400e; }
+  .hint-partial { background: #fff7ed; border: 3px dashed #fb923c; color: #9a3412; }
 
   /* ── 수료증 ── */
   .cert-flowers { font-size: 36px; line-height: 1.7; text-align: center; margin-bottom: 16px; }
@@ -327,9 +323,9 @@
   .cert-sub { font-size: 24px; color: var(--ink-soft); text-align: center; margin-bottom: 22px; }
   .cert-box {
     background: var(--sun); border-radius: 18px; padding: 18px 24px;
-    font-size: 22px; font-weight: 700; color: #1e1b4b; text-align: center;
+    font-size: 22px; font-weight: 700; color: #3b0a0a; text-align: center;
     line-height: 1.6; margin-bottom: 22px;
-    box-shadow: 0 4px 0 rgba(99,102,241,0.3);
+    box-shadow: 0 4px 0 rgba(234,88,12,0.25);
   }
   .secret-box {
     background: var(--accent-tint); border: 3px dashed var(--accent);
@@ -349,7 +345,7 @@
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <div class="brand-mark">🦉</div>
+      <div class="brand-mark">🦊</div>
       <div>
         <p class="eyebrow">Vocabulary Workshop · Green</p>
         <h1>초록 단어 정원</h1>
@@ -387,12 +383,12 @@
   ];
 
   var SECRET_CODE = "ROSE🌸";   // ← 엄마가 원하는 코드로 바꾸세요
-  var STORE_KEY = "vwgreen_progress_unit1415_v1";
-  /* 올빼미 + 별빛 */
-  var WAVE_OWL =
+  var STORE_KEY = "vwgreen_progress_unit1415_v2";
+  /* 여우 + 단풍잎 */
+  var WAVE_FOX =
     '<div style="flex-shrink:0;display:inline-flex;align-items:flex-end;gap:2px">' +
-      '<span style="font-size:64px;line-height:1">🦉</span>' +
-      '<span class="wave-hand" style="font-size:28px;margin-bottom:6px">📖</span>' +
+      '<span style="font-size:64px;line-height:1">🦊</span>' +
+      '<span class="wave-hand" style="font-size:28px;margin-bottom:6px">🍁</span>' +
     '</div>';
 
   var greeted = false;
@@ -403,7 +399,7 @@
     window.speechSynthesis.cancel();
 
     function doSpeak() {
-      var u = new SpeechSynthesisUtterance("안녕! 오늘도 같이 달빛 아래서 단어를 읽어보자!");
+      var u = new SpeechSynthesisUtterance("안녕! 오늘도 같이 가을 숲에서 단어를 찾아보자!");
       u.lang  = "ko-KR";
       u.pitch = 1.7;
       u.rate  = 0.92;
@@ -417,7 +413,6 @@
       window.speechSynthesis.speak(u);
     }
 
-    // voices가 이미 로딩됐으면 바로, 아니면 이벤트 대기
     if (window.speechSynthesis.getVoices().length > 0) {
       doSpeak();
     } else {
@@ -425,18 +420,17 @@
         window.speechSynthesis.onvoiceschanged = null;
         doSpeak();
       };
-      setTimeout(doSpeak, 400);  // fallback
+      setTimeout(doSpeak, 400);
     }
   }
 
-  // 첫 인터랙션 시 재생 — iOS(touchend)·데스크탑(mouseup) 모두 커버
   ["touchend", "mouseup"].forEach(function (evt) {
     document.addEventListener(evt, function h() {
       speakGreeting();
       document.removeEventListener(evt, h);
     }, { once: true });
   });
-  var FLOWER = ["📖", "🌙", "⭐", "✨", "🦉"];  // index = stars(0~4)
+  var FLOWER = ["🌾", "🍂", "🍁", "🔥", "🦊"];  // index = stars(0~4)
   var screenEl = document.getElementById("screen");
   var root = document.documentElement;
   var themeBtn = document.getElementById("themeToggle");
@@ -484,8 +478,8 @@
   }
 
   var state = {
-    queue: [],       // 현재 세션 메인 큐
-    retryQueue: [],  // 🔁 누른 단어들 (세션 끝에 재시도)
+    queue: [],
+    retryQueue: [],
     index: 0,
     answered: false
   };
@@ -507,9 +501,9 @@
     '</div>';
 
     var legendHtml = '<div class="garden-legend">' +
-      '<span style="opacity:0.25">📖 아직 안 봤어</span>' +
-      '<span>🌙 첫 페이지</span><span>⭐ 별을 찾았어!</span>' +
-      '<span>✨ 반짝반짝!</span><span>🦉 올빼미 완성!</span>' +
+      '<span style="opacity:0.25">🌾 아직 안 봤어</span>' +
+      '<span>🍂 첫 발자국</span><span>🍁 단풍잎 발견!</span>' +
+      '<span>🔥 활활 타오르는 중!</span><span>🦊 여우 완성!</span>' +
     '</div>';
 
     var actionHtml = remaining > 0
@@ -517,10 +511,10 @@
       : '<button class="primary-btn" id="certBtn" type="button">🏆 수료증 보기!</button>';
 
     screenEl.innerHTML =
-      '<div class="mascot-row">' + WAVE_OWL +
-        '<div class="speech">안녕! 오늘도 같이 달빛 아래서 단어를 읽어보자! 🌙</div></div>' +
+      '<div class="mascot-row">' + WAVE_FOX +
+        '<div class="speech">안녕! 오늘도 같이 가을 숲에서 단어를 찾아보자! 🦊</div></div>' +
       '<div class="card">' +
-        '<h2 class="section-title">🌙 내 단어 도서관</h2>' +
+        '<h2 class="section-title">🍁 내 단풍 숲</h2>' +
         gardenHtml + legendHtml + actionHtml +
       '</div>';
 
@@ -681,7 +675,6 @@
     document.getElementById("missedBtn").addEventListener("click", function () { handleWrong(w); });
   }
 
-  // pointer-based writing pad (works with finger, mouse, and stylus/Apple Pencil)
   function setupWritePad() {
     var canvas = document.getElementById("writeCanvas");
     if (!canvas) return null;
@@ -694,13 +687,13 @@
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.restore();
-      ctx.strokeStyle = "rgba(74,58,85,0.2)";
+      ctx.strokeStyle = "rgba(185,28,28,0.15)";
       ctx.setLineDash([7, 7]);
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(0, h * 0.28); ctx.lineTo(w, h * 0.28); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(0, h * 0.62); ctx.lineTo(w, h * 0.62); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.strokeStyle = "rgba(74,58,85,0.4)";
+      ctx.strokeStyle = "rgba(185,28,28,0.3)";
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(0, h * 0.82); ctx.lineTo(w, h * 0.82); ctx.stroke();
     }
@@ -725,7 +718,7 @@
     function move(e) {
       if (!drawing) return;
       var p = point(e);
-      ctx.strokeStyle = "#3c2b4a"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.strokeStyle = "#7f1d1d"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.lineJoin = "round";
       ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
       lastX = p.x; lastY = p.y;
       e.preventDefault();
@@ -745,7 +738,7 @@
     state.answered = true;
     setStars(w.word, getStars(w.word) + 1);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🦉📖 잘했어요! 별이 하나 더 생겼어요 ⭐";
+    fb.innerHTML = "🦊🍁 잘했어요! 단풍잎이 하나 더 피었어요 ⭐";
     fb.className = "feedback-row correct";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -755,7 +748,7 @@
     state.answered = true;
     state.retryQueue.push(w);
     var fb = document.getElementById("feedback");
-    fb.innerHTML = "🦉🌙 괜찮아요, 나중에 다시 해봐요!";
+    fb.innerHTML = "🦊🍂 괜찮아요, 나중에 다시 도전해봐요!";
     fb.className = "feedback-row wrong";
     document.getElementById("nextBtn").classList.add("show");
   }
@@ -779,10 +772,10 @@
   function renderCertificate() {
     screenEl.innerHTML =
       '<div class="card">' +
-        '<div class="cert-flowers">🦉🌙🦉🌙🦉<br>🌙⭐🌙⭐🌙<br>🦉🌙🦉🌙🦉<br>🌙⭐🌙⭐🌙</div>' +
-        '<div class="cert-title">달빛 도서관 완성! 🎉</div>' +
+        '<div class="cert-flowers">🦊🍁🦊🍁🦊<br>🍁🔥🍁🔥🍁<br>🦊🍁🦊🍁🦊<br>🍁🔥🍁🔥🍁</div>' +
+        '<div class="cert-title">가을 숲 완성! 🎉</div>' +
         '<div class="cert-sub">Unit 14 · 15 단어 20개를 모두 외웠어요!</div>' +
-        '<div class="cert-box">이 친구는 올빼미처럼 별빛 아래서<br>단어를 모두 완성했습니다 🦉</div>' +
+        '<div class="cert-box">이 친구는 여우처럼 가을 숲을 달려<br>단어를 모두 완성했습니다 🦊</div>' +
         '<div class="secret-box">' +
           '<div class="secret-label">🔑 비밀코드</div>' +
           '<div class="secret-code">' + esc(SECRET_CODE) + '</div>' +
@@ -811,15 +804,15 @@
     screenEl.innerHTML =
       '<div class="card">' +
         '<div class="score-hero">' +
-          '<div class="score-mascot">🦉🌙</div>' +
+          '<div class="score-mascot">🦊🍁</div>' +
           '<div class="score-num">' + mastered + ' / 20</div>' +
-          '<div class="score-label">도서관을 ' + mastered + '개 읽었어요! 계속 읽어요 🌙</div>' +
+          '<div class="score-label">단풍잎이 ' + mastered + '개 피었어요! 계속 달려봐요 🦊</div>' +
         '</div>' +
         '<div class="result-actions">' +
           (remaining > 0
-            ? '<button class="primary-btn" id="continueBtn" type="button">🌙 계속 연습하기 (' + remaining + '개 남음)</button>'
+            ? '<button class="primary-btn" id="continueBtn" type="button">🍁 계속 연습하기 (' + remaining + '개 남음)</button>'
             : '') +
-          '<button class="ghost-btn" id="homeBtn" type="button">🏠 도서관으로 돌아가기</button>' +
+          '<button class="ghost-btn" id="homeBtn" type="button">🏠 단풍 숲으로 돌아가기</button>' +
         '</div>' +
       '</div>';
 
